@@ -40,3 +40,30 @@ void PutarPeta(PETA *P){
     }
     *P = Pt;
 }
+
+void CopyPETA (PETA P, PETA *P1){
+    *P1 = P;
+}
+
+boolean IsUkuranSama (PETA P1, PETA P2){
+    return ((LebarPeta(P1) == LebarPeta(P2)) && (PanjangPeta(P1) == PanjangPeta(P2)));
+}
+
+boolean IsPetaSama (PETA P1, PETA P2){
+    if (!IsUkuranSama(P1,P2)){
+        return false;
+    } else {
+        int i,j; boolean found = true;
+        i = BrsMin(P1);
+        while (i <= LebarPeta(P1) && found){
+            j = PNJMin(P1);
+            while (j <= PanjangPeta(P1) && found){
+                if (Posisi(P1,i,j) != Posisi(P2,i,j))
+                    found = false;
+                j++;
+            }
+        i++;
+        }
+        return found;
+    }
+}

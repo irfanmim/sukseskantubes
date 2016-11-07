@@ -10,6 +10,7 @@
 #define PNJMin 0
 #define PNJMax 100
 
+typedef int indeks
 typedef char ElType;
 
 typedef struct{
@@ -30,5 +31,7 @@ void ReadPeta(FILE *source,PETA *P,str filetxt);
 void PrintPeta(PETA P);
 
 void PutarPeta(PETA *P);
+
+void CopyPETA (PETA P, PETA *P1);
 
 #endif // PETA_H
