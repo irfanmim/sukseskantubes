@@ -6,10 +6,13 @@
 #include "boolean.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 /* Konstanta */
 #define Nil NULL
 
+
+typedef char str[100];
 
 typedef char infotypeq;
 
@@ -115,5 +118,7 @@ void Del(Queue * Q, infotypeq * X);
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "mundur" */
 
 void PrintQueue(Queue Q);
+
+void BacaFile(Stack *S, FILE * file, str namafile);
 
 #endif

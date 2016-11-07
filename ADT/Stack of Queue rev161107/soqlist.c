@@ -152,3 +152,24 @@ void PrintQueue(Queue Q){
     printf("]\n");
 }
 
+void BacaFile(Stack *S, FILE * source, str filetxt){
+    source = fopen(filetxt,"r");
+    int x = 0;
+    int i;
+    Queue temp;
+    str antri;
+    while (!feof(source)){
+        CreateEmptyQueue(&temp);
+        fgets(antri,1000,source);
+        x = strlen(antri);
+        if(antri[x] == '\n'){
+            x--;
+        }
+        for(i=0;i<=x-1;i++){
+            Add(&temp,antri[i]);
+        }
+        Push(S,temp);
+    }
+    fclose(source);
+}
+
