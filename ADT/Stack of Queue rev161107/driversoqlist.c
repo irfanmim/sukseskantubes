@@ -21,8 +21,17 @@ while(C != 'F'){
         PrintQueue(qc);
     } else if(C == 'P') {
         CreateEmptyQueue(&temp);
-        Pop(&sq,&temp);
+        if(!IsEmpty(sq)){
+            Pop(&sq,&temp);
+        }else {
+            printf("kosong\n");
+        }
         PrintQueue(temp);
+    }else if (C=='O'){
+        str kata;
+        scanf("%s",kata);
+        FILE *pita;
+        BacaFile(&sq,pita,kata);
     }
     scanf(" %c",&C);
 }
