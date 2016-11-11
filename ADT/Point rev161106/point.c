@@ -13,7 +13,7 @@
 #include <math.h>
 
 /* *** Konstruktor membentuk POINT *** */
-POINT MakePOINT (float X, float Y)
+POINT MakePOINT (int X, int Y)
 /* Membentuk sebuah POINT dari komponen-komponennya */
 {
 	/* Kamus */
@@ -36,10 +36,10 @@ void BacaPOINT (POINT * P)
 /* F.S. P terdefinisi */
 {
 	/* Kamus */
-	float x, y;
+	int x, y;
 	
 	/* Algoritma */
-	scanf("%f %f", &x, &y);
+	scanf("%d %d", &x, &y);
 	*P = MakePOINT(x, y);
 	
 }
@@ -52,7 +52,7 @@ void TulisPOINT (POINT P)
 /* F.S. P tertulis di layar dengan format "(X,Y)" */                
 {
 	/* Algoritma */
-	printf("(%.2f,%.2f)", Absis(P), Ordinat(P));
+	printf("(%d,%d)", Absis(P), Ordinat(P));
 	
 }
 
@@ -124,7 +124,7 @@ POINT NextY (POINT P)
 	return (MakePOINT(Absis(P), (Ordinat(P)+1)));
 }
 
-POINT PlusDelta (POINT P, float deltaX, float deltaY)
+POINT PlusDelta (POINT P, int deltaX, int deltaY)
 /* Mengirim salinan P yang absisnya adalah Absis(P) + deltaX dan ordinatnya adalah Ordinat(P) + deltaY */
 {
 	/* Algoritma */
@@ -143,37 +143,42 @@ POINT MirrorOf (POINT P, boolean SbX)
 		return (MakePOINT((Absis(P) * (-1)), Ordinat(P)));
 }
 
-void GerakKiri(POINT * P)
+void GerakKiri(POINT *P)
 /* 	I.S : P terdefinisi
 	F.S : Mengurangi nilai X dari titik P sebesar 1 */
 {
 	Absis(*P)--;
 }
-void GerakKanan(POINT * P)
+
+void GerakKanan(POINT *P)
 /* 	I.S : P terdefinisi
 	F.S : Menambah nilai X dari titik P sebesar 1 */
 {
 	Absis(*P)++;
 }
-void GerakAtas(POINT * P)
+
+void GerakAtas(POINT *P)
 /* 	I.S : P terdefinisi
 	F.S : Menambah nilai Y dari titik P sebesar 1 */
 {
 	Ordinat(*P)++;
 }
+
 void GerakBawah(POINT * P)
 /* 	I.S : P terdefinisi
 	F.S : Mengurangi nilai X dari titik P sebesar 1 */
 {
 	Ordinat(*P)--;
 }
-float Jarak0 (POINT P)
+
+int Jarak0 (POINT P)
 /* Menghitung jarak P ke (0,0) */
 {
 	/* Algoritma */
 	return (sqrt(pow(Absis(P), 2) + pow(Ordinat(P), 2)));
 }
-float Panjang (POINT P1, POINT P2)
+
+int Panjang (POINT P1, POINT P2)
 /* Menghitung panjang garis yang dibentuk P1 dan P2 */
 /* Perhatikanlah bahwa di sini spec fungsi kurang baik sebab menyangkut ADT Garis. */
 /* Tuliskan spec fungsi yang lebih tepat. */
@@ -181,7 +186,8 @@ float Panjang (POINT P1, POINT P2)
 	/* Algoritma */
 	return(sqrt(pow((Absis(P2) - Absis(P1)), 2) + pow((Ordinat(P2) - Ordinat(P1)), 2)));
 }
-void Geser (POINT *P, float deltaX, float deltaY)
+
+void Geser (POINT *P, int deltaX, int deltaY)
 /* I.S. P terdefinisi */
 /* F.S. P digeser, absisnya sebesar deltaX dan ordinatnya sebesar deltaY */
 {
@@ -190,6 +196,7 @@ void Geser (POINT *P, float deltaX, float deltaY)
 	Ordinat(*P) = Ordinat(*P) + deltaY;
 	
 }
+
 void GeserKeSbX (POINT *P)
 /* I.S. P terdefinisi */
 /* F.S. P berada pada sumbu X dengan absis sama dengan absis semula. */
@@ -200,6 +207,7 @@ void GeserKeSbX (POINT *P)
 	Ordinat(*P) = 0;
 	
 }
+
 void GeserKeSbY (POINT *P)
 /* I.S. P terdefinisi*/
 /* F.S. P berada pada sumbu Y dengan ordinat yang sama dengan semula. */
@@ -210,6 +218,7 @@ void GeserKeSbY (POINT *P)
 	Absis(*P) = 0;
 	
 }
+
 void Mirror (POINT *P, boolean SbX)
 /* I.S. P terdefinisi */
 /* F.S. P dicerminkan tergantung nilai SbX atau SbY */
@@ -223,7 +232,7 @@ void Mirror (POINT *P, boolean SbX)
 		Absis(*P) = Absis(*P) * (-1);
 }
 
-void Putar (POINT *P, float Sudut)
+void Putar (POINT *P, int Sudut)
 /* I.S. P terdefinisi */
 /* F.S. P digeser sebesar Sudut derajat dengan sumbu titik (0,0) */
 {
@@ -232,7 +241,7 @@ void Putar (POINT *P, float Sudut)
 	#define PI 3.14159265
 	#define degtorad (PI/180)
 	
-	float x, y;
+	int x, y;
 	
 	
 	/* Algoritma */
@@ -242,6 +251,4 @@ void Putar (POINT *P, float Sudut)
 		
 	Absis(*P) = (x * (cos(Sudut*degtorad))) - (y * (sin(Sudut*degtorad)));
 	Ordinat(*P) = (x * (sin(Sudut*degtorad))) + (y * (cos(Sudut*degtorad)));
-	
-
 }
