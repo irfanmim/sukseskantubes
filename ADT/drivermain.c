@@ -8,7 +8,7 @@
 
 int main()
 {
-	character Utama, Enemy[3];
+	player Utama, Enemy[3];
 	FILE *jehian;
 	char kata[20][20];
 	jehian = fopen("peta.txt","r");
@@ -90,7 +90,7 @@ int main()
 
 	}
 	
-	for (k = 0; k <= 8; ++k)
+	for (k = 0; k < 8; ++k)
 	{
 		printf("%s", kata[k]);
 	}
