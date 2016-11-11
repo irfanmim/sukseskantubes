@@ -3,30 +3,12 @@
 #include <stdlib.h>
 #include <time.h>
 #include <conio.h>
-
-typedef struct
-{
-	int X;
-	int Y;
-} point;
-
-typedef struct
-{
-	point posisi;
-	long HP;
-	long DEF;
-	long ATK;
-} player;
-
-#define X(P) (P).posisi.X
-#define Y(P) (P).posisi.Y
-#define HP(P) (P).HP
-#define DEF(P) (P).DEF
-#define ATK(P) (P).ATK
+#include "point.h"
+#include "player.h"
 
 int main()
 {
-	player Utama, Enemy[3];
+	character Utama, Enemy[3];
 	FILE *jehian;
 	char kata[20][20];
 	jehian = fopen("peta.txt","r");

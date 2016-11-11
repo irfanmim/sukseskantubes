@@ -5,7 +5,7 @@
 #include "boolean.h"
 
 typedef struct {
-	point posisi;
+	POINT posisi;
 	int HP;
 	int LVL;
 	long EXP;
