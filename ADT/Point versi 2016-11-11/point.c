@@ -147,28 +147,28 @@ void GerakKiri(POINT *P)
 /* 	I.S : P terdefinisi
 	F.S : Mengurangi nilai X dari titik P sebesar 1 */
 {
-	Absis(*P)--;
+	--Absis(*P);
 }
 
 void GerakKanan(POINT *P)
 /* 	I.S : P terdefinisi
 	F.S : Menambah nilai X dari titik P sebesar 1 */
 {
-	Absis(*P)++;
+	++Absis(*P);
 }
 
 void GerakAtas(POINT *P)
 /* 	I.S : P terdefinisi
 	F.S : Menambah nilai Y dari titik P sebesar 1 */
 {
-	Ordinat(*P)++;
+	--Ordinat(*P);
 }
 
-void GerakBawah(POINT * P)
+void GerakBawah(POINT *P)
 /* 	I.S : P terdefinisi
 	F.S : Mengurangi nilai X dari titik P sebesar 1 */
 {
-	Ordinat(*P)--;
+	++Ordinat(*P);
 }
 
 int Jarak0 (POINT P)

@@ -9,6 +9,7 @@
 
 typedef struct {
 	POINT posisi;
+	char name[200];
 	long int HP;
 	long int HPMAX;
 	int LVL;
@@ -19,6 +20,7 @@ typedef struct {
 
 /* *** Notasi Akses: Selektor player *** */
 
+#define Posisi(P)	(P).posisi
 #define X(P) 		(P).posisi.X
 #define Y(P) 		(P).posisi.Y
 #define HP(P) 		(P).HP
@@ -26,6 +28,7 @@ typedef struct {
 #define ATK(P) 		(P).ATK
 #define DEF(P)		(P).DEF
 #define LVL(P) 		(P).LVL
+#define NAME(P)		(P).name
 #define HPMAX(P)	(P).HPMAX
 
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */

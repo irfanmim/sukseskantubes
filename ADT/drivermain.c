@@ -10,31 +10,50 @@ int main()
 {
 	player Utama, Enemy[3];
 	FILE *jehian;
-	char kata[20][20];
-	jehian = fopen("peta.txt","r");
-	int i = 0;
-	do
+	jehian = fopen("status.txt","r");
+	char kata[1000][1000], mapu[1000][1000];
+	int i = 0, tanda = 0, found = 0;
+	while (!feof(jehian))
 	{
-		fgets(kata[i], 20, jehian);
+		fgets(kata[i], 1000, jehian);
+		if (kata[i][2] == ' ' && !found)
+		{
+			tanda = i;
+			found = 1;
+		}
 		++i;
-	} while (!feof(jehian));
+	}
+	int CCeff = i-1;
 	fclose(jehian);
-	int junk = i;
-	srand(time(NULL)*time(NULL));
+	jehian = fopen("peta.txt","r");
+	i = 0;
+	while (!feof(jehian))
+	{
+		fgets(mapu[i], 1000, jehian);
+		++i;
+	}
+	int mapueff = i-1;
+	int tengahp = (tanda+CCeff-mapueff)/2, tengahl = (strlen(kata[CCeff-1])-strlen(mapu[0])+1)/2;
+	int j;
+	for (i = tengahp; i < tengahp+mapueff; ++i)
+	{
+		for (j = tengahl; j < tengahl+strlen(mapu[i-tengahp])-1; ++j)
+		{
+			kata[i][j] = mapu[i-tengahp][j-tengahl];
+		}		
+	}
+	
+	srand(time(NULL));
 	i = rand();
 	srand(i);
-	int j = rand() % 12;
-	i = i % 8;
+	j = rand() % strlen(mapu[0]) + tengahl;
+	i = i % mapueff + tengahp;
+	
 	while (kata[i][j] != '-')
 	{
-		srand(time(NULL));
-		i = rand();
-		++i;
-		srand(i);
-		j = rand() % 12;
+		srand(j);
 		++j;
-		j = j % 12;
-		i = i % 8;
+		j = j % strlen(mapu[0]) + tengahl;
 	}
 	kata[i][j] = 'P';
 	X(Utama) = j;
@@ -46,18 +65,13 @@ int main()
 	srand(time(NULL));
 	i = rand();
 	srand(i);
-	j = rand() % 12;
-	i = i % 8;
+	j = rand() % strlen(mapu[0]) + tengahl;
+	i = i % mapueff + tengahp;
 	while (kata[i][j] != '-')
 	{
-		srand(time(NULL));
-		i = rand();
-		++i;
-		srand(i);
-		j = rand() % 12;
+		srand(j);
 		++j;
-		j = j % 12;
-		i = i % 8;
+		j = j % strlen(mapu[0]) + tengahl;
 	}
 	kata[i][j] = 'M';
 	int k;
@@ -67,18 +81,13 @@ int main()
 		srand(time(NULL));
 		i = rand();
 		srand(i);
-		j = rand() % 12;
-		i = i % 8;
+		j = rand() % strlen(mapu[0]) + tengahl;
+		i = i % mapueff + tengahp;
 		while (kata[i][j] != '-')
 		{
-			srand(time(NULL));
-			i = rand();
-			++i;
-			srand(i);
-			j = rand() % 12;
+			srand(j);
 			++j;
-			j = j % 12;
-			i = i % 8;
+			j = j % strlen(mapu[0]) + tengahl;
 		}
 		kata[i][j] = 'E';
 
@@ -90,7 +99,7 @@ int main()
 
 	}
 	
-	for (k = 0; k < 8; ++k)
+	for (k = 0; k < CCeff; ++k)
 	{
 		printf("%s", kata[k]);
 	}
@@ -100,29 +109,29 @@ int main()
 	{
 		gets(CC);
 		kata[Y(Utama)][X(Utama)] = '-';
-		if (strcmp(CC, "GD") == 0 && kata[Y(Utama)+1][X(Utama)] != '#')
+		if (strcmp(CC, "GD") == 0 && (kata[Y(Utama)+1][X(Utama)] == '-' || kata[Y(Utama)+1][X(Utama)] == 'M' || kata[Y(Utama)+1][X(Utama)] == 'E'))
 		{
-			++Y(Utama);
+			GerakBawah(&Posisi(Utama));
 		}
-		else if (strcmp(CC, "GU") == 0 && kata[Y(Utama)-1][X(Utama)] != '#')
+		else if (strcmp(CC, "GU") == 0 && (kata[Y(Utama)-1][X(Utama)] == '-' || kata[Y(Utama)-1][X(Utama)] == 'M' || kata[Y(Utama)-1][X(Utama)] == 'E'))
 		{
-			--Y(Utama);
+			GerakAtas(&Posisi(Utama));
 		}
-		else if (strcmp(CC, "GL") == 0 && kata[Y(Utama)][X(Utama)-1] != '#')
+		else if (strcmp(CC, "GL") == 0 && (kata[Y(Utama)][X(Utama)-1] == '-' || kata[Y(Utama)][X(Utama)-1] == 'M' || kata[Y(Utama)][X(Utama)-1] == 'E'))
 		{
-			--X(Utama);
+			GerakKiri(&Posisi(Utama));
 		}
-		else if (strcmp(CC, "GR") == 0 && kata[Y(Utama)][X(Utama)+1] != '#')
+		else if (strcmp(CC, "GR") == 0 && (kata[Y(Utama)][X(Utama)+1] == '-' || kata[Y(Utama)][X(Utama)+1] == 'M' || kata[Y(Utama)][X(Utama)+1] == 'E'))
 		{
-			++X(Utama);
+			GerakKanan(&Posisi(Utama));
 		}
 		if (kata[Y(Utama)][X(Utama)] == 'M')
 		{
-			HP(Utama) += 10;
+			RestoredHP(&Utama);
 		}
 		kata[Y(Utama)][X(Utama)] = 'P';
 		system("cls");
-		for (k = 0; k < junk-1; ++k)
+		for (k = 0; k < CCeff; ++k)
 		{
 			printf("%s", kata[k]);
 		}
