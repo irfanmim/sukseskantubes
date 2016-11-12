@@ -25,7 +25,7 @@ int main()
 	}
 	int CCeff = i-1;
 	fclose(jehian);
-	jehian = fopen("peta.txt","r");
+	jehian = fopen("B.txt","r");
 	i = 0;
 	while (!feof(jehian))
 	{
@@ -48,7 +48,6 @@ int main()
 	srand(i);
 	j = rand() % strlen(mapu[0]) + tengahl;
 	i = i % mapueff + tengahp;
-	
 	while (kata[i][j] != '-')
 	{
 		srand(j);
