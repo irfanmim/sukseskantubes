@@ -178,3 +178,105 @@ int NbDaun1(binTree P)
 		}
 	}
 }
+
+infotype max(infotype e1, infotype e2)
+/* Mengirimkan maksimum dari e1 dan e2 */
+{
+	if (e1 > e2) {
+		return e1;
+	}
+	else {
+		return e2;
+	}
+}
+int Tinggi(binTree P)
+/* 	Mengirim 'height' / tinggi pohon 
+	Basis : Jika pohon kosong, tinggnya nol.
+	Rekurens : 1 + maksimum(tinggi(anak_kiri), tinggi(anak_kanan)) */
+{
+	if (IsTreeEmpty(P)) {
+		return 0;
+	}
+	else {
+		1 + max(Tinggi(Left(*P)), Tinggi(Right(*P)));
+	}
+}
+		
+/*********** INSERT / DELETE LEAF ***********/
+void AddLMLeaf (binTree *P, infotype X)
+/* Add leftmost leaf (add daun terkiri)
+{ I.S. P tidak kosong}
+{ F.S. Daun terkiri P dihapus, nilai daun ditampung di X} */
+{	
+	// Algoritma
+	if (IsTreeEmpty(*P)) {
+		*P = Alokasi(X);
+	}
+	else {
+		AddLMLeaf(&Left(**P), X);
+	}
+}
+				  
+void AddRMLeaf (binTree *P, infotype X)
+/* Add rightmost leaf (add daun terkanan)
+{ I.S. P boleh kosong}
+{ F.S. X menjadi info P} */
+{
+	// Algoritma
+	if (IsTreeEmpty(*P)) {
+		*P = Alokasi(X);
+	}
+	else {
+		AddRMLeaf(&Right(**P), X);
+	}
+}
+void DelLMLeaf (binTree *P, infotype * X)
+/* Delete leftmost leaf (delete daun terkiri)
+{ I.S. P tidak kosong}
+{ F.S. Daun terkiri P dihapus, nilai daun ditampung di X} */
+{
+	// Kamus
+	address temp;
+	
+	// Algoritma
+	if (IsOneElmt(*P)) {
+		*X = Info(**P);
+		temp = *P;
+		*P = Nil;
+		Dealokasi(temp);
+	}
+	else {
+		if (IsUnerRight(*P)) {
+			DelLMLeaf(&Right(**P), X);
+		}
+		else {
+			DelLMLeaf(&Left(**P), X);
+		}
+	}
+}
+void DelRMLeaf (binTree *P, infotype *X)
+/* Delete rightmost leaf (delete daun terkanan)
+{ I.S. P tidak kosong}
+{ F.S. Daun terkanan P dihapus, nilai daun ditampung di X} */
+{
+	// Kamus
+	address temp;
+	
+	// Algoritma
+	if (IsOneElmt(*P)) {
+		*X = Info(**P);
+		temp = *P;
+		*P = Nil;
+		Dealokasi(temp);
+	}
+	else {
+		if (IsUnerLeft(*P)) {
+			DelRMLeaf(&Left(**P), X);
+		}
+		else {
+			DelRMLeaf(&Right(**P), X);
+		}
+	}
+}
+/*********** TREE TO LIST / LIST TO TREE ***********/
+	

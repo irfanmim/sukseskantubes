@@ -10,12 +10,18 @@ int main() {
 	infotype e;
 	address root, left, right;
 	
-	
-	MakeTree(1, Nil, Nil, &left);
-	MakeTree(2, Nil, Nil, &right);
-	MakeTree(3, left, right, &root);
-	PrintPreOrder(root);
+	MakeTree(1, Nil, Nil, &root);
+	AddLMLeaf(&root, 2);
+	AddLMLeaf(&root, 2);
+	AddLMLeaf(&root, 2);
+	PrintPreOrder(root);	
 	printf("%d\n", NbDaun(root));
+	
+	printf("\n");
+	while(!IsTreeEmpty(root)) {
+		(DelLMLeaf(&root, &e));
+		printf("%d\n", e);
+	}
 	
 	printf("Left Right Biner : %d %d %d\n", IsUnerLeft(root), IsUnerRight(root), IsBiner(root));
 	return 0;

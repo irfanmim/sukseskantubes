@@ -99,4 +99,37 @@ int NbDaun(binTree P);
 int NbDaun1(binTree P); 
 /* Fungsi untuk rekursif NbDaun */
 
+infotype max(infotype e1, infotype e2);
+/* Mengirimkan maksimum dari e1 dan e2 */
+
+int Tinggi(binTree P);
+/* 	Mengirim 'height' / tinggi pohon 
+	Basis : Jika pohon kosong, tinggnya nol.
+	Rekurens : 1 + maksimum(tinggi(anak_kiri), tinggi(anak_kanan)) */
+
+/*********** INSERT / DELETE LEAF ***********/
+void AddLMLeaf (binTree *P, infotype X);
+/* Add leftmost leaf (add daun terkiri)
+{ I.S. P boleh kosong}
+{ F.S. X menjadi simpul daun terkiri} */
+
+void AddRMLeaf (binTree *P, infotype X);
+/* Add rightmost leaf (add daun terkanan)
+{ I.S. P boleh kosong}
+{ F.S. X menjadi simpul daun terkiri} */
+
+void DelLMLeaf (binTree *P, infotype * X);
+/* Delete leftmost leaf (delete daun terkiri)
+{ I.S. P tidak kosong}
+{ F.S. Daun terkiri P dihapus, nilai daun ditampung di X} */
+
+void DelRMLeaf (binTree *P, infotype *X);
+/* Delete rightmost leaf (delete daun terkanan)
+{ I.S. P tidak kosong}
+{ F.S. Daun terkanan P dihapus, nilai daun ditampung di X} */
+
+/*********** TREE TO LIST / LIST TO TREE ***********/
+
+
 #endif
+
