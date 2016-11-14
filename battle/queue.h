@@ -73,4 +73,3 @@ void PrintQueue (Queue Q);
 void PrintQueuewithpointer (Queue Q, int x, int i, int r, boolean lawan);
 
 #endif
- 
