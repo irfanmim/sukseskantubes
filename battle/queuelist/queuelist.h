@@ -71,6 +71,8 @@ void PrintQueue(Queue Q);
 
 void PrintQueueRandom (Queue Q, int *i,int *r);
 
+void PrintQueueClosed (Queue Q, int i,int r);
+
 void PrintQueuewithpointer (Queue Q, int x, int i, int r, boolean lawan);
 
 #endif

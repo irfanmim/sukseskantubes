@@ -153,6 +153,27 @@ void PrintQueueRandom (Queue Q, int *i,int *r){
     }
 }
 
+void PrintQueueClosed (Queue Q, int i,int r){
+    int count;
+
+    if ( IsEmpty(Q) ) {
+        printf("Queue Kosong\n");
+    }
+    else {
+        address P = Head(Q);
+        count = 0;
+        while(P != Nil){
+            if(count == i || count == r){
+                printf("# ");
+            }else{
+                printf("%c ",Info(P));
+            }
+            P = Next(P);
+            count++;
+        }
+    }
+}
+
 void PrintQueuewithpointer (Queue Q, int x, int i, int r, boolean lawan){
 
     int count;
@@ -164,34 +185,46 @@ void PrintQueuewithpointer (Queue Q, int x, int i, int r, boolean lawan){
         count = 0;
         address P = Head(Q);
         while ( P != Nil ) {
-            //MASIH NGACO
-            if (x >= i){
-                    if (count == x )
-                    {
-                        printf(">%c ",Info(P) );
-                    }else{
-                        if (count == r) {
-                            printf("# ");
-                        }
-                        else {
-                            printf("%c ",Info(P) );
-                        }
-                    }
-            }else if(x >= r){
-                    if (count == x)
-                    {
-                        printf(">%c ",Info(P) );
-                    }else{
-                        printf("%c ",Info(P) );
-                    }
-
-            }else {
-                    if (count == x)
-                    {
-                        printf(">%c ",Info(P) );
-                    }else{
-                        printf("%c ",Info(P) );
-                    }
+            if (x < i){
+                if (count == i || count == r)
+                {
+                    printf("# ");
+                }else if (count == x){
+                    printf(">%c ",Info(P) );
+                }else{
+                    printf("%c ",Info(P) );
+                }
+            }else if (x == i){
+                if (count == r)
+                {
+                    printf("# ");
+                }else if(count == x){
+                    printf(">%c ",Info(P) );
+                }else{
+                    printf("%c ",Info(P) );
+                }
+            }else if (x > i && x < r){
+                if (count == r)
+                {
+                    printf("# ");
+                }else if(count == x){
+                    printf(">%c ",Info(P) );
+                }else{
+                    printf("%c ",Info(P) );
+                }
+            }else if (x == r){
+                if (count == r){
+                    printf(">%c ",Info(P) );
+                }else{
+                    printf("%c ",Info(P) );
+                }
+            }else{
+                if (count == x)
+                {
+                    printf(">%c ",Info(P) );
+                }else{
+                    printf("%c ",Info(P) );
+                }    
             }
             P = Next(P);
             count++;
