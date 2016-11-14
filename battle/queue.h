@@ -64,10 +64,13 @@ void Del (Queue * Q, infotype * X);
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer; 
         Q mungkin kosong */
+void DelTail (Queue * Q, infotype * X);
 
-void PrintQueueRandom (Queue Q);
+void PrintQueueRandom (Queue Q, int *i,int *r);
 
 void PrintQueue (Queue Q);
+
+void PrintQueuewithpointer (Queue Q, int x, int i, int r, boolean lawan);
 
 #endif
  

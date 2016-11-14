@@ -127,9 +127,21 @@ void Del (Queue * Q, infotype * X)
 	}	
 }
 
+void DelTail (Queue * Q, infotype * X){
+	address
+	if ( Head(*Q) == Tail(*Q) ) {
+		*X = InfoHead(*Q);
+		Head(*Q) = Nil;
+		Tail(*Q) = Nil;
+	}
+	else {
+		
+
+	}	
+}
 
 /* Operasi Tambahan */
-void PrintQueueRandom (Queue Q)
+void PrintQueueRandom (Queue Q, int *i, int *r)
 /* Mencetak isi queue Q ke layar */
 /* I.S. Q terdefinisi, mungkin kosong */
 /* F.S. Q tercetak ke layar */
@@ -137,18 +149,18 @@ void PrintQueueRandom (Queue Q)
     infotype temp;
     
     srand(time(NULL));
-	int i = rand() % 4;
-	int r = rand() % 4;
+	*i = rand() % 4;
+	*r = rand() % 4;
 	int temp1, count;
 
-	while ( i == r ){
-		i = rand() % 4;
+	while ( *i == *r ){
+		*i = rand() % 4;
 	}
 
-	if ( i > r ) {
-		temp1 = i;
-		i = r;
-		r = temp1;
+	if ( *i > *r ) {
+		temp1 = *i;
+		*i = *r;
+		*r = temp1;
 	}
 
 	//printf("%d %d\n", i, r);
@@ -159,7 +171,7 @@ void PrintQueueRandom (Queue Q)
     else {
     	count = 0;
         while ( !IsEmpty(Q) ) {
-            if ( count == i || count == r ) {
+            if ( count == *i || count == *r ) {
             	printf("# ");
             	Del(&Q,&temp);
             }
@@ -189,6 +201,67 @@ void PrintQueue (Queue Q)
         while ( !IsEmpty(Q) ) {
             printf("%c ", InfoHead(Q) );
             Del(&Q,&temp);
+            count++;
+        }
+    }
+}
+
+void PrintQueuewithpointer (Queue Q, int x, int i, int r,boolean lawan){
+
+	infotype temp;
+	int count;
+
+
+
+	if ( IsEmpty(Q) ) {
+        printf("Queue Kosong\n");
+    }
+    else if (lawan){
+    	count = 0;
+        while ( !IsEmpty(Q) ) {
+            if (x >= i){
+            		Del(&Q,&temp);
+		            if (count == x )
+		            {
+		            	printf(">%c ",temp );
+		            }else{
+		            	if (count == r) {
+		            		printf("# ");
+		            	}
+		            	else {
+		            		printf("%c ",temp );
+		            	}
+		            }
+            }else if(x >= r){
+            		Del(&Q,&temp);
+		            if (count == x)
+		            {
+		            	printf(">%c ",temp );
+		            }else{
+		            	printf("%c ",temp );
+		            }
+
+            }else {
+					Del(&Q,&temp);
+		            if (count == x)
+		            {
+		            	printf(">%c ",temp );
+		            }else{
+		            	printf("%c ",temp );
+		            }
+		    }
+		    count++;
+        }
+    }else{
+    	count = 0;
+        while ( !IsEmpty(Q) ) {
+            Del(&Q,&temp);
+            if (count == x)
+            {
+            	printf(">%c ",temp );
+            }else{
+            	printf("%c ",temp );
+            }
             count++;
         }
     }

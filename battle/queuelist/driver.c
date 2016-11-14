@@ -1,5 +1,5 @@
 #include "boolean.h"
-#include "queue.h"
+#include "queuelist.h"
 #include <stdio.h>
 
 void bertarung(char lawan, char player, int *splayer, int *slawan);
@@ -9,8 +9,8 @@ int main() {
 	char input,temp,tempplayer,templawan;
 	int i,scorelawan,scoreplayer,x,z,r1,r2;
 
-	CreateEmpty(&Q,4);
-	CreateEmpty(&Battle,4);
+	CreateEmpty(&Q);
+	CreateEmpty(&Battle);
 
 	Add(&Q,'F');
 	Add(&Q,'B');
@@ -28,7 +28,7 @@ int main() {
 	while ( i != 4 ) {
 		
 		if ( input == 'D' ) {
-			Del(&Battle,&temp);
+			DelTail(&Battle,&temp);
 			i--;
 		}else if(input == 'A' || input == 'B' || input == 'F'){
 			i++;
@@ -53,6 +53,7 @@ int main() {
 
 
 	PrintQueue(Battle);
+
 	printf("\n");
 
 	printf("Player : %d           Enemy : %d\n",scoreplayer,scorelawan);
