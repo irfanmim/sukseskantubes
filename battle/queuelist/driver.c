@@ -40,7 +40,7 @@ int main() {
 	
 
 	inputdata(pl,&atk,&def,&lvlplayer);
-	hpplayer = 100;
+	hpplayer = 5;
 	hplawan = 25;
 
 	printf("nama lawan : "); scanf(" %s",en);
@@ -79,13 +79,23 @@ int main() {
 		z = 0; 
 		while(hpplayer > 0 && hplawan > 0 && z<=3)
 		{
+			char prevplayer,prevlawan;
 			bertarungreal(Info(penemy),Info(pplayer),&hpplayer,&hplawan,atk,3);
 
 			PrintHeaderInBattle(pl,en,hpplayer,lvlplayer,atk,def,round,hplawan,Q,r1,r2,z);
 
 			printf("\n");
+			if (z == 0){
+				bertarungstatus(Info(penemy),Info(pplayer),atk,3,pl,en);
+				prevlawan = Info(penemy);
+				prevplayer = Info(pplayer);
+			}else{
+				bertarungstatus(prevlawan,prevplayer,atk,3,pl,en);
+				bertarungstatus(Info(penemy),Info(pplayer),atk,3,pl,en);
+				prevlawan = Info(penemy);
+				prevplayer = Info(pplayer);
 
-			bertarungstatus(Info(penemy),Info(pplayer),atk,3,pl,en);
+			}
 
 			printf("\n");
 
