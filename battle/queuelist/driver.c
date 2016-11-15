@@ -43,7 +43,9 @@ int main() {
 	hpplayer = 100;
 	hplawan = 25;
 
-		printf("nama lawan : "); scanf(" %s",en);
+	printf("nama lawan : "); scanf(" %s",en);
+
+	system("clear");
 
 	while(hpplayer > 0 && hplawan > 0 && round<=10){
 
@@ -65,15 +67,10 @@ int main() {
 			printf("\n");
 			PrintAndInput(&Battle,&i);
 			
-			//clrscr();
+			system("clear");
 		}while(i != 4);
 
-		printf("\n");
-		printf("\n");
-		printf("\n");
-		printf("\n");
-		printf("\n");
-		printf("\n");
+		
 		while(getchar()!='\n');
 
 		penemy = Head(Q);
@@ -95,8 +92,8 @@ int main() {
 			PrintCommandInBattle(Battle,z);
 			
 			while(getchar()!='\n');
-			//clrscr();
-
+			
+			system("clear");
 			penemy = Next(penemy);
 			pplayer = Next(pplayer);
 			z++;
@@ -256,8 +253,10 @@ void PrintAndInput(Queue *Q, int *i){
 	printf("Command : ");
 	scanf(" %c", &input);
 	if ( input == 'D' ) {
-		DelTail(Q,&temp);
-		*i = *i -1;
+		if(!IsEmpty(*Q)){	
+			DelTail(Q,&temp);
+			*i = *i -1;
+		}
 	}else if(input == 'A' || input == 'B' || input == 'F'){
 		*i = *i + 1;
 		Add(Q,input);
