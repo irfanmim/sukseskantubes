@@ -1,9 +1,15 @@
 #include "boolean.h"
 #include "queuelist.h"
 #include <stdio.h>
+#include <time.h>
 //#include <conio.h>
 
-void bertarung(char lawan, char player, int *splayer, int *slawan);
+void inputdata(char nama[200], int *atk, int *def, int *lvl);
+
+
+void bertarungreal(char lawan, char player, int *splayer, int *slawan, int atkplayer, int atklawan);
+
+void bertarungstatus(char lawan, char player, int atkplayer, int atklawan, char nplayer[200], char nlawan[200]);
 
 void PrintHeader(char nama[200],char enemy[200], int hpplayer, int level, int atk, int def , int round,int hpenemy, Queue qenemy, int i,int  r);
 
@@ -13,122 +19,195 @@ void PrintAndInput(Queue *Q, int *i);
 
 void PrintCommandInBattle(Queue Q, int i);
 
+void RandomAngka(int *i, int *r);
+
 int main() {
 	Queue Q,Battle;
 	char input,temp,tempplayer,templawan;
-	int i,scorelawan,scoreplayer,x,z,r1,r2;
+	int i,x,z,r1,r2,round;
+
+	int atk,def,hpplayer,hplawan,lvlplayer;
 
 	address penemy,pplayer;
 
 	char pl[200],en[200];
 
-	CreateEmpty(&Q);
-	CreateEmpty(&Battle);
+	round = 1;
 
-	Add(&Q,'F');
-	Add(&Q,'B');
-	Add(&Q,'F');
-	Add(&Q,'A');
 
-	PrintQueueRandom(Q,&r1,&r2);
 
 	printf("\n");
-	scorelawan = 0;
-	scoreplayer = 0;
-	i = 0;
+	
 
-	scanf(" %s",pl);
-	scanf(" %s",en);
+	inputdata(pl,&atk,&def,&lvlplayer);
+	hpplayer = 100;
+	hplawan = 25;
 
-	do{
-		PrintHeader(pl,en,100,999,999,999,1,25,Q,r1,r2);
+		printf("nama lawan : "); scanf(" %s",en);
+
+	while(hpplayer > 0 && hplawan > 0 && round<=10){
+
+		CreateEmpty(&Q);
+		CreateEmpty(&Battle);
+
+		Add(&Q,'F');
+		Add(&Q,'B');
+		Add(&Q,'F');
+		Add(&Q,'A');
+
+		RandomAngka(&r1,&r2);
+
+		i = 0;
+		do{
+			PrintHeader(pl,en,hpplayer,lvlplayer,atk,def,round,hplawan,Q,r1,r2);
+			printf("\n");
+			printf("\n");
+			printf("\n");
+			PrintAndInput(&Battle,&i);
+			
+			//clrscr();
+		}while(i != 4);
+
+		printf("\n");
 		printf("\n");
 		printf("\n");
 		printf("\n");
-		PrintAndInput(&Battle,&i);
-		
-		//clrscr();
-	}while(i != 4);
-
-
-	PrintQueue(Battle);
-
-	printf("\n");
-
-	printf("Player : %d           Enemy : %d\n",scoreplayer,scorelawan);
-
-	penemy = Head(Q);
-	pplayer = Head(Battle);
-
-	for (int z = 0; z <= 3; z++)
-	{
-		PrintHeaderInBattle(pl,en,100,999,999,999,1,25,Q,r1,r2,z);
-
 		printf("\n");
-
-		bertarung(Info(penemy),Info(pplayer),&scoreplayer,&scorelawan);
-		printf("Player : %d           Enemy : %d\n",scoreplayer,scorelawan);
-
 		printf("\n");
-
-		PrintCommandInBattle(Battle,z);
-		
 		while(getchar()!='\n');
-		//clrscr();
 
-		penemy = Next(penemy);
-		pplayer = Next(pplayer);
+		penemy = Head(Q);
+		pplayer = Head(Battle);
+
+		z = 0; 
+		while(hpplayer > 0 && hplawan > 0 && z<=3)
+		{
+			bertarungreal(Info(penemy),Info(pplayer),&hpplayer,&hplawan,atk,3);
+
+			PrintHeaderInBattle(pl,en,hpplayer,lvlplayer,atk,def,round,hplawan,Q,r1,r2,z);
+
+			printf("\n");
+
+			bertarungstatus(Info(penemy),Info(pplayer),atk,3,pl,en);
+
+			printf("\n");
+
+			PrintCommandInBattle(Battle,z);
+			
+			while(getchar()!='\n');
+			//clrscr();
+
+			penemy = Next(penemy);
+			pplayer = Next(pplayer);
+			z++;
+
+		}
+		round++;
 
 	}
-
 	printf("\n");
 	return 0;
 }
 
-void bertarung(char lawan, char player, int *splayer, int *slawan){
+//PORSEDUR
+
+void inputdata(char nama[200], int *atk, int *def, int *lvl){
+	printf("nama : "); scanf(" %s",nama);
+	printf("attack : "); scanf(" %d",atk);
+	printf("defense : "); scanf(" %d",def);
+	printf("level : "); scanf(" %d",lvl);
+}
+
+void bertarungreal(char lawan, char player, int *splayer, int *slawan, int atkplayer, int atklawan){
+
 	if (lawan == 'A')
 	{
 		if (player == 'A')
 		{
-			printf("Player use %c and Enemy use %c\n",player,lawan );
+			*splayer = *splayer - atklawan;
+			*slawan = *slawan - atkplayer;
+			
 			//seri
 		}else if (player == 'F')
 		{	
-			printf("Player use %c and Enemy use %c\n",player,lawan );
-			*slawan = *slawan + 1;
+			*splayer = *splayer - atklawan;
+
 		}else if (player == 'B')
 		{
-			printf("Player use %c and Enemy use %c\n",player,lawan );
-			*splayer = *splayer + 1;
 		}
 	}else if (lawan == 'F')
 	{
 		if (player == 'A')
 		{
-			printf("Player use %c and Enemy use %c\n",player,lawan );
-			*splayer = *splayer + 1;
+			*slawan = *slawan - atkplayer;
+			
 		}else if (player == 'F')
 		{
-			printf("Player use %c and Enemy use %c\n",player,lawan );
-			//seri
+			*splayer = *splayer - atklawan;
+			*slawan = *slawan - atkplayer;
+			//
 		}else if (player == 'B')
 		{
-			printf("Player use %c and Enemy use %c\n",player,lawan );
-			*slawan = *slawan + 1;
+			*splayer = *splayer - atklawan;
 		}
 	}else if (lawan == 'B')
 	{
 		if (player == 'A')
 		{
-			printf("Player use %c and Enemy use %c\n",player,lawan );
-			*slawan = *slawan + 1;
 		}else if (player == 'F')
 		{
-			printf("Player use %c and Enemy use %c\n",player,lawan );
-			*splayer = *splayer + 1;
+			*slawan = *slawan - atkplayer;
 		}else if (player == 'B')
 		{
-			printf("Player use %c and Enemy use %c\n",player,lawan );
+		}
+	}
+}
+
+void bertarungstatus(char lawan, char player, int atkplayer, int atklawan, char nplayer[200], char nlawan[200]){
+	if (lawan == 'A')
+	{
+		if (player == 'A')
+		{
+			printf(" %s attacks %s! %s -%dHP \n",nlawan,nplayer,nplayer,atklawan );
+			printf(" %s attacks %s! %s -%dHP \n",nplayer,nlawan,nlawan,atkplayer );
+			
+			//seri
+		}else if (player == 'F')
+		{	
+			printf(" %s attacks %s! %s -%dHP \n",nlawan,nplayer,nplayer,atklawan );
+		
+		}else if (player == 'B')
+		{
+			printf(" %s attacks %s, but it's blocked \n",nlawan,nplayer );
+		}
+	}else if (lawan == 'F')
+	{
+		if (player == 'A')
+		{
+			printf(" %s attacks %s! %s -%dHP \n",nplayer,nlawan,nlawan,atkplayer );
+			
+		}else if (player == 'F')
+		{
+			printf(" %s flanks %s! %s -%dHP \n",nlawan,nplayer,nplayer,atklawan );
+			printf(" %s flanks %s! %s -%dHP \n",nplayer,nlawan,nlawan,atkplayer );
+			//
+		}else if (player == 'B')
+		{
+			printf(" %s flanks %s! %s -%dHP \n",nlawan,nplayer,nplayer,atklawan );
+		}
+	}else if (lawan == 'B')
+	{
+		if (player == 'A')
+		{
+			printf(" %s attacks %s, but it's blocked \n",nplayer,nlawan );
+		}else if (player == 'F')
+		{
+			printf(" %s flanks %s! %s -%dHP \n",nplayer,nlawan,nlawan,atkplayer );
+		}else if (player == 'B')
+		{
+			printf(" %s blocks %s! \n",nlawan,nplayer);
+			
+			printf(" %s blocks %s! \n",nplayer,nlawan);
 			//seri
 		}
 	}
@@ -197,5 +276,24 @@ void PrintCommandInBattle(Queue Q, int i){
 
 	printf("\n");
 	printf("════════════════════════════════════════════════════════════════════════════════════════════════════\n" );
+
+}
+
+void RandomAngka(int *i, int *r){
+
+	srand(time(NULL));
+    *i = rand() % 4;
+    *r = rand() % 4;
+    int temp1, count;
+
+    while ( *i == *r ){
+        *i = rand() % 4;
+    }
+
+    if ( *i > *r ) {
+        temp1 = *i;
+        *i = *r;
+        *r = temp1;
+    }
 
 }
