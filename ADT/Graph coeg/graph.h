@@ -2,81 +2,59 @@
 #define _GRAPH_H_
 
 #include "boolean.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "listlinier.h"
+#include "matriks.h"
 
 #define Nil NULL
 
-typedef int infotype;
-
-typedef tNode address;
-typedef tEdge address;
-typedef tBusur address;
-
-typedef struct tNode {
-    infotype infonode;
-    address next;
-    ListOfEdge busur;
-} Node;
-
-typedef struct tEdge {
-    infotype infoedge;
-    address next;
-    address node1;
-    address node2;
-} Edge;
-
-typedef struct tBusur {
-    address infobusur;
-    address next;
-} Busur;
-
-typedef {
-    address first;
-} ListOfEdge;
-
-typedef {
-    address first;
-} ListOfNode;
-
-typedef {
-    address first;
-} ListOfBusur;
-
-typedef {
-    ListOfNode ListNode;
-    ListOfEdge ListEdge;
+typedef int Node;
+typedef int Edge;
+typedef Node NbNode;
+typedef Edge NbEdge;
+typedef struct{
+    NbNode V;
+    NbEdge E;
+    MATRIKS adj;
 } Graph;
 
-#define Next(P) (P)->next
-#define First(L) ((L).first)
+typedef List ListOfNodes;
 
-#define Infoedge(P) (P)->infoedge
-#define Node1(P) (P) ->node1
-#define Node2(P) (P) ->node2
+#define NbNode(G) (G).V
+#define NbEdge(G) (G).E
+#define Adj(G) (G).adj
 
-#define Infonode(P) (P)->infonode
-#define Busur(P) (P)->busur
-#define Infobusur(P) (P)->infobusur
+void SetVertex(Graph *G, Node V);
+/* Mengganti jumlah simpul dari graf G dengan V*/
+void SetEdge(Graph *G, Edge E);
+/* Mengganti jumlah sisi dari graf G dengan E*/
+Graph CreateGraph(Node V);
+/* Menghasilkan sebuah graf kosong dengan simpul v. Graf kosong
+adalah graf dengan sisi 0 dalam representasi matriks ketetanggaan
+dengan jumlah baris efektif V dan jumlah kolom efektif boolean IsEmpty(Graph G);
+/* Megembalikan true apabila graf kosong, sisi graf = 0*/
+boolean IsGraphEmpty(Graph G);
+/* Megembalikan true apabila graf kosong, sisi graf = 0*/
+boolean Adjacent(Graph G, Node V, Node V2);
+/* Mengembalikan true jika simpul V1 dan V2 pada graf G bertetangga,
+yaitu apabila elemen ke [V1][V2] pada graf G bernilai 1*/
+boolean Incident(Graph G, Node V, Edge E);
+/* Mengembalikan true jika simpul V berhubungan dengan sisi E*/
+ListOfNodes Neighbors(Graph G, Node V);
+/* Mengembalikan sebuah list of nodes yang berisi daftar simpul-simpul
+yang bertetangga dengan simpul V*/
+void AddV(Graph *G, Node V);
+/* Menambahkan simpul V kedalam G, dengan menambahkan NbrsEff dan NkolEff
+dengan 1*/
+void AddE(Graph *G, Node V1, Node V2);
+/* Menambahkan sebuah sisi diantara simpul V1 dan V2*/
+void DelE(Graph *G, Node V1, Node V2);
+/* Menghapus sisi diantara simpul V1 dan V2*/
+void DelV(Graph *G, Node V);
+/* Menghapus simpul V. Kolom ke-V dan baris ke-V dihapus dari kolom.
+Menggeser seluruh elemen di setiap kolom ke-V dengan elemen sesudahnya
+sampai NKolEff dan setiap bari ke-V dengan elemen sesudahnya sampai NBrsEff*/
 
-Graph CreateGraph (ListOfNode V, ListOfEdge E);
+#endif // _GRAPH_H_
 
-boolean IsEmpty (Graph G);
 
-Graph AddE (Graph G, infotype info, address V1, address V2);
 
-void AddEdge1 (Graph *G, Node V1, Node V2);
-
-Graph AddEdge2 (Graph G, Node V1, Node V2);
-
-Graph DeleteE(Graph G, Node V1, Node V2);
-
-boolean IsAdjacent (Graph G, Node V1, Node V2);
-
-boolean IsIncident (Graph G, Node V, Edge E);
-
-ListOfNode Neighbours (Graph G, Node V);
-
-Graph AddV (Graph G, infotype V);
-
-Graph DelV (Graph G, Node V);
