@@ -2,7 +2,7 @@
 #include "boolean.h"
 #include "battleandplayer.h"
 #include <time.h>
-#include "queuelist.h"
+#include "soqlist.h"
 #include <stdio.h>
 
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */
@@ -46,7 +46,7 @@ boolean isDeath (player *P1)
 }
 
 //BATTLE
-void bertarungreal(char lawan, char cplayer,player *me, player *enemy){
+void bertarungreal(char lawan, char cplayer, player *me, player *enemy){
 	if (lawan == 'A')
 	{
 		if (cplayer == 'A')
@@ -95,13 +95,13 @@ void bertarungstatus(char lawan, char cplayer, player me, player enemy){
 	{
 		if (cplayer == 'A')
 		{
-			printf(" %s attacks %s! %s -%dHP \n",NAME(enemy),NAME(me),NAME(me),ATK(enemy) );
-			printf(" %s attacks %s! %s -%dHP \n",NAME(me),NAME(enemy),NAME(enemy),ATK(me) );
+			printf(" %s attacks %s! %s -%ldHP \n",NAME(enemy),NAME(me),NAME(me),ATK(enemy) );
+			printf(" %s attacks %s! %s -%ldHP \n",NAME(me),NAME(enemy),NAME(enemy),ATK(me) );
 			
 			//seri
 		}else if (cplayer == 'F')
 		{	
-			printf(" %s attacks %s! %s -%dHP \n",NAME(enemy),NAME(me),NAME(me),ATK(enemy) );
+			printf(" %s attacks %s! %s -%ldHP \n",NAME(enemy),NAME(me),NAME(me),ATK(enemy) );
 		
 		}else if (cplayer == 'B')
 		{
@@ -111,16 +111,16 @@ void bertarungstatus(char lawan, char cplayer, player me, player enemy){
 	{
 		if (cplayer == 'A')
 		{
-			printf(" %s attacks %s! %s -%dHP \n",NAME(me),NAME(enemy),NAME(enemy),ATK(me));
+			printf(" %s attacks %s! %s -%ldHP \n",NAME(me),NAME(enemy),NAME(enemy),ATK(me));
 			
 		}else if (cplayer == 'F')
 		{
-			printf(" %s flanks %s! %s -%dHP \n",NAME(enemy),NAME(me),NAME(me),ATK(enemy) );
-			printf(" %s flanks %s! %s -%dHP \n",NAME(me),NAME(enemy),NAME(enemy),ATK(me));
+			printf(" %s flanks %s! %s -%ldHP \n",NAME(enemy),NAME(me),NAME(me),ATK(enemy) );
+			printf(" %s flanks %s! %s -%ldHP \n",NAME(me),NAME(enemy),NAME(enemy),ATK(me));
 			//
 		}else if (cplayer == 'B')
 		{
-			printf(" %s flanks %s! %s -%dHP \n",NAME(enemy),NAME(me),NAME(me),ATK(enemy));
+			printf(" %s flanks %s! %s -%ldHP \n",NAME(enemy),NAME(me),NAME(me),ATK(enemy));
 		}
 	}else if (lawan == 'B')
 	{
@@ -129,7 +129,7 @@ void bertarungstatus(char lawan, char cplayer, player me, player enemy){
 			printf(" %s attacks %s, but it's blocked \n",NAME(me),NAME(enemy));
 		}else if (cplayer == 'F')
 		{
-			printf(" %s flanks %s! %s -%dHP \n",NAME(me),NAME(enemy),NAME(enemy),ATK(me) );
+			printf(" %s flanks %s! %s -%ldHP \n",NAME(me),NAME(enemy),NAME(enemy),ATK(me) );
 		}else if (cplayer == 'B')
 		{
 			printf(" %s blocks %s! \n",NAME(enemy),NAME(me));
@@ -143,18 +143,18 @@ void bertarungstatus(char lawan, char cplayer, player me, player enemy){
 
 void PrintHeader(player me, player enemy, int round, Queue qenemy, int i,int  r){
 	printf("════════════════════════════════════════════════════════════════════════════════════════════════════\n" );
-	printf(" %-22s| LVL : %-6d | HP : %-6d | STR : %-6d | DEF : %-6d | Round : %-6d \n",NAME(me),LVL(me),HP(me),ATK(me),DEF(me),round);
+	printf(" %-22s| LVL : %-6d | HP : %-6ld | STR : %-6ld | DEF : %-6ld | Round : %-6d \n",NAME(me),LVL(me),HP(me),ATK(me),DEF(me),round);
 	printf("════════════════════════════════════════════════════════════════════════════════════════════════════\n" );
-	printf(" %-22s| HP : %-6d  | Command : ",NAME(enemy),HP(enemy));
+	printf(" %-22s| HP : %-6ld  | Command : ",NAME(enemy),HP(enemy));
 	PrintQueueClosed(qenemy,i,r);printf("\n");
 	printf("════════════════════════════════════════════════════════════════════════════════════════════════════\n" );
 }
 
 void PrintHeaderInBattle(player me, player enemy, int round, Queue qenemy, int i,int  r,int x){
 	printf("════════════════════════════════════════════════════════════════════════════════════════════════════\n" );
-	printf(" %-22s| LVL : %-6d | HP : %-6d | STR : %-6d | DEF : %-6d | Round : %-6d \n",NAME(me),LVL(me),HP(me),ATK(me),DEF(me),round);
+	printf(" %-22s| LVL : %-6d | HP : %-6ld | STR : %-6ld | DEF : %-6ld | Round : %-6d \n",NAME(me),LVL(me),HP(me),ATK(me),DEF(me),round);
 	printf("════════════════════════════════════════════════════════════════════════════════════════════════════\n" );
-	printf(" %-22s| HP : %-6d  | Command : ",NAME(enemy),HP(enemy));
+	printf(" %-22s| HP : %-6ld  | Command : ",NAME(enemy),HP(enemy));
 	PrintQueuewithpointer(qenemy,x,i,r,true);printf("\n");
 	printf("════════════════════════════════════════════════════════════════════════════════════════════════════\n" );
 }
@@ -166,7 +166,7 @@ void PrintAndInput(Queue *Q, int *i){
 	printf("════════════════════════════════════════════════════════════════════════════════════════════════════\n" );
 	printf("Inserted Command : ");
 	
-	if (!IsEmpty(*Q)){
+	if (!IsEmptyQueue(*Q)){
 		PrintQueue(*Q);
 	}
 	x = *i;
@@ -181,7 +181,7 @@ void PrintAndInput(Queue *Q, int *i){
 	printf("Command : ");
 	scanf(" %c", &input);
 	if ( input == 'D' ) {
-		if(!IsEmpty(*Q)){	
+		if(!IsEmptyQueue(*Q)){	
 			DelTail(Q,&temp);
 			*i = *i -1;
 		}
@@ -223,7 +223,88 @@ void RandomAngka(int *i, int *r){
         *r = temp1;
     }
 
-}void BattleOn(player *me, player enemy){
+}
 
+void BattleOn(player *me, player enemy, Stack enemyatk ){
+	Queue atkenm,atkpl;
+	int i,x,z,r1,r2,round;
+	addressq penemy,pplayer;
+
+	round = 1;
+	while(HP(*me) > 0 && HP(enemy) > 0 && round <= 10){
+		CreateEmptyQueue(&atkpl);
+		Pop(&enemyatk,&atkenm);
+
+		RandomAngka(&r1,&r2);
+
+		i = 0;
+		do{
+			PrintHeader(*me,enemy,round,atkenm,r1,r2);
+			printf("\n");
+			printf("\n");
+			printf("\n");
+			PrintAndInput(&atkpl,&i);
+			//Jika masukan salah belum ditambah
+
+			if (i == 4){
+				//Tambahin Print
+				printf("Are you sure with this command? (Y/N)\n");
+				printf("Answer ");
+				char ans;
+				scanf(" %c",&ans);
+				while(ans != 'Y' && ans != 'y' && ans != 'N' && ans != 'n'){
+					printf("Answer error, Answer again :");
+					scanf(" %c",&ans);
+				}	
+				if(ans == 'Y' || ans == 'y'){
+
+				}else if(ans == 'N' || ans == 'n'){
+					DelTail(&atkpl,&ans);
+					i--;
+				}
+					
+			}
+
+			system("clear");
+				
+		}while(i != 4);
+
+		while(getchar()!='\n');		
+
+		pplayer = Head(atkpl);
+		penemy = Head(atkenm);
+
+		z = 0;
+		while(HP(*me) > 0 && HP(enemy) > 0 && z <= 3){
+			infotypeq prevplayer,prevlawan;
+			bertarungreal(Info(penemy),Info(pplayer),me,&enemy);
+			PrintHeaderInBattle(*me,enemy,round,atkenm,r1,r2,z);
+
+			printf("\n");
+			if (z == 0){
+				bertarungstatus(Info(penemy),Info(pplayer),*me,enemy);
+				prevlawan = Info(penemy);
+				prevplayer = Info(pplayer);
+			}else{
+				bertarungstatus(prevlawan,prevplayer,*me,enemy);
+				bertarungstatus(Info(penemy),Info(pplayer),*me,enemy);
+				prevlawan = Info(penemy);
+				prevplayer = Info(pplayer);
+
+			}
+
+			printf("\n");
+
+			PrintCommandInBattle(atkpl,z);
+
+			while(getchar()!='\n');
+			
+			system("clear");
+			penemy = Next(penemy);
+			pplayer = Next(pplayer);
+			z++;
+		}
+		round++;	
+	}
 
 }

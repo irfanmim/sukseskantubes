@@ -7,7 +7,7 @@
 #include "point.h"
 #include "boolean.h"
 #include <time.h>
-#include "queuelist.h"
+#include "soqlist.h"
 #include <stdio.h>
 
 typedef struct {
@@ -64,6 +64,6 @@ void PrintCommandInBattle(Queue Q, int i);
 
 void RandomAngka(int *i, int *r);
 
-void BattleOn(player *me, player enemy);
+void BattleOn(player *me, player enemy, Stack enemyatk );
 
 #endif
