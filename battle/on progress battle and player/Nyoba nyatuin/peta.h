@@ -24,7 +24,7 @@ typedef char str[100];
 
 #define LebarPeta(P) (P).LebarPeta
 #define PanjangPeta(P) (P).PanjangPeta
-#define Posisi(P,i,j) (P).peta[(i)][(j)]
+#define Letak(P,i,j) (P).peta[(i)][(j)]
 
 void MakePeta(int LB, int PNJ, PETA *P);
 

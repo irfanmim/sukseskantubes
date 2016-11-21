@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,12 +5,19 @@
 #include "point.h"
 #include "peta.h"
 #include "player.h"
+#include "boolean.h"
+
+void maketable(int A, int B);
 
 int main()
 {
 	player Utama, Enemy[3];
+	int ui, uj;
+	printf("Masukkan ukuruan peta: ");
+	scanf("%d %d", &ui, &uj);
+	maketable(ui, uj);
 	FILE *jehian;
-	jehian = fopen("status.txt","r");
+	jehian = fopen("map.txt","r");
 	char kata[1000][1000], mapu[1000][1000];
 	int i = 0, tanda = 0, found = 0;
 	while (!feof(jehian))
@@ -25,8 +31,9 @@ int main()
 		++i;
 	}
 	int CCeff = i-1;
+	printf("%d\n", tanda);
 	fclose(jehian);
-	jehian = fopen("B.txt","r");
+	jehian = fopen("A.txt","r");
 	i = 0;
 	while (!feof(jehian))
 	{
@@ -130,7 +137,7 @@ int main()
 			RestoredHP(&Utama);
 		}
 		kata[Y(Utama)][X(Utama)] = 'P';
-		system("cls");
+		system("clear");
 		for (k = 0; k < CCeff; ++k)
 		{
 			printf("%s", kata[k]);
@@ -138,7 +145,7 @@ int main()
 		printf("%ld\n", HP(Utama));	
 	
 	}
-	system("cls");
+	system("clear");
 	kata[i][j] = 'M';
 	for (k = 0; k < 8; ++k)
 	{
@@ -146,152 +153,57 @@ int main()
 	}	
 	return 0;
 }
-=======
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
-#include <conio.h>
-#include "point.h"
-#include "player.h"
 
-int main()
+
+void maketable(int A, int B)
 {
-	player Utama, Enemy[3];
-	FILE *jehian;
-	jehian = fopen("status.txt","r");
-	char kata[1000][1000], mapu[1000][1000];
-	int i = 0, tanda = 0, found = 0;
-	while (!feof(jehian))
+	FILE *f;
+	f = fopen("map.txt", "w");
+	int i, j;
+	for (i = 0; i < 1 && i < A; ++i)
 	{
-		fgets(kata[i], 1000, jehian);
-		if (kata[i][2] == ' ' && !found)
+		fprintf(f, "%c", (char) 201);
+		for (j = 1; j < B-1; ++j)
 		{
-			tanda = i;
-			found = 1;
+			fprintf(f, "%c", (char) 205);
 		}
-		++i;
+		fprintf(f, "%c\n", (char) 187);
 	}
-	int CCeff = i-1;
-	fclose(jehian);
-	jehian = fopen("B.txt","r");
-	i = 0;
-	while (!feof(jehian))
+	for (; i < 2 && i < A; ++i)
 	{
-		fgets(mapu[i], 1000, jehian);
-		++i;
-	}
-	int mapueff = i-1;
-	int tengahp = (tanda+CCeff-mapueff)/2, tengahl = (strlen(kata[CCeff-1])-strlen(mapu[0])+1)/2;
-	int j;
-	for (i = tengahp; i < tengahp+mapueff; ++i)
-	{
-		for (j = tengahl; j < tengahl+strlen(mapu[i-tengahp])-1; ++j)
+		fprintf(f, "%c", (char) 186);
+		for (j = 1; j < B-1; ++j)
 		{
-			kata[i][j] = mapu[i-tengahp][j-tengahl];
-		}		
-	}
-	
-	srand(time(NULL));
-	i = rand();
-	srand(i);
-	j = rand() % strlen(mapu[0]) + tengahl;
-	i = i % mapueff + tengahp;
-	while (kata[i][j] != '-')
-	{
-		srand(j);
-		++j;
-		j = j % strlen(mapu[0]) + tengahl;
-	}
-	kata[i][j] = 'P';
-	X(Utama) = j;
-	Y(Utama) = i;
-	HP(Utama) = 100;
-	ATK(Utama) = 1000;
-	DEF(Utama) = 2000;
-	
-	srand(time(NULL));
-	i = rand();
-	srand(i);
-	j = rand() % strlen(mapu[0]) + tengahl;
-	i = i % mapueff + tengahp;
-	while (kata[i][j] != '-')
-	{
-		srand(j);
-		++j;
-		j = j % strlen(mapu[0]) + tengahl;
-	}
-	kata[i][j] = 'M';
-	int k;
-	
-	for (k = 0; k <= 2; ++k)
-	{
-		srand(time(NULL));
-		i = rand();
-		srand(i);
-		j = rand() % strlen(mapu[0]) + tengahl;
-		i = i % mapueff + tengahp;
-		while (kata[i][j] != '-')
-		{
-			srand(j);
-			++j;
-			j = j % strlen(mapu[0]) + tengahl;
+			fprintf(f, " ");
 		}
-		kata[i][j] = 'E';
-
-		X(Enemy[k]) = j;
-		Y(Enemy[k]) = i;
-		ATK(Enemy[k]) = 50;
-		DEF(Enemy[k]) = 10;
-		HP(Enemy[k]) = 20;
-
+		fprintf(f, "%c\n", (char) 186);
 	}
-	
-	for (k = 0; k < CCeff; ++k)
+	for (; i < 3 && i < A; ++i)
 	{
-		printf("%s", kata[k]);
+		fprintf(f, "%c", (char) 204);
+		for (j = 1; j < B-1; ++j)
+		{
+			fprintf(f, "%c", (char) 205);
+		}
+		fprintf(f, "%c\n", (char) 185);
 	}
-	k = 3;
-	char CC[2];
-	while (k != 0)
+	for (; i < A-1; ++i)
 	{
-		gets(CC);
-		kata[Y(Utama)][X(Utama)] = '-';
-		if (strcmp(CC, "GD") == 0 && (kata[Y(Utama)+1][X(Utama)] == '-' || kata[Y(Utama)+1][X(Utama)] == 'M' || kata[Y(Utama)+1][X(Utama)] == 'E'))
+		fprintf(f, "%c", (char) 186);
+		for (j = 1; j < B-1; ++j)
 		{
-			GerakBawah(&Posisi(Utama));
+			fprintf(f, " ");
 		}
-		else if (strcmp(CC, "GU") == 0 && (kata[Y(Utama)-1][X(Utama)] == '-' || kata[Y(Utama)-1][X(Utama)] == 'M' || kata[Y(Utama)-1][X(Utama)] == 'E'))
-		{
-			GerakAtas(&Posisi(Utama));
-		}
-		else if (strcmp(CC, "GL") == 0 && (kata[Y(Utama)][X(Utama)-1] == '-' || kata[Y(Utama)][X(Utama)-1] == 'M' || kata[Y(Utama)][X(Utama)-1] == 'E'))
-		{
-			GerakKiri(&Posisi(Utama));
-		}
-		else if (strcmp(CC, "GR") == 0 && (kata[Y(Utama)][X(Utama)+1] == '-' || kata[Y(Utama)][X(Utama)+1] == 'M' || kata[Y(Utama)][X(Utama)+1] == 'E'))
-		{
-			GerakKanan(&Posisi(Utama));
-		}
-		if (kata[Y(Utama)][X(Utama)] == 'M')
-		{
-			RestoredHP(&Utama);
-		}
-		kata[Y(Utama)][X(Utama)] = 'P';
-		system("cls");
-		for (k = 0; k < CCeff; ++k)
-		{
-			printf("%s", kata[k]);
-		}
-		printf("%ld\n", HP(Utama));	
-	
+		fprintf(f, "%c\n", (char) 186);
 	}
-	system("cls");
-	kata[i][j] = 'M';
-	for (k = 0; k < 8; ++k)
+	for (i = A-1; i < A; ++i)
 	{
-		printf("%s", kata[k]);
-	}	
-	return 0;
+		fprintf(f, "%c", (char) 200);
+		for (j = 1; j < B-1; ++j)
+		{
+			fprintf(f, "%c", (char) 205);
+		}
+		fprintf(f, "%c\n", (char) 188);
+	}
+	fclose(f);
 }
->>>>>>> d0c14c0b3cbd1b504aac7fe32a9cd76e560b888c

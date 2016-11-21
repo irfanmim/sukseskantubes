@@ -137,7 +137,7 @@ int main()
 			RestoredHP(&Utama);
 		}
 		kata[Y(Utama)][X(Utama)] = 'P';
-		system("cls");
+		system("clear");
 		for (k = 0; k < CCeff; ++k)
 		{
 			printf("%s", kata[k]);
@@ -145,7 +145,7 @@ int main()
 		printf("%ld\n", HP(Utama));	
 	
 	}
-	system("cls");
+	system("clear");
 	kata[i][j] = 'M';
 	for (k = 0; k < 8; ++k)
 	{

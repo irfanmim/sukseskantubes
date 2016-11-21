@@ -82,8 +82,13 @@ void ShowSkill(player *P1);
 // I.S : Skill Tree P1 terdefinisi
 // F.S : Menampilkan seluruh daftar skill yang sudah dan belum dipelajari. Skill yang sudah dipelajari diberi keterangan (learned).
 
+boolean Search(SkillTree S, char * nama);
+// Mengembalikan true jika terdapat skill dengan nama 'nama' di S
+
 void SearchAndActivate(player *P1);
-// I.S : 
+// I.S : S telah diinisialisasi, skill dengan nama 'nama' ada dalam S
+// F.S : Learnt skill 'nama' = true
+
 /* *** DAFTAR SKILL *** */
 void ATKUP(player *P1);
 // I.S : 

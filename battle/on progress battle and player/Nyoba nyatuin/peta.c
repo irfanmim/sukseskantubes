@@ -27,7 +27,7 @@ void PrintPeta(PETA P)
         {
             if ((j == PanjangPeta(P)) && (i == LebarPeta(P)))
             {
-                printf("%c",Posisi(P,i,j));
+                printf("%c",Letak(P,i,j));
 			}
             else if (j == PanjangPeta(P))
             {
@@ -35,7 +35,7 @@ void PrintPeta(PETA P)
 			}
             else
 			{
-				printf("%c ",Posisi(P,i,j));
+				printf("%c ",Letak(P,i,j));
 			}
         }
     }
@@ -51,7 +51,7 @@ void PutarPeta(PETA *P)
         for (j = PNJMin; j < PanjangPeta(*P); j++)
         {
             k = LebarPeta(*P)-i-1;
-            Posisi(Pt,j,k) = Posisi(*P,i,j);
+            Letak(Pt,j,k) = Letak(*P,i,j);
         }
     }
     *P = Pt;
@@ -83,7 +83,7 @@ boolean IsPetaSama (PETA P1, PETA P2)
             j = PanjangPeta(P1);
             while (j <= PanjangPeta(P1) && found)
             {
-                if (Posisi(P1,i,j) != Posisi(P2,i,j))
+                if (Letak(P1,i,j) != Letak(P2,i,j))
                 {
 					found = false;
 				}
@@ -97,15 +97,15 @@ boolean IsPetaSama (PETA P1, PETA P2)
 
 boolean isDinding (PETA P, POINT T)
 {
-	return (Posisi(P,Ordinat(T),Absis(T)) == '#');
+	return (Letak(P,Ordinat(T),Absis(T)) == '#');
 }
 
 boolean isEnemy (PETA P, POINT T)
 {
-	return (Posisi(P,Ordinat(T),Absis(T)) == 'E');
+	return (Letak(P,Ordinat(T),Absis(T)) == 'E');
 }
 
 boolean isMedicine (PETA P, POINT T)
 {
-	return (Posisi(P,Ordinat(T),Absis(T)) == 'M');
+	return (Letak(P,Ordinat(T),Absis(T)) == 'M');
 }

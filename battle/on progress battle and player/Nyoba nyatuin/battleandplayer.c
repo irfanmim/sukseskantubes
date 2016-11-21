@@ -49,7 +49,7 @@ boolean isDeath (player *P1)
 }
 
 /* *** SKILL TREE *** */
-void InitSkillTree(player *P1)
+void InitSkillTree(SkillTree *S)
 // I.S : Sembarang
 // F.S : Daftar skill player diinisialisasi, learnt = false kecuali root
 {
@@ -72,7 +72,7 @@ void InitSkillTree(player *P1)
 		// InitStatus
 		fgets(line, 50, daftarskill);
 		sscanf(line, "%s", temp);
-		MakeTree(temp, Nil, Nil, &STREE(*P1));
+		MakeTree(temp, Nil, Nil, S);
 		Learnt(STREE(*P1)) = true;
 	
 		// ATTACK SKILL TREE
@@ -81,28 +81,28 @@ void InitSkillTree(player *P1)
 		}
 		while(strcmp(line, "DEFENSE") != 0) { 
 			sscanf(line, "%s", temp);
-			AddDaunTerkiri(&STREE(*P1), temp);
+			AddDaunTerkiri(S, temp);
 			fgets(line, 50, daftarskill);
 		}
 		
 		// DEFENSE SKILL TREE
 		while(strcmp(line, "END") != 0) {
 			sscanf(line, "%s", temp);
-			AddDaunTerkanan(&STREE(*P1), statusarr);
+			AddDaunTerkanan(S, temp);
 			fgets(line, 50, daftarskill);
 		}
 	}
 	// EOF
 }
 	
-void ActivateSkill(player *P1)
+void ActivateSkill(SkillTree * S)
 // I.S : Lvl terdefinisi, skill tree telah diinisialisasi
 // F.S : Menambah status karakter sesuai skill yang telah diperoleh
 {
 	// Kamus
 	
 	// Algoritma
-	if (!IsTreeOneElmt(STREE(*P1))) {
+/*	if (IsTreeOneElmt(STREE(*P1))) {
 		 if (Learnt(STREE(*P1))) {
 			 if (strcmp(Akar(STREE(*P1)), "ATKUP") == 0) {
 				 ATKUP(P1);
@@ -118,17 +118,84 @@ void ActivateSkill(player *P1)
 	else {
 		ActivateSkill(P1, Left(skilltree));
 		ActivateSkill(P1, Right(skilltree));
+	} */
+	if (IsTreeEmpty(*S)) {
+		;
 	}
+	else {
+		if (Learnt(*S)) {
+			 if (strcmp(Akar(*S)), "ATKUP") == 0) {
+				 ATKUP(P1);
+			 }
+			 else if (strcmp(Akar(*S)), "DEFUP") == 0) {
+				 DEFUP(P1);
+			 }
+		 }
+		else {
+			;
+		}
+		ActivateSkill(Left(S));
+		ActivateSkill(Right(S));
 }
 
-void Learn(player *P1){}
+void Learn(SkillTree * S, char * nama)
 // I.S : Skill point >= nol
 // F.S : Mempelajari skill baru dalam skill tree
-
-void ShowSkill(player *P1){}
+{
+	if (SPt(*P1) > 0) {
+		SearchAndLearn(S, nama);
+	}
+	else {
+		printf("Skill pointmu tidak mencukupi.");
+	}
+		
+void ShowSkill(SkillTree * S){}
 // I.S : Skill Tree P1 terdefinisi
 // F.S : Menampilkan seluruh daftar skill yang sudah dan belum dipelajari. Skill yang sudah dipelajari diberi keterangan (learned).
 
+boolean Search(SkillTree S, char * nama);
+// Mengembalikan true jika terdapat skill dengan nama 'nama' di S
+{
+	if (IsTreeEmpty(S)) {
+		return false;
+	}
+	else {
+		if (strcmp(Name(S), nama) == 0)  {
+			return true;
+		}
+		else { 
+			return (Search(Left(S), nama) || Search(Right(S), nama));
+		}
+	}
+}
+
+void SearchAndLearn(SkillTree *S, char * nama)
+// I.S : S telah diinisialisasi, skill dengan nama 'nama' ada dalam S
+// F.S : Learnt skill 'nama' = true
+{
+	// Kamus
+	
+	// Algoritma
+	if (IsTreeEmpty(*S)) {
+		;
+	}
+	else {
+		if (strcmp(Name(*S), nama) == 0) {
+			Learnt(*S) = true;
+		}
+		else {
+			if (Search(Left(*S), nama)) {
+				SearchAndLearn(&Left(*S), nama);
+			}
+			else if (Search(Right(*S)), nama) {
+				SearchAndLearn(&Right(*S), nama);
+			}
+			else {
+				;
+			}
+		}
+	}
+}
 
 /* *** DAFTAR SKILL *** */
 void ATKUP(player *P1){}
