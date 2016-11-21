@@ -7,13 +7,13 @@
 #define _BINTREE_H_
 
 /* Modul lain yang digunakan : */
-#include "listrek.h"
 #include "boolean.h"
 
-/* #define Nil NULL */ /* konstanta Nil sesuai pada modul listrek */
+#define Nil NULL
 
 /* *** Definisi Type Pohon Biner *** */
 /* typedef int infotype; */ /* type infotype sesuai pada modul listrek */
+typedef int infotype;
 typedef struct tNode *addrNode;
 typedef struct tNode { 
 	infotype info;
@@ -116,8 +116,6 @@ boolean SearchTree (BinTree P, infotype X);
 /* Mengirimkan true jika ada node dari P yang bernilai X */
 
 /* *** Fungsi-Fungsi Lain *** */
-int NbElmt (BinTree P);
-/* Mengirimkan banyaknya elemen (node) pohon biner P */
 int NbDaun (BinTree P);
 /* Mengirimkan banyaknya daun (node) pohon biner P */
 /* Prekondisi: P tidak kosong */
@@ -138,6 +136,10 @@ int Tinggi (BinTree P);
 void AddDaunTerkiri (BinTree *P, infotype X);
 /* I.S. P boleh kosong */
 /* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkiri */
+void AddDaunTerkanan (BinTree *P, infotype X);
+/* I.S. P boleh kosong */
+/* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkanan */
+
 void AddDaun (BinTree *P, infotype X, infotype Y, boolean Kiri);
 /* I.S. P tidak kosong, X adalah salah satu daun Pohon Biner P */
 /* F.S. P bertambah simpulnya, dengan Y sebagai anak kiri X (jika Kiri = true), atau 
@@ -150,22 +152,5 @@ void DelDaunTerkiri (BinTree *P, infotype *X);
 void DelDaun (BinTree *P, infotype X);
 /* I.S. P tidak kosong, minimum ada 1 daun bernilai X. */
 /* F.S. Semua daun bernilai X dihapus dari P. */
-List MakeListDaun (BinTree P); 
-/* Jika P adalah pohon kosong, maka menghasilkan list kosong. */
-/* Jika P bukan pohon kosong: menghasilkan list yang elemennya adalah semua daun pohon P,
-   jika semua alokasi list berhasil.
-   Daun terkiri menjadi elemen pertama dari list, diikuti elemen kanannya, dst.
-   Menghasilkan list kosong jika ada alokasi yang gagal. */
-List MakeListPreorder (BinTree P);
-/* Jika P adalah pohon kosong, maka menghasilkan list kosong. */
-/* Jika P bukan pohon kosong: menghasilkan list yang elemennya adalah semua elemen pohon P 
-   dengan urutan preorder, jika semua alokasi berhasil.   
-   Menghasilkan list kosong jika ada alokasi yang gagal. */
-List MakeListLevel (BinTree P, int N);
-/* Jika P adalah pohon kosong, maka menghasilkan list kosong. */
-/* Jika P bukan pohon kosong: menghasilkan list yang elemennya adalah semua elemen pohon P 
-   yang levelnya=N, jika semua alokasi berhasil. 
-   Elemen terkiri menjadi elemen pertama dari list, diikuti elemen kanannya, dst.
-   Menghasilkan list kosong jika ada alokasi yang gagal. */
    
 #endif

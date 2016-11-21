@@ -9,18 +9,8 @@
 #include <time.h>
 #include "soqlist.h"
 #include <stdio.h>
-#include "bintree.h"
+#include "skilltree.h"
 
-typedef struct {
-	char name[50]; // Nama skill
-	BinTree tree;
-	boolean learnt;
-} SkillTree;
-
-/* *** Selektor Skill Tree *** */
-#define Name(P) (P).name
-#define Learnt(P) (P).learnt
-#define Tree(P) (P).tree
 
 typedef struct {
 	POINT posisi;
@@ -48,7 +38,7 @@ typedef struct {
 #define NAME(P)		(P).name
 #define HPMAX(P)	(P).HPMAX
 #define STREE(P)	(P).skilltree
-#define SPt			(P).skillpoint
+#define SPt(P)			(P).skillpoint
 
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */
 void HPUP (player *P1, int N);
@@ -66,28 +56,34 @@ boolean isDeath (player *P1);
 /*	Mengecek apakah pemain sudah mati atau belum */
 
 /* *** PENGELOLAAN SKILL TREE *** */
-void InitSkillTree(player *P1);
+void InitSkillTree(SkillTree *S);
 // I.S : Sembarang
 // F.S : Daftar skill player diinisialisasi, learned = false
 
-void ActivateSkill(player *P1);
+void ActivateSkill(SkillTree *S);
 // I.S : Lvl terdefinisi, skill tree telah diinisialisasi
 // F.S : Menambah status karakter sesuai skill yang telah diperoleh
 	
-void Learn(player *P1);
+void Learn(player *P1, char * name);
 // I.S : Skill point >= nol
 // F.S : Mempelajari skill baru dalam skill tree
 
-void ShowSkill(player *P1);
+void ShowSkill(SkillTree S);
 // I.S : Skill Tree P1 terdefinisi
 // F.S : Menampilkan seluruh daftar skill yang sudah dan belum dipelajari. Skill yang sudah dipelajari diberi keterangan (learned).
 
 boolean Search(SkillTree S, char * nama);
 // Mengembalikan true jika terdapat skill dengan nama 'nama' di S
 
-void SearchAndActivate(player *P1);
+void SearchAndActivate(SkillTree *S, char * name);
 // I.S : S telah diinisialisasi, skill dengan nama 'nama' ada dalam S
 // F.S : Learnt skill 'nama' = true
+
+
+void SearchAndLearn(SkillTree *S, char * nama);
+// I.S : S telah diinisialisasi, skill dengan nama 'nama' ada dalam S
+// F.S : Learnt skill 'nama' = true
+
 
 /* *** DAFTAR SKILL *** */
 void ATKUP(player *P1);

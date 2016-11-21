@@ -1,11 +1,6 @@
-InitStatus	0	0	0
-
+InitStatus
 ATTACK
-ATK UP		0	5	0
-BERSERK		-5	10	0
-
+ATKUP
 DEFENSE
-DEF UP		0	0	5
-MAX HP UP	20 	0	0
-
-END
+DEFUP
+END.
