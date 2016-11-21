@@ -6,9 +6,10 @@ int main()
     PETA P;
     int Lebar = 10;
     int Panjang = 10;
-    MakePeta(Lebar,Panjang,&P);
-    str filetxt = "pitakar.txt";
-    ReadPeta(namafile,&P,filetxt);
+    //MakePeta(Lebar,Panjang,&P);
+    //str filetxt = "pitakar.txt";
+    //ReadPeta(namafile,&P,filetxt);
+    GeneratePeta(&P,Lebar,Panjang);
     PrintPeta(P);
     PutarPeta(&P);
     printf("\n");

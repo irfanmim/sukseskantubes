@@ -2,6 +2,7 @@
 #define PETA_H
 
 #include <stdio.h>
+#include <time.h>
 #include "string.h"
 #include "boolean.h"
 #include "point.h"
@@ -35,6 +36,12 @@ void PrintPeta(PETA P);
 void PutarPeta(PETA *P);
 
 void CopyPETA (PETA P, PETA *P1);
+
+void GeneratePeta(PETA *P, int LB, int PNJ);
+
+boolean IsUkuranSama (PETA P1, PETA P2);
+
+boolean IsPetaSama (PETA P1, PETA P2);
 
 boolean isDinding (PETA P, POINT T);
 
