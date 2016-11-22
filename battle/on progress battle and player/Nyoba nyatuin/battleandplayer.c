@@ -49,73 +49,65 @@ boolean isDeath (player *P1)
 	return (HP(*P1) <= 0);
 }
 
+void ShowStatus(player P1)
+// I.S : P1 terdefinisi
+// F.S : Menampilkan current status P1 (HP, ATK, DEF)
+{
+	printf("%ld\n%ld\n%ld\n", HPMAX(P1), ATK(P1), DEF(P1));
+}
 /* *** SKILL TREE *** */
 void InitSkillTree(SkillTree *S)
 // I.S : Sembarang
 // F.S : Daftar skill player diinisialisasi, learnt = false kecuali root
 {
 	// Kamus
-	/*
+	
 	FILE *daftarskill;
 	daftarskill = fopen("daftarskill.txt", "r");
 	char line[50];
-	int i;
 	char temp[50];
 	
 	// Algoritma
-	i = 0;
 	while (!feof(daftarskill)) {
-		
-		
-		// InitStatus
-		fgets(line, 50, daftarskill);
-		sscanf(line, "%s", temp);
-		MakeTree(randomnum, Nil, Nil, S);
-		Learnt(*S) = true;
-		printf("pass1\n");
 		// ATTACK SKILL TREE
 		while(strcmp(line, "ATTACK\n") != 0) {
 			fgets(line, 50, daftarskill);
 		}
 		while(strcmp(line, "DEFENSE\n") != 0) {
-			printf("%s\n", line);
 			sscanf(line, "%s", temp);
-			AddDaunTerkiri(S, randomnum);
-			strcpy(Name(*S), temp);
+			if (strcmp(temp, "ATTACK") != 0) {
+				AddDaunTerkiri(S, randomnum, temp);
+			}
 			fgets(line, 50, daftarskill);
 		}
-		printf("pass2\n");
 		// DEFENSE SKILL TREE
 		while(strcmp(line, "END.") != 0) {
-			printf("%s\n", line);
 			sscanf(line, "%s", temp);
-			AddDaunTerkanan(S, randomnum);
-			strcpy(Name(*S), temp);
+			if (strcmp(temp, "DEFENSE") != 0) {
+				AddDaunTerkiri(S, randomnum, temp);
+			}
 			fgets(line, 50, daftarskill);
 		}
-		printf("yeay\n");
 	}
 	// EOF
-	*/
-	MakeTree(1, Nil, Nil, S);
+	
+/*	MakeTree(1, Nil, Nil, S);
 	strcpy(Name(*S), "Tes");
 	Learnt(*S) = true;
 	
-	AddDaunTerkiri(S, randomnum, "ATKLALA");
-	Learnt(*S) = true;
+	AddDaunTerkiri(S, randomnum, "ATKUP");
 	
 	AddDaunTerkiri(S, randomnum, "Kiri2");
-	Learnt(*S) = true;
+	Learnt(Left(Left(*S))) = true;
 
-	AddDaunTerkiri(S, randomnum, "DefLALA");
-	Learnt(*S) = true;
+	AddDaunTerkanan(S, randomnum, "DEFUP");
+	Learnt(Right(*S)) = true;
 	
-	AddDaunTerkiri(S, randomnum, "Kanan2");
-	Learnt(*S) = true;
-	
+	AddDaunTerkanan(S, randomnum, "Kanan2");
+	Learnt(Right(Right(*S))) = true;	*/
 }
 	
-void ActivateSkill(SkillTree * S)
+void ActivateSkill(player * P1, SkillTree * S)
 // I.S : Lvl terdefinisi, skill tree telah diinisialisasi
 // F.S : Menambah status karakter sesuai skill yang telah diperoleh
 {
@@ -145,19 +137,17 @@ void ActivateSkill(SkillTree * S)
 	else {
 		if (Learnt(*S)) {
 			 if ((strcmp(Name(*S), "ATKUP")) == 0) {
-				 //ATKUP(P1)
-				 ;
+				 ATKUP(P1);
 			 }
 			 else if ((strcmp(Name(*S), "DEFUP")) == 0) {
-				 //DEFUP(P1)
-				 ;
+				 DEFUP(P1);
 			 }
 		 }
 		else {
 			;
 		}
-		ActivateSkill(&(Left(*S)));
-		ActivateSkill(&(Right(*S)));
+		ActivateSkill(P1, &(Left(*S)));
+		ActivateSkill(P1, &(Right(*S)));
 	}
 }
 
@@ -167,6 +157,7 @@ void Learn(player * P1, char * nama)
 {
 	if (SPt(*P1) > 0) {
 		SearchAndLearn(&(STREE(*P1)), nama);
+		SPt(*P1) = SPt(*P1) - 1;
 	}
 	else {
 		printf("Skill pointmu tidak mencukupi.");
@@ -236,13 +227,18 @@ void SearchAndLearn(SkillTree *S, char * nama)
 }
 
 /* *** DAFTAR SKILL *** */
-void ATKUP(player *P1){}
+void ATKUP(player *P1)
 // I.S : 
 // F.S : 
-void DEFUP(player *P1){}
+{
+	ATK(*P1) += 5;
+}
+void DEFUP(player *P1)
 // I.S :
 // F.S : 	
-
+{
+	DEF(*P1) += 5;
+}
 //BATTLE
 void bertarungreal(char lawan, char cplayer, player *me, player *enemy){
 	if (lawan == 'A')

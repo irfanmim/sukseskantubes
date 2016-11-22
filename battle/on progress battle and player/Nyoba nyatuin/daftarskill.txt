@@ -1,4 +1,3 @@
-InitStatus
 ATTACK
 ATKUP
 DEFENSE

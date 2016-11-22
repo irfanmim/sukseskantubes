@@ -54,13 +54,16 @@ void RestoredHP (player *P1);
 /*	Mengembalikan HP Pemain menjadi Maksimum */
 boolean isDeath (player *P1);
 /*	Mengecek apakah pemain sudah mati atau belum */
+void ShowStatus(player P1);
+// I.S : P1 terdefinisi
+// F.S : Menampilkan current status P1 (HP, ATK, DEF)
 
 /* *** PENGELOLAAN SKILL TREE *** */
 void InitSkillTree(SkillTree *S);
 // I.S : Sembarang
 // F.S : Daftar skill player diinisialisasi, learned = false
 
-void ActivateSkill(SkillTree *S);
+void ActivateSkill(player * P1, SkillTree *S);
 // I.S : Lvl terdefinisi, skill tree telah diinisialisasi
 // F.S : Menambah status karakter sesuai skill yang telah diperoleh
 	
