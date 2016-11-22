@@ -39,6 +39,8 @@ void CopyPETA (PETA P, PETA *P1);
 
 void GeneratePeta(PETA *P, int LB, int PNJ);
 
+void BreakdownPeta(PETA P,indeks Y, indeks X);
+
 boolean IsUkuranSama (PETA P1, PETA P2);
 
 boolean IsPetaSama (PETA P1, PETA P2);

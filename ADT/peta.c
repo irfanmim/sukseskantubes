@@ -75,7 +75,7 @@ void GeneratePeta(PETA *P, int LB, int PNJ)
         for (j = PNJMin; j <= PanjangPeta(*P); j++)
         {
             random = rand() % 3;
-            if (random == 0)
+            if ((random == 0) || j == PNJMin || j == PanjangPeta(*P) || i == LBMin || i == LebarPeta(*P)) 
                 Letak(*P,i,j) = '#';
             else
                 Letak(*P,i,j) = '-';
@@ -121,6 +121,32 @@ void GeneratePeta(PETA *P, int LB, int PNJ)
             {
                 if ((up == '#') && (down == '#') && (left == '#') && (right == '#'))
                     Letak(*P,i,j) = '#';
+            }
+        }
+    }
+}
+
+void BreakdownPeta(PETA P,indeks Y, indeks X)
+{
+    int gridL, gridP,i,j;
+    gridL = Y / 10 * 10;
+    gridP = X / 10 * 10;
+    for (i = gridL; i <= (gridL+9); i++)
+    {
+        for (j = gridP; j <= (gridP+9); j++)
+        {
+            if ((j == (gridP+9)) && (i == (gridL+9)))
+            {
+                printf("%c",Letak(P,i,j));
+            }
+            else if (j == (gridP+9))
+            {
+                printf("%c",Letak(P,i,j));
+                printf("\n");
+            }
+            else
+            {
+                printf("%c ",Letak(P,i,j));
             }
         }
     }
