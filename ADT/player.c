@@ -13,7 +13,7 @@ void HPUP (player *P1, int N)
 void HPDOWN (player *P1, player P2)
 /*	Mengurangi HP Pemain akibat serangan Pemain lain */
 {
-	HP(*P1) -= ATK(P2) - DEF(*P1);
+	HP(*P1) -= STR(P2) - DEF(*P1);
 }
 
 boolean isLvlUp (player *P1, int Exp[])

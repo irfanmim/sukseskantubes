@@ -14,7 +14,7 @@ typedef struct {
 	long int HPMAX;
 	int LVL;
 	long int EXP;
-	long int ATK;
+	long int STR;
 	long int DEF;
 } player;
 
@@ -25,7 +25,7 @@ typedef struct {
 #define Y(P) 		(P).posisi.Y
 #define HP(P) 		(P).HP
 #define EXP(P) 		(P).EXP
-#define ATK(P) 		(P).ATK
+#define STR(P) 		(P).STR
 #define DEF(P)		(P).DEF
 #define LVL(P) 		(P).LVL
 #define NAME(P)		(P).name
