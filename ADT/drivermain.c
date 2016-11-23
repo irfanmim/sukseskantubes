@@ -7,7 +7,8 @@
 #include "player.h"
 #include "boolean.h"
 
-void maketable(int A, int B);
+void Converter(int CC);
+void maketable(int* kata, int A, int B);
 
 int main()
 {
@@ -15,24 +16,22 @@ int main()
 	int ui, uj;
 	printf("Masukkan ukuruan peta: ");
 	scanf("%d %d", &ui, &uj);
-	maketable(ui, uj);
-	FILE *jehian;
-	jehian = fopen("map.txt","r");
-	char kata[1000][1000], mapu[1000][1000];
-	int i = 0, tanda = 0, found = 0;
-	while (!feof(jehian))
+	int kata[ui][uj];
+	char mapu[1000][1000];
+	maketable(kata, ui, uj);
+	int q, r;
+	for (q = 0; q < ui; ++q)
 	{
-		fgets(kata[i], 1000, jehian);
-		if (kata[i][2] == ' ' && !found)
+		for (r = 0; r < uj; ++r)
 		{
-			tanda = i;
-			found = 1;
+			Converter(kata[q][r]);
 		}
-		++i;
+		printf("\n");
 	}
-	int CCeff = i-1;
-	printf("%d\n", tanda);
-	fclose(jehian);
+	FILE *jehian;
+	int i, tanda = 0, found = 0;
+	int CCeff = ui;
+	tanda = 2;
 	jehian = fopen("A.txt","r");
 	i = 0;
 	while (!feof(jehian))
@@ -137,15 +136,16 @@ int main()
 			RestoredHP(&Utama);
 		}
 		kata[Y(Utama)][X(Utama)] = 'P';
-		system("cls");
+		system("clear");
 		for (k = 0; k < CCeff; ++k)
 		{
 			printf("%s", kata[k]);
+			printf("\n");
 		}
 		printf("%ld\n", HP(Utama));	
 	
 	}
-	system("cls");
+	system("clear");
 	kata[i][j] = 'M';
 	for (k = 0; k < 8; ++k)
 	{
@@ -154,7 +154,7 @@ int main()
 	return 0;
 }
 
-
+/*
 void maketable(int A, int B)
 {
 	FILE *f;
@@ -206,4 +206,97 @@ void maketable(int A, int B)
 		fprintf(f, "%c\n", (char) 188);
 	}
 	fclose(f);
+}
+*/
+
+void maketable(int* AA, int A, int B)
+{
+	int i, j;
+	for (i = 0; i < 1 && i < A; ++i)
+	{
+		AA[i*B] = 201;
+		for (j = 1; j < B-1; ++j)
+		{
+			AA[i*B+j] = 205;
+		}
+		AA[i*B+j] = 187;
+	}
+
+	for (; i < 2 && i < A; ++i)
+	{
+		AA[i*B] = 186;
+		for (j = 1; j < B-1; ++j)
+		{
+			AA[i*B+j] = ' ';
+		}
+		AA[i*B+j] = 186;
+	}
+
+	for (; i < 3 && i < A; ++i)
+	{
+		AA[i*B] = 204;
+		for (j = 1; j < B-1; ++j)
+		{
+			AA[i*B+j] = 205;
+		}
+		AA[i*B+j] = 185;
+	}
+	for (; i < A-1; ++i)
+	{
+		AA[i*B] = 186;
+		for (j = 1; j < B-1; ++j)
+		{
+			AA[i*B+j] = ' ';
+		}
+		AA[i*B+j] = 186;
+	}
+	for (i = A-1; i < A; ++i)
+	{
+		AA[i*B] = 200;
+		for (j = 1; j < B-1; ++j)
+		{
+			AA[i*B+j] = 205;
+		}
+		AA[i*B+j] = 188;
+	}
+}
+
+void Converter (int CC)
+{
+	if (CC == 185)
+	{
+		printf("\u2563");
+	}
+	else if (CC == 186)
+	{
+		printf("\u2551");
+	}
+	else if (CC == 187)
+	{
+		printf("\u2557");
+	}
+	else if (CC == 188)
+	{
+		printf("\u255D");
+	}
+	else if (CC == 200)
+	{
+		printf("\u255A");
+	}
+	else if (CC == 201)
+	{
+		printf("\u2554");
+	}
+	else if (CC == 204)
+	{
+		printf("\u2560");
+	}
+	else if (CC == 205)
+	{
+		printf("\u2550");
+	}
+	else
+	{
+		printf("%c", (char) CC);
+	}
 }
