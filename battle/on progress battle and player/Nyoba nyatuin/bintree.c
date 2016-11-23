@@ -6,6 +6,7 @@
 #include "bintree.h"
 #include <stdlib.h>
 #include <stdio.h>
+
 BinTree Tree (infotype Akar, BinTree L, BinTree R)
 /* Menghasilkan sebuah pohon biner dari A, L, dan R, jika AlokNode berhasil */
 /* Menghasilkan pohon kosong (Nil) jika AlokNode gagal */
@@ -42,7 +43,7 @@ addrNode AlokNode (infotype X)
 	// Algoritma
 	P = (Node*) malloc (sizeof(Node));
 	if (P != Nil) {
-		Info(P) = X;
+		Akar(P) = X;
 		Left(P) = Nil;
 		Right(P) = Nil;
 	}
@@ -119,7 +120,7 @@ void PrintPreorder (BinTree P)
 		printf("()");
 	}
 	else {
-		printf("(%d", Info(P)); 
+		printf("(%d", Akar(P)); 
 		PrintPreorder(Left(P)); 
 		PrintPreorder(Right(P));
 		printf(")");
@@ -141,7 +142,7 @@ void PrintInorder (BinTree P)
 	else {
 		printf("(");
 		PrintInorder(Left(P)); 
-		printf("%d", Info(P));
+		printf("%d", Akar(P));
 		PrintInorder(Right(P));
 		printf(")");
 	}
@@ -163,7 +164,7 @@ void PrintPostorder (BinTree P)
 		printf("(");
 		PrintPostorder(Left(P)); 
 		PrintPostorder(Right(P));
-		printf("%d)", Info(P));
+		printf("%d)", Akar(P));
 	}
 }
 void PrintTree (BinTree P, int h)
@@ -225,16 +226,6 @@ boolean SearchTree (BinTree P, infotype X)
 	}
 }
 /* *** Fungsi-Fungsi Lain *** */
-int NbElmt (BinTree P)
-/* Mengirimkan banyaknya elemen (node) pohon biner P */
-{
-	if (IsTreeEmpty(P)) {
-		return 0;
-	}
-	else {
-		return (1 + (NbElmt(Left(P))) + (NbElmt(Right(P))));
-	}
-}
 int NbDaun (BinTree P)
 /* Mengirimkan banyaknya daun (node) pohon biner P */
 /* Prekondisi: P tidak kosong */
@@ -332,6 +323,19 @@ void AddDaunTerkiri (BinTree *P, infotype X)
 		AddDaunTerkiri(&Left(*P), X);
 	}
 }
+void AddDaunTerkanan (BinTree *P, infotype X)
+/* I.S. P boleh kosong */
+/* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkanan */
+{	
+	// Algoritma
+	if (IsTreeEmpty(*P)) {
+		*P = AlokNode(X);
+	}
+	else {
+		AddDaunTerkanan(&Right(*P), X);
+	}
+}
+
 void AddDaun (BinTree *P, infotype X, infotype Y, boolean Kiri)
 /* I.S. P tidak kosong, X adalah salah satu daun Pohon Biner P */
 /* F.S. P bertambah simpulnya, dengan Y sebagai anak kiri X (jika Kiri = true), atau 
@@ -372,7 +376,7 @@ void DelDaunTerkiri (BinTree *P, infotype *X)
 	
 	// Algoritma
 	if (IsTreeOneElmt(*P)) {
-		*X = Info(*P);
+		*X = Akar(*P);
 		temp = *P;
 		*P = Nil;
 		DealokNode(temp);
@@ -405,69 +409,6 @@ void DelDaun (BinTree *P, infotype X)
 		}
 		if (SearchTree(Right(*P), X)) {
 			DelDaun(&(Right(*P)), X);
-		}
-	}
-}
-List MakeListDaun (BinTree P)
-/* Jika P adalah pohon kosong, maka menghasilkan list kosong. */
-/* Jika P bukan pohon kosong: menghasilkan list yang elemennya adalah semua daun pohon P,
-   jika semua AlokNode list berhasil.
-   Daun terkiri menjadi elemen pertama dari list, diikuti elemen kanannya, dst.
-   Menghasilkan list kosong jika ada AlokNode yang gagal. */
-{
-	if (IsTreeEmpty(P)) {
-		return Nil;
-	}
-	else {
-		if (IsTreeOneElmt(P)) {
-			return (Alokasi(Akar(P)));
-		}
-		else {
-			return (Concat(MakeListDaun(Left(P)), MakeListDaun(Right(P))));
-		}
-	}
-}
-List MakeListPreorder (BinTree P)
-/* Jika P adalah pohon kosong, maka menghasilkan list kosong. */
-/* Jika P bukan pohon kosong: menghasilkan list yang elemennya adalah semua elemen pohon P 
-   dengan urutan preorder, jika semua AlokNode berhasil.   
-   Menghasilkan list kosong jika ada AlokNode yang gagal. */
-{
-	// Kamus
-	address E;
-	List L;
-	
-	// Algoritma
-	if (IsTreeEmpty(P)) {
-		return Nil;
-	}
-	else {
-		E = Alokasi(Akar(P));
-		if (E != Nil) {
-			Next(E) = MakeListPreorder(Left(P));
-			return (Concat(E, MakeListPreorder(Right(P))));
-		}
-		else {
-			return Nil;
-		}
-	}
-}
-List MakeListLevel (BinTree P, int N)
-/* Jika P adalah pohon kosong, maka menghasilkan list kosong. */
-/* Jika P bukan pohon kosong: menghasilkan list yang elemennya adalah semua elemen pohon P 
-   yang levelnya=N, jika semua AlokNode berhasil. 
-   Elemen terkiri menjadi elemen pertama dari list, diikuti elemen kanannya, dst.
-   Menghasilkan list kosong jika ada AlokNode yang gagal. */
-{
-	if (IsTreeEmpty(P)) {
-		return Nil;
-	}
-	else {
-		if (N == 1) {
-			return (Alokasi(Akar(P)));
-		}
-		else {
-			return (Concat(MakeListLevel(Left(P), (N-1)), MakeListLevel(Right(P), (N-1))));
 		}
 	}
 }

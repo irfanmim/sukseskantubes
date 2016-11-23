@@ -1,0 +1,46 @@
+#include "listrek.h"
+#include "boolean.h"
+#include "bintree.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+int main (){
+	int x;
+	BinTree pohon;
+
+	scanf("%d",&x);
+	MakeTree(x,Nil,Nil,&pohon);
+
+	scanf("%d",&x);
+
+	while(x != -9999){
+		if(x == 1){
+			scanf("%d",&x);
+			AddDaunTerkiri(&pohon,x);
+		}else if(x == 2){
+
+		}else if(x == 3){
+			
+		}else if(x == 4){
+			
+		}else if(x == 5){
+			
+		}else if(x == 6){
+			
+		}else if(x == 7){
+
+		}else if(x == 8){
+			PrintPostorder(pohon);
+			printf("\n");		
+		}else if(x == 9){
+			PrintInorder(pohon);
+			printf("\n");		
+		}else if(x == 0){
+			PrintPreorder(pohon);
+			printf("\n");
+		}
+		scanf("%d",&x);	
+	}
+
+	return 0;
+}

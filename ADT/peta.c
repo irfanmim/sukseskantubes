@@ -1,3 +1,4 @@
+#include <time.h>
 #include "peta.h"
 #include "point.h"
 
@@ -31,10 +32,11 @@ void PrintPeta(PETA P)
 			}
             else if (j == PanjangPeta(P))
             {
+                printf("%c",Letak(P,i,j));
 				printf("\n");
 			}
             else
-			{
+            {
 				printf("%c ",Letak(P,i,j));
 			}
         }
@@ -60,6 +62,94 @@ void PutarPeta(PETA *P)
 void CopyPETA (PETA P, PETA *P1)
 {
     *P1 = P;
+}
+
+void GeneratePeta(PETA *P, int LB, int PNJ)
+{
+    MakePeta(LB,PNJ,P);
+    time_t t;
+    srand((unsigned) time(&t));
+    int i,j,random;
+    for (i = LBMin; i <= LebarPeta(*P); i++)
+    {
+        for (j = PNJMin; j <= PanjangPeta(*P); j++)
+        {
+            random = rand() % 3;
+            if ((random == 0) || j == PNJMin || j == PanjangPeta(*P) || i == LBMin || i == LebarPeta(*P)) 
+                Letak(*P,i,j) = '#';
+            else
+                Letak(*P,i,j) = '-';
+        }
+    }
+    
+    POINT atas,bawah,kiri,kanan;
+    char up,down,left,right;
+
+    for (i = LBMin; i <= LebarPeta(*P); i++)
+    {
+        for (j = PNJMin; j <= PanjangPeta(*P); j++)
+        {
+            if (i == LBMin)
+                Ordinat(atas) = LebarPeta(*P);
+            else
+                Ordinat(atas) = i-1;
+            Absis(atas) = j;
+            up = Letak(*P,Ordinat(atas),Absis(atas));
+
+            if (i == LebarPeta(*P))
+                Ordinat(bawah) = LBMin;
+            else
+                Ordinat(bawah) = i+1;
+            Absis(bawah) = j;
+            down = Letak(*P,Ordinat(bawah),Absis(bawah));
+
+            if (j == PNJMin)
+                Absis(kiri) = PanjangPeta(*P);
+            else
+                Absis(kiri) = j-1;
+            Ordinat(kiri) = i;
+            left = Letak(*P,Ordinat(kiri),Absis(kiri));
+
+            if (j == PanjangPeta(*P))
+                Absis(kanan) = PNJMin;
+            else
+                Absis(kanan) = j+1;
+            Ordinat(kanan) = i;
+            right = Letak(*P,Ordinat(kanan),Absis(kanan));
+
+            if (Letak(*P,i,j) == '-')
+            {
+                if ((up == '#') && (down == '#') && (left == '#') && (right == '#'))
+                    Letak(*P,i,j) = '#';
+            }
+        }
+    }
+}
+
+void BreakdownPeta(PETA P,indeks Y, indeks X)
+{
+    int gridL, gridP,i,j;
+    gridL = Y / 10 * 10;
+    gridP = X / 10 * 10;
+    for (i = gridL; i <= (gridL+9); i++)
+    {
+        for (j = gridP; j <= (gridP+9); j++)
+        {
+            if ((j == (gridP+9)) && (i == (gridL+9)))
+            {
+                printf("%c",Letak(P,i,j));
+            }
+            else if (j == (gridP+9))
+            {
+                printf("%c",Letak(P,i,j));
+                printf("\n");
+            }
+            else
+            {
+                printf("%c ",Letak(P,i,j));
+            }
+        }
+    }
 }
 
 boolean IsUkuranSama (PETA P1, PETA P2)
