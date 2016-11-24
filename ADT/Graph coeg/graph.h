@@ -1,60 +1,82 @@
-#ifndef _GRAPH_H_
-#define _GRAPH_H_
-
-#include "boolean.h"
-#include "listlinier.h"
-#include "matriks.h"
-
+{ Graph berarah diimplementasi sebagai Multilist }
 #define Nil NULL
+typedef struct tNode *adrNode;
+typedef struct tSuccNode *adrSuccNode;
+typedef struct tNode {
+	int id;
+	int NPred;
+	adrSuccNode Trail;
+	adrNode Next;
+} Node;
 
-typedef int Node;
-typedef int Edge;
-typedef Node NbNode;
-typedef Edge NbEdge;
-typedef struct{
-    NbNode V;
-    NbEdge E;
-    MATRIKS adj;
+typedef struct tSuccNode{
+	adrNode Succ;
+	adrSuccNode Next;	
+} SuccNode;
+
+typedef struct
+{
+	adrNode First
 } Graph;
 
-typedef List ListOfNodes;
+{ *** Selektor *** }
+#define First(G) (G).First;
+#define Id(Pn) (Pn).Id; 
+#define NPred(Pn) (Pn).NPred; 
+#define Trail(Pn) (Pn).Trail;
+#define Next(Pn) (Pn).Next;
+#define Succ(Pt) (Pt).Succ; 
+#define Next(Pt) (Pt).Next;
 
-#define NbNode(G) (G).V
-#define NbEdge(G) (G).E
-#define Adj(G) (G).adj
+{ *** Konstruktor *** }
+void CreateGraph (int X, Graph *L);
+{ I.S. Sembarang; F.S. Terbentuk Graph dengan satu simpul dengan Id=X }
+{ *** Manajemen Memory List Simpul (Leader) *** }
 
-void SetVertex(Graph *G, Node V);
-/* Mengganti jumlah simpul dari graf G dengan V*/
-void SetEdge(Graph *G, Edge E);
-/* Mengganti jumlah sisi dari graf G dengan E*/
-Graph CreateGraph(Node V);
-/* Menghasilkan sebuah graf kosong dengan simpul v. Graf kosong
-adalah graf dengan sisi 0 dalam representasi matriks ketetanggaan
-dengan jumlah baris efektif V dan jumlah kolom efektif boolean IsEmpty(Graph G);
-/* Megembalikan true apabila graf kosong, sisi graf = 0*/
-boolean IsGraphEmpty(Graph G);
-/* Megembalikan true apabila graf kosong, sisi graf = 0*/
-boolean Adjacent(Graph G, Node V, Node V2);
-/* Mengembalikan true jika simpul V1 dan V2 pada graf G bertetangga,
-yaitu apabila elemen ke [V1][V2] pada graf G bernilai 1*/
-boolean Incident(Graph G, Node V, Edge E);
-/* Mengembalikan true jika simpul V berhubungan dengan sisi E*/
-ListOfNodes Neighbors(Graph G, Node V);
-/* Mengembalikan sebuah list of nodes yang berisi daftar simpul-simpul
-yang bertetangga dengan simpul V*/
-void AddV(Graph *G, Node V);
-/* Menambahkan simpul V kedalam G, dengan menambahkan NbrsEff dan NkolEff
-dengan 1*/
-void AddE(Graph *G, Node V1, Node V2);
-/* Menambahkan sebuah sisi diantara simpul V1 dan V2*/
-void DelE(Graph *G, Node V1, Node V2);
-/* Menghapus sisi diantara simpul V1 dan V2*/
-void DelV(Graph *G, Node V);
-/* Menghapus simpul V. Kolom ke-V dan baris ke-V dihapus dari kolom.
-Menggeser seluruh elemen di setiap kolom ke-V dengan elemen sesudahnya
-sampai NKolEff dan setiap bari ke-V dengan elemen sesudahnya sampai NBrsEff*/
+adrNode AlokNode (int X);
+{ Mengembalikan address hasil alokasi Simpul X. }
+{ Jika alokasi berhasil, maka address tidak Nil, misalnya menghasilkan P, maka Id(P)=X,
+ Npred(P)=0, Trail(P)=Nil, dan Next(P)=Nil. Jika alokasi gagal, mengembalikan Nil. }
 
-#endif // _GRAPH_H_
+void DealokNode (adrNode P);
+{ I.S. P terdefinisi; F.S. P dikembalikan ke sistem }
+{ *** Manajemen Memory List Successor (Trailer) *** }
 
+adrSuccNode AlokSuccNode (adrNode Pn);
+{ Mengembalikan address hasil alokasi. }
+{ Jika alokasi berhasil, maka address tidak Nil, misalnya menghasilkan Pt, maka
+Succ(Pt)=Pn dan Next(Pt)=Nil. Jika alokasi gagal, mengembalikan Nil. }
 
+void DealokSuccNode (adrSuccNode P);
+{ I.S. P terdefinisi; F.S. P dikembalikan ke sistem }
+{ *** Fungsi/Prosedur Lain *** }
 
+adrNode SearchNode (Graph G, int X);
+{ mengembalikan address simpul dengan Id=X jika sudah ada pada graph G, Nil jika belum }
+
+adrSuccNode SearchEdge (Graph G, int prec, int succ);
+{ mengembalikan address trailer yang menyimpan info busur (prec,succ) jika sudah ada pada
+graph G, Nil jika belum }
+
+void InsertNode (Graph *G, int X, adrNode *Pn);
+{ Menambahkan simpul X ke dalam graph, jika alokasi X berhasil. }
+{ I.S. G terdefinisi, X terdefinisi dan belum ada pada G. }
+{ F.S. Jika alokasi berhasil, X menjadi elemen terakhir G, Pn berisi address simpul X.
+ Jika alokasi gagal, G tetap, Pn berisi Nil }
+
+void InsertEdge (Graph *G, int prec, int succ);
+{ Menambahkan busur dari prec menuju succ ke dalam G }
+{ I.S. G, prec, succ terdefinisi. }
+{ F.S. Jika belum ada busur (prec,succ) di G, maka tambahkan busur (prec,succ) ke G.
+ Jika simpul prec/succ belum ada pada G, tambahkan simpul tersebut dahulu.
+ Jika sudah ada busur (prec,succ) di G, maka G tetap. }
+
+void DeleteNode (Graph *G, int X);
+{ Menghapus simpul X dari G }
+{ I.S. G terdefinisi, X terdefinisi dan ada pada G, jumlah simpul pada G lebih dari 1. }
+{ F.S. simpul X dan semua busur yang terhubung ke X dihapus dari G. }
+
+boolean IsPathExist (Graph G, int from, int to);
+{ mengembalikan true jika terdapat jalur (dengan memperhatikan arah dari busur) yang
+menghubungkan “from” ke simpul “to” }
+{ Asumsi: from dan to ada pada G dan merupakan simpul yang berbeda }

@@ -126,7 +126,7 @@ void GeneratePeta(PETA *P, int LB, int PNJ)
     }
 }
 
-void BreakdownPeta(PETA P,indeks Y, indeks X)
+void PrintBreakdownPeta(PETA P,indeks Y, indeks X)
 {
     int gridL, gridP,i,j;
     gridL = Y / 10 * 10;
