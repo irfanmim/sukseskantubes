@@ -63,15 +63,14 @@ int main()
 	int CCeff = ui;
 	tanda = 2;
 	i = 0;
-
-	GeneratePeta(&P, 29, 29);
+	FILE *hihi;
+	ReadPeta(hihi, &P, "A.txt");
 	PrintPeta(P); printf("\n");
-	int mapueff = 29;
-	int tengahp = (tanda+CCeff-mapueff)/2, tengahl = (uj-29+1)/2;
+	int tengahp = (tanda+CCeff-PanjangPeta(P))/2, tengahl = (uj-LebarPeta(P)+1)/2;
 	int j;
-	for (i = tengahp; i < tengahp+mapueff+1; ++i)
+	for (i = tengahp; i < tengahp+PanjangPeta(P)+1; ++i)
 	{
-		for (j = tengahl; j < tengahl+30; ++j)
+		for (j = tengahl; j < tengahl+LebarPeta(P); ++j)
 		{
 			kata[i][j] = Letak(P, i-tengahp, j-tengahl);
 		}		
@@ -108,7 +107,7 @@ int main()
 	i = rand();
 	srand(i);
 	j = rand() % 29 + tengahl;
-	i = i % mapueff + tengahp;
+	i = i % PanjangPeta(P) + tengahp;
 	while (kata[i][j] != '-')
 	{
 		srand(j);
@@ -123,7 +122,7 @@ int main()
 	i = rand();
 	srand(i);
 	j = rand() % 29 + tengahl;
-	i = i % mapueff + tengahp;
+	i = i % PanjangPeta(P) + tengahp;
 	while (kata[i][j] != '-')
 	{
 		srand(j);
@@ -139,7 +138,7 @@ int main()
 		i = rand();
 		srand(i);
 		j = rand() % 29 + tengahl;
-		i = i % mapueff + tengahp;
+		i = i % PanjangPeta(P) + tengahp;
 		while (kata[i][j] != '-')
 		{
 			srand(j);

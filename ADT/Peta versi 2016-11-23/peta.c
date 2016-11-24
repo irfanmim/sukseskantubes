@@ -1,14 +1,17 @@
 #include <time.h>
 #include "peta.h"
 #include "point.h"
+#include "jehian.h"
 
-void MakePeta(int LB, int PNJ, PETA *P){
+void MakePeta(int LB, int PNJ, PETA *P)
+{
     LebarPeta(*P) = LB;
     PanjangPeta(*P) = PNJ;
 }
 
-void ReadPeta(FILE *source, PETA *P, str filetxt)
+void ReadPeta(PETA *P, str filetxt)
 {
+    FILE *source;
     source = fopen(filetxt,"r");
     int i = 0;
     while (!feof(source))
@@ -16,25 +19,28 @@ void ReadPeta(FILE *source, PETA *P, str filetxt)
         fgets((*P).peta[i], CharMax, source);
         ++i;
     }
+    MakePeta(strlen((*P).peta[i-1]), i, P);
     fclose(source);
 }
 
 void PrintPeta(PETA P)
 {
     int i, j;
-    for (i = LBMin; i <= LebarPeta(P); i++)
+    for (i = LBMin; i < LebarPeta(P); i++)
     {
-        for (j = PNJMin; j <= PanjangPeta(P); j++)
+        for (j = PNJMin; j < PanjangPeta(P); j++)
         {
-            if ((j == PanjangPeta(P)) && (i == LebarPeta(P)))
+            if ((j == PanjangPeta(P)-1) && (i == LebarPeta(P)-1))
             {
                 printf("%c",Letak(P,i,j));
 			}
-            else if (j == PanjangPeta(P))
+            
+            else if (j == PanjangPeta(P)-1)
             {
                 printf("%c",Letak(P,i,j));
 				printf("\n");
 			}
+            
             else
             {
 				printf("%c ",Letak(P,i,j));
