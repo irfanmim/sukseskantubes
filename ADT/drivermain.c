@@ -6,11 +6,13 @@
 #include "peta.h"
 #include "player.h"
 #include "boolean.h"
+#include "soqlist.h"
 
 /* List Fungsi dan Prosedur untuk digunakan pada main program*/
 void Converter(unsigned char CC);
 void InsertStats (unsigned char* CC, player P, int B);
 void MakeTable(unsigned char* kata, int A, int B);
+void MakeStack(Stack *st);
 
 int main()
 {
@@ -23,7 +25,7 @@ int main()
 
 	/* ALGORITMA */
 	printf("Masukkan ukuruan layar:\n");
-	printf("Ukuran Lebar minimal adalah 40 dan Panjang minimal 70\n");
+	printf("Ukuran Lebar minimal adalah 40 dan Panjang minimal 75\n");
 
 	do
 	{
@@ -37,11 +39,11 @@ int main()
 	do
 	{
 		printf("Panjang layar : "); scanf("%d", &uj);
-		if (uj < 70)
+		if (uj < 75)
 		{
-			printf("Ukuran Panjang minimal adalah 70!!\n");
+			printf("Ukuran Panjang minimal adalah 75!!\n");
 		}
-	} while (uj < 70);
+	} while (uj < 75);
 
 	unsigned char kata[ui][uj];
 	MakeTable(kata, ui, uj);
@@ -61,15 +63,14 @@ int main()
 	int CCeff = ui;
 	tanda = 2;
 	i = 0;
-
-	GeneratePeta(&P, 29, 29);
+	FILE *hihi;
+	ReadPeta(hihi, &P, "A.txt");
 	PrintPeta(P); printf("\n");
-	int mapueff = 29;
-	int tengahp = (tanda+CCeff-mapueff)/2, tengahl = (uj-29+1)/2;
+	int tengahp = (tanda+CCeff-PanjangPeta(P))/2, tengahl = (uj-LebarPeta(P)+1)/2;
 	int j;
-	for (i = tengahp; i < tengahp+mapueff+1; ++i)
+	for (i = tengahp; i < tengahp+PanjangPeta(P)+1; ++i)
 	{
-		for (j = tengahl; j < tengahl+30; ++j)
+		for (j = tengahl; j < tengahl+LebarPeta(P); ++j)
 		{
 			kata[i][j] = Letak(P, i-tengahp, j-tengahl);
 		}		
@@ -87,7 +88,7 @@ int main()
 	X(Utama) = j;
 	Y(Utama) = i;
 	HP(Utama) = 1;
-	HPMAX(Utama) = 9999;
+	HPMAX(Utama) = 10;
 	STR(Utama) = 999;
 	DEF(Utama) = 999;
 	LVL(Utama) = 100;
@@ -106,7 +107,7 @@ int main()
 	i = rand();
 	srand(i);
 	j = rand() % 29 + tengahl;
-	i = i % mapueff + tengahp;
+	i = i % PanjangPeta(P) + tengahp;
 	while (kata[i][j] != '-')
 	{
 		srand(j);
@@ -121,7 +122,7 @@ int main()
 	i = rand();
 	srand(i);
 	j = rand() % 29 + tengahl;
-	i = i % mapueff + tengahp;
+	i = i % PanjangPeta(P) + tengahp;
 	while (kata[i][j] != '-')
 	{
 		srand(j);
@@ -137,7 +138,7 @@ int main()
 		i = rand();
 		srand(i);
 		j = rand() % 29 + tengahl;
-		i = i % mapueff + tengahp;
+		i = i % PanjangPeta(P) + tengahp;
 		while (kata[i][j] != '-')
 		{
 			srand(j);
@@ -151,7 +152,9 @@ int main()
 		STR(Enemy[k]) = 50;
 		DEF(Enemy[k]) = 10;
 		HP(Enemy[k]) = 20;
-
+		HPMAX(Enemy[k]) = 20;
+		LVL(Enemy[k]) = 1;
+		EXP(Enemy[k]) = 0;
 	}
 	
 	for (q = 0; q < ui; ++q)
@@ -185,12 +188,31 @@ int main()
 		{
 			GerakKanan(&Posisi(Utama));
 		}
-		if (kata[Y(Utama)][X(Utama)] == 'M')
+		if (kata[Y(Utama)][X(Utama)] != 'E' && kata[Y(Utama)][X(Utama)] != '#' && kata[Y(Utama)][X(Utama)] != ' ')
 		{
 			RestoredHP(&Utama);
 			InsertStats(kata, Utama, uj);
+			kata[Y(Utama)][X(Utama)] = 'P';
 		}
-		kata[Y(Utama)][X(Utama)] = 'P';
+		else if (kata[Y(Utama)][X(Utama)] == 'E')
+		{
+			int z = 0;
+			boolean found = false, win;
+			Stack yuhu;
+			CreateEmpty(&yuhu);
+			MakeStack(&yuhu);
+			while (z < k && !found)
+			{
+				found = (X(Utama) == X(Enemy[z]) && Y(Utama) == Y(Enemy[z]));
+				++z;
+			}
+			--z;
+			BattleOn(&Utama, Enemy[1], yuhu, &win);
+			if (win)
+			{
+				kata[Y(Utama)][X(Utama)] = 'P';
+			}
+		}
 		system("clear");
 	
 		for (q = 0; q < ui; ++q)
@@ -200,17 +222,9 @@ int main()
 				Converter(kata[q][r]);
 			}
 			printf("\n");
-		}
-
-		printf("%ld\n", HP(Utama));	
-	
+		}	
 	}
 	system("clear");
-	kata[i][j] = 'M';
-	for (k = 0; k < 8; ++k)
-	{
-		printf("%s", kata[k]);
-	}	
 	return 0;
 }
 
@@ -280,6 +294,10 @@ void InsertStats (unsigned char* CC, player P, int B)
 			CC[j] = (unsigned char) (temp + 48);
 			DEF(P) /= 10;
 		}
+		else
+		{
+			CC[j] = ' ';
+		}
 	}
 	CC[j] = '=';
 	CC[j-2] = 'F';
@@ -297,6 +315,10 @@ void InsertStats (unsigned char* CC, player P, int B)
 			temp = STR(P)%10;
 			CC[j] = (unsigned char) (temp + 48);
 			STR(P) /= 10;
+		}
+		else
+		{
+			CC[j] = ' ';
 		}
 	}
 	CC[j] = '=';
@@ -316,6 +338,10 @@ void InsertStats (unsigned char* CC, player P, int B)
 			CC[j] = (unsigned char) (temp + 48);
 			HPMAX(P) /= 10;
 		}
+		else
+		{
+			CC[j] = ' ';
+		}
 	}
 	CC[j] = '/';
 	--j;
@@ -327,6 +353,10 @@ void InsertStats (unsigned char* CC, player P, int B)
 			temp = HP(P)%10;
 			CC[j] = (unsigned char) (temp + 48);
 			HP(P) /= 10;
+		}
+		else
+		{
+			CC[j] = ' ';
 		}
 	}
 	CC[j] = '=';
@@ -344,6 +374,10 @@ void InsertStats (unsigned char* CC, player P, int B)
 			temp = LVL(P)%10;
 			CC[j] = (unsigned char) (temp + 48);
 			LVL(P) /= 10;
+		}
+		else
+		{
+			CC[j] = ' ';
 		}
 	}
 	CC[j] = '=';
@@ -413,4 +447,34 @@ void Converter (unsigned char CC)
 	{
 		printf("%c", CC);
 	}
+}
+
+
+void MakeStack(Stack *st)
+{
+	int i,r,z;
+	Queue temp;
+
+    z = 1;
+    while(z <= 10){
+    	CreateEmptyQueue(&temp);
+		for (int i = 1; i <= 4; i++)
+		{
+			srand(time(NULL)*z*i);
+			srand((rand()*13)+401*i);
+			srand(rand()*101*z-i*z*z);
+			srand(rand()*i*11);
+    		r = rand() % 8;
+
+			if(r == 0 || r == 4 || r == 5){
+				Add(&temp,'A');	
+			}else if(r == 3 || r == 1 || r == 7){
+				Add(&temp,'F');
+			}else if(r == 2 || r == 6){
+				Add(&temp,'B');
+			}
+		}
+		Push(st,temp);
+		z++;
+    }
 }
