@@ -1,6 +1,7 @@
 #ifndef PETA_H
 #define PETA_H
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 #include "boolean.h"
@@ -38,7 +39,7 @@ void CopyPETA (PETA P, PETA *P1);
 
 void GeneratePeta(PETA *P, int LB, int PNJ);
 
-void PrintBreakdownPeta(PETA P,indeks Y, indeks X);
+void BreakdownPeta(PETA P,indeks Y, indeks X);
 
 boolean IsUkuranSama (PETA P1, PETA P2);
 

@@ -2,13 +2,12 @@
 
 int main()
 {
-    FILE *namafile;
     PETA P;
     int Lebar = 0;
     int Panjang = 0;
     MakePeta(Lebar,Panjang,&P);
-    str filetxt = "pitakar.txt";
-    ReadPeta(&P,filetxt);
+    str filetxt = "A.txt";
+    ReadPeta(&P, filetxt);
     //GeneratePeta(&P,Lebar,Panjang);
     PrintPeta(P);
     printf("\n");

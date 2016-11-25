@@ -1,7 +1,8 @@
+#include <stdlib.h>
 #include <time.h>
 #include "peta.h"
 #include "point.h"
-#include "jehian.h"
+#include "custring.h"
 
 void MakePeta(int LB, int PNJ, PETA *P)
 {
@@ -14,28 +15,28 @@ void ReadPeta(PETA *P, str filetxt)
     FILE *source;
     source = fopen(filetxt,"r");
     int i = 0;
-    while (!feof(source))
+    do
     {
         fgets((*P).peta[i], CharMax, source);
         ++i;
-    }
-    MakePeta(strlen((*P).peta[i-1]), i, P);
+    } while (!feof(source));
+    MakePeta(i, strlen((*P).peta[0]), P);
     fclose(source);
 }
 
 void PrintPeta(PETA P)
 {
     int i, j;
-    for (i = LBMin; i < LebarPeta(P); i++)
+    for (i = 0; i < LebarPeta(P)-1; i++)
     {
-        for (j = PNJMin; j < PanjangPeta(P); j++)
+        for (j = 0; j < PanjangPeta(P)-1; j++)
         {
-            if ((j == PanjangPeta(P)-1) && (i == LebarPeta(P)-1))
+            if ((j == PanjangPeta(P) - 2) && (i == LebarPeta(P) - 2))
             {
                 printf("%c",Letak(P,i,j));
 			}
             
-            else if (j == PanjangPeta(P)-1)
+            else if (j == PanjangPeta(P) - 2)
             {
                 printf("%c",Letak(P,i,j));
 				printf("\n");
