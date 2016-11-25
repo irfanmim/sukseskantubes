@@ -1,12 +1,11 @@
-
-/* File : stacklist.h */
 #ifndef _SOQLIST_H
 #define _SOQLIST_H
 
 #include "boolean.h"
+#include "custring.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include <time.h>
 
 /* Konstanta */
 #define Nil NULL
@@ -58,6 +57,8 @@ typedef struct {
 #define Next(P) (P)->Next
 #define Info(P) (P)->Info
 
+//STACK
+
 /* Prototype manajemen memori */
 void Alokasi (address *P, infotypes X);
 /* I.S. Sembarang */
@@ -86,6 +87,8 @@ void Pop (Stack * S, infotypes * X);
 /* F.S. X adalah nilai elemen TOP yang lama, */
 /*      elemen TOP yang lama didealokasi */
 /* Pada dasarnya adalah operasi Delete First pada list linier */
+
+//QUEUE
 
 void AlokasiQueue (addressq *P, infotypeq X);
 /* I.S. Sembarang */
@@ -117,8 +120,19 @@ void Del(Queue * Q, infotypeq * X);
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "mundur" */
 
-void PrintQueue(Queue Q);
+//void PrintQueue(Queue Q);
 
 void BacaFile(Stack *S, FILE * file, str namafile);
+
+void DelTail(Queue *Q, infotypeq *X);
+
+void PrintQueue(Queue Q);
+
+void PrintQueueRandom (Queue Q, int *i,int *r);
+
+void PrintQueueClosed (Queue Q, int i,int r);
+
+void PrintQueuewithpointer (Queue Q, int x, int i, int r, boolean lawan);
+
 
 #endif

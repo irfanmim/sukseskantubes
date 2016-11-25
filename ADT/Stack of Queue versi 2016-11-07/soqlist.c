@@ -1,3 +1,4 @@
+#include "custring.h"
 #include "soqlist.h"
 
 /* Prototype manajemen memori */
@@ -9,7 +10,7 @@ void Alokasi (address *P, infotypes X){
     }
 }
 /* I.S. Sembarang */
-/* F.S. Alamat P dialokasi, jika berhasil maka Info(P)=X dan
+/* F.S. Alamat P dialokasi, jika berhasil maka Info(P)=X dasarnyan
         Next(P)=Nil */
 /*      P=Nil jika alokasi gagal */
 void Dealokasi (address P){
@@ -139,6 +140,7 @@ void Del(Queue * Q, infotypeq * X){
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "mundur" */
 
+/*
 void PrintQueue(Queue Q){
     printf("[");
     if(!IsEmptyQueue(Q)){
@@ -151,6 +153,7 @@ void PrintQueue(Queue Q){
     }
     printf("]\n");
 }
+*/
 
 void BacaFile(Stack *S, FILE * source, str filetxt){
     source = fopen(filetxt,"r");
@@ -173,3 +176,166 @@ void BacaFile(Stack *S, FILE * source, str filetxt){
     fclose(source);
 }
 
+//----------------------------------------------
+
+void DelTail(Queue *Q, infotypeq *X){
+    *X = InfoTail(*Q);
+    if(Head(*Q) == Tail(*Q)){
+        CreateEmptyQueue(Q);
+    }else{
+        addressq P = Tail(*Q);
+        addressq O = Head(*Q);
+        while(Next(O) != P){
+            O = Next(O);
+        }
+        Next(O) = Nil;
+        Tail(*Q) = O;
+        DealokasiQueue(P);
+    }
+
+}
+
+void PrintQueue(Queue Q){
+
+    if ( IsEmptyQueue(Q) ) {
+        printf("Queue Kosong\n");
+    }
+    else {
+        addressq P = Head(Q);
+        while(P!=Nil){
+            printf("%c ",Info(P));
+            P = Next(P);
+        }
+    }
+}
+
+void PrintQueueRandom (Queue Q, int *i,int *r){
+    infotypeq temp;
+    
+    srand(time(NULL));
+    *i = rand() % 4;
+    *r = rand() % 4;
+    int temp1, count;
+
+    while ( *i == *r ){
+        *i = rand() % 4;
+    }
+
+    if ( *i > *r ) {
+        temp1 = *i;
+        *i = *r;
+        *r = temp1;
+    }
+
+    //printf("%d %d\n", i, r);
+
+    if ( IsEmptyQueue(Q) ) {
+        printf("Queue Kosong\n");
+    }
+    else {
+        addressq P = Head(Q);
+        count = 0;
+        while(P != Nil){
+            if(count == *i || count == *r){
+                printf("# ");
+            }else{
+                printf("%c ",Info(P));
+            }
+            P = Next(P);
+            count++;
+        }
+    }
+}
+
+void PrintQueueClosed (Queue Q, int i,int r){
+    int count;
+
+    if ( IsEmptyQueue(Q) ) {
+        printf("Queue Kosong\n");
+    }
+    else {
+        addressq P = Head(Q);
+        count = 0;
+        while(P!=Nil){
+            if(count == i || count == r){
+                printf("# ");
+            }else{
+                printf("%c ",Info(P));
+            }
+            P = Next(P);
+            count++;
+        }
+     }
+    
+}
+
+void PrintQueuewithpointer (Queue Q, int x, int i, int r, boolean lawan){
+
+    int count;
+
+    if ( IsEmptyQueue(Q) ) {
+        printf("Queue Kosong\n");
+    }
+    else if (lawan){
+        count = 0;
+        addressq P = Head(Q);
+        while ( P != Nil ) {
+            if (x < i){
+                if (count == i || count == r)
+                {
+                    printf("# ");
+                }else if (count == x){
+                    printf(">%c ",Info(P) );
+                }else{
+                    printf("%c ",Info(P) );
+                }
+            }else if (x == i){
+                if (count == r)
+                {
+                    printf("# ");
+                }else if(count == x){
+                    printf(">%c ",Info(P) );
+                }else{
+                    printf("%c ",Info(P) );
+                }
+            }else if (x > i && x < r){
+                if (count == r)
+                {
+                    printf("# ");
+                }else if(count == x){
+                    printf(">%c ",Info(P) );
+                }else{
+                    printf("%c ",Info(P) );
+                }
+            }else if (x == r){
+                if (count == r){
+                    printf(">%c ",Info(P) );
+                }else{
+                    printf("%c ",Info(P) );
+                }
+            }else{
+                if (count == x)
+                {
+                    printf(">%c ",Info(P) );
+                }else{
+                    printf("%c ",Info(P) );
+                }    
+            }
+            P = Next(P);
+            count++;
+        }
+    }else{
+        count = 0;
+        addressq P = Head(Q);
+        while ( P!=Nil) {
+            if (count == x)
+            {
+                printf(">%c ",Info(P) );
+            }else{
+                printf("%c ",Info(P) );
+            }
+            P = Next(P);
+            count++;
+        }
+    }
+}
