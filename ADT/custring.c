@@ -14,7 +14,7 @@ long strlen(char CC[])
 boolean Strcmp(char A[], char B[])
 {
 	boolean same = true;
-	int i;
+	int i = 0;
 	if (strlen(A) == strlen(B))
 	{
 		int panjang = strlen(A);
