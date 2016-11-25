@@ -1,9 +1,9 @@
 #ifndef PETA_H
 #define PETA_H
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "string.h"
 #include "boolean.h"
 #include "point.h"
 
@@ -29,7 +29,7 @@ typedef char str[100];
 
 void MakePeta(int LB, int PNJ, PETA *P);
 
-void ReadPeta(FILE *source, PETA *P, str filetxt);
+void ReadPeta(PETA *P, str filetxt);
 
 void PrintPeta(PETA P);
 

@@ -6,6 +6,7 @@
 #define POINT_H
 
 #include "boolean.h"
+#include "custring.h"
 
 typedef struct { 
 	int X; /* absis   */

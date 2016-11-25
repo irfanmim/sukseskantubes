@@ -1,12 +1,10 @@
-
-/* File : stacklist.h */
 #ifndef _SOQLIST_H
 #define _SOQLIST_H
 
 #include "boolean.h"
+#include "custring.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 #include <time.h>
 
 /* Konstanta */

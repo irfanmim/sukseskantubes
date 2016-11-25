@@ -1,3 +1,4 @@
+#include "custring.h"
 #include "soqlist.h"
 
 /* Prototype manajemen memori */

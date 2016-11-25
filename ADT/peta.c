@@ -1,40 +1,47 @@
+#include <stdlib.h>
 #include <time.h>
 #include "peta.h"
 #include "point.h"
+#include "custring.h"
 
-void MakePeta(int LB, int PNJ, PETA *P){
+void MakePeta(int LB, int PNJ, PETA *P)
+{
     LebarPeta(*P) = LB;
     PanjangPeta(*P) = PNJ;
 }
 
-void ReadPeta(FILE *source, PETA *P, str filetxt)
+void ReadPeta(PETA *P, str filetxt)
 {
+    FILE *source;
     source = fopen(filetxt,"r");
     int i = 0;
-    while (!feof(source))
+    do
     {
         fgets((*P).peta[i], CharMax, source);
         ++i;
-    }
+    } while (!feof(source));
+    MakePeta(i, strlen((*P).peta[0]), P);
     fclose(source);
 }
 
 void PrintPeta(PETA P)
 {
     int i, j;
-    for (i = LBMin; i <= LebarPeta(P); i++)
+    for (i = 0; i < LebarPeta(P)-1; i++)
     {
-        for (j = PNJMin; j <= PanjangPeta(P); j++)
+        for (j = 0; j < PanjangPeta(P)-1; j++)
         {
-            if ((j == PanjangPeta(P)) && (i == LebarPeta(P)))
+            if ((j == PanjangPeta(P) - 2) && (i == LebarPeta(P) - 2))
             {
                 printf("%c",Letak(P,i,j));
 			}
-            else if (j == PanjangPeta(P))
+            
+            else if (j == PanjangPeta(P) - 2)
             {
                 printf("%c",Letak(P,i,j));
 				printf("\n");
 			}
+            
             else
             {
 				printf("%c ",Letak(P,i,j));
@@ -126,7 +133,7 @@ void GeneratePeta(PETA *P, int LB, int PNJ)
     }
 }
 
-void PrintBreakdownPeta(PETA P,indeks Y, indeks X)
+void BreakdownPeta(PETA P,indeks Y, indeks X)
 {
     int gridL, gridP,i,j;
     gridL = Y / 10 * 10;

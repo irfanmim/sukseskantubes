@@ -8,9 +8,10 @@
 /* Tanggal: 28 Agustus 2016 */
 /* *** REALISASI ABSTRACT DATA TYPE POINT *** */
 
-#include "point.h"
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
+#include "custring.h"
+#include "point.h"
 
 /* *** Konstruktor membentuk POINT *** */
 POINT MakePOINT (int X, int Y)

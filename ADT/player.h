@@ -4,7 +4,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 #include "point.h"
+#include "custring.h"
 #include "boolean.h"
 #include "soqlist.h"
 

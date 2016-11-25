@@ -1,6 +1,9 @@
+#include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 #include "boolean.h"
+#include "custring.h"
 #include "player.h"
 #include "point.h"
 #include "soqlist.h"
