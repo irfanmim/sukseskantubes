@@ -48,7 +48,7 @@ void LVLUP (player *P1, int Exp[]);
 /*	Menaikkan Level Pemain sebanyak 1 */
 void RestoredHP (player *P1);
 /*	Mengembalikan HP Pemain menjadi Maksimum */
-boolean isDeath (player *P1);
+boolean isDeath (player P1);
 /*	Mengecek apakah pemain sudah mati atau belum */
 
 

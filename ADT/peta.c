@@ -18,25 +18,26 @@ void ReadPeta(PETA *P, str filetxt)
     do
     {
         fgets((*P).peta[i], CharMax, source);
+        (*P).peta[i][strlen((*P).peta[i])] = '\0';
         ++i;
     } while (!feof(source));
-    MakePeta(i, strlen((*P).peta[0]), P);
+    MakePeta(i-1, strlen((*P).peta[0])-1, P);
     fclose(source);
 }
 
 void PrintPeta(PETA P)
 {
     int i, j;
-    for (i = 0; i < LebarPeta(P)-1; i++)
+    for (i = 0; i < LebarPeta(P); i++)
     {
-        for (j = 0; j < PanjangPeta(P)-1; j++)
+        for (j = 0; j < PanjangPeta(P); j++)
         {
-            if ((j == PanjangPeta(P) - 2) && (i == LebarPeta(P) - 2))
+            if ((j == PanjangPeta(P)-1) && (i == LebarPeta(P) - 1))
             {
                 printf("%c",Letak(P,i,j));
 			}
             
-            else if (j == PanjangPeta(P) - 2)
+            else if (j == PanjangPeta(P)-1)
             {
                 printf("%c",Letak(P,i,j));
 				printf("\n");
@@ -205,4 +206,45 @@ boolean isEnemy (PETA P, POINT T)
 boolean isMedicine (PETA P, POINT T)
 {
 	return (Letak(P,Ordinat(T),Absis(T)) == 'M');
+}
+
+boolean isPath (PETA P, POINT T)
+{
+    return ((Letak(P,Ordinat(T),Absis(T)) == '-') || isMedicine(P, T) || isEnemy(P, T));
+}
+
+boolean SearchKolom (PETA P, int i, char CC)
+{
+    boolean found = false;
+    int j = 0;
+    while (!found && j < PanjangPeta(P))
+    {
+        if (Letak(P,i,j) == CC)
+        {
+            found = true;
+        }
+        else
+        {
+            ++j;
+        }
+    }
+    return found;
+}
+
+boolean SearchBaris (PETA P, int j, char CC)
+{
+    boolean found = false;
+    int i = 0;
+    while (!found && i < LebarPeta(P))
+    {
+        if (Letak(P,i,j) == CC)
+        {
+            found = true;
+        }
+        else
+        {
+            ++i;
+        }
+    }
+    return found;
 }

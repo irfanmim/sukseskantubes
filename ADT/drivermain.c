@@ -10,10 +10,17 @@
 
 /* List Fungsi dan Prosedur untuk digunakan pada main program*/
 void Converter (unsigned char CC);
-void InsertMaps (unsigned char* CC, PETA P, int ui, int uj);
+void InsertMaps (unsigned char* CC, PETA P);
 void InsertStats (unsigned char* CC, player P, int B);
-void MakeTable (unsigned char* kata, int A, int B);
+void MakeTable (unsigned char* CC, int A, int B);
 void MakeStack (Stack *st);
+void PrintLayar (unsigned char* CC);
+void DeretPrima ();
+
+/* KAMUS GLOBAL */
+int ui, uj;
+unsigned char kata[100][100];
+long int prima[50001];
 
 int main()
 {
@@ -21,14 +28,13 @@ int main()
 
 	/* KAMUS */
 	boolean validasi;
-	int q, r, ui, uj;
+	int q, r;
 	PETA P;
 	player Utama, Enemy[3];
-	unsigned char mapu[1000][1000], space;
+	unsigned char mapu[100][100], space;
 
 	char yoho[] = "A.txt";
 	ReadPeta(&P, yoho);
-	PrintPeta(P);
 
 	/* ALGORITMA */
 	printf("Masukkan ukuruan layar:\n");
@@ -53,10 +59,11 @@ int main()
 	} while (uj < 75);
 
 
-	unsigned char kata[ui][uj];
 	MakeTable(kata, ui, uj);
 	
 	printf("Masukkan nama kamu: "); scanf("%c",&space); gets(NAME(Utama));
+
+	system("clear");
 
 	int i, tanda = 0, found = 0;
 	int CCeff = ui;
@@ -64,9 +71,24 @@ int main()
 	i = 0;
 	int tengahp = (tanda+CCeff-LebarPeta(P)+2)/2, tengahl = (uj-PanjangPeta(P)+4)/2;
 	int j;
-	
-	InsertMaps (kata, P, ui, uj);
 
+	/* RANDOM AWAL UNTUK LOKASI PLAYER */
+	i = rand()%LebarPeta(P);
+	j = rand()%PanjangPeta(P);
+
+	while (!SearchKolom(P, i, '-'))
+	{
+		++i;
+	}
+
+	while (Letak(P,i,j) != '-')
+	{
+		srand(j*time(NULL));
+		j = rand();
+		j %= PanjangPeta(P);
+	}
+
+	Letak(P,i,j) = 'P';
 	X(Utama) = j;
 	Y(Utama) = i;
 	HP(Utama) = 1;
@@ -76,109 +98,125 @@ int main()
 	LVL(Utama) = 100;	
 	InsertStats(kata, Utama, uj);
 
-		
-	for (q = 0; q < ui; ++q)
+
+	/* RANDOM UNTUK LOKASI MEDICINE */
+	int l;
+	for (l = 0; l <= 2; ++l)
 	{
-		for (r = 0; r < uj; ++r)
+		i = rand()%LebarPeta(P);
+		j = rand()%PanjangPeta(P);
+
+		while (!SearchBaris(P, j, '-'))
 		{
-			Converter(kata[q][r]);
-		}
-		printf("\n");
-	}
-
-
-	srand(time(NULL));
-	i = rand();
-	srand(i);
-	j = rand() % PanjangPeta(P) + tengahl;
-	i = i % LebarPeta(P) + tengahp;
-	while (kata[i][j] != '-')
-	{
-		srand(j);
-		++j;
-		j = j % PanjangPeta(P) + tengahl;
-	}
-	kata[i][j] = 'P';
-	X(Utama) = j;
-	Y(Utama) = i;
-
-	srand(time(NULL));
-	i = rand();
-	srand(i);
-	j = rand() % PanjangPeta(P) + tengahl;
-	i = i % LebarPeta(P) + tengahp;
-	while (kata[i][j] != '-')
-	{
-		srand(j);
-		++j;
-		j = j % PanjangPeta(P) + tengahl;
-	}
-	kata[i][j] = 'M';
-	int k;
-	
-	for (k = 0; k <= 2; ++k)
-	{
-		srand(time(NULL));
-		i = rand();
-		srand(i);
-		j = rand() % PanjangPeta(P) + tengahl;
-		i = i % LebarPeta(P) + tengahp;
-		while (kata[i][j] != '-')
-		{
-			srand(j);
 			++j;
-			j = j % PanjangPeta(P) + tengahl;
 		}
-		kata[i][j] = 'E';
 
-		X(Enemy[k]) = j;
-		Y(Enemy[k]) = i;
-		STR(Enemy[k]) = 50;
-		DEF(Enemy[k]) = 10;
-		HP(Enemy[k]) = 20;
-		HPMAX(Enemy[k]) = 20;
-		LVL(Enemy[k]) = 1;
-		EXP(Enemy[k]) = 0;
-	}
-	
-	for (q = 0; q < ui; ++q)
-	{
-		for (r = 0; r < uj; ++r)
+		while (Letak(P,i,j) != '-')
 		{
-			Converter(kata[q][r]);
+			srand(i*time(NULL));
+			++i;
+			i %= LebarPeta(P);
 		}
-		printf("\n");
+		Letak(P,i,j) = 'M';
 	}
 
-	k = 3;
+	/* RANDOM UNTUK LOKASI ENEMY */
+	for (l = 0; l <= 2; ++l)
+	{
+		i = rand()%LebarPeta(P);
+		j = rand()%PanjangPeta(P);
+
+		while (!SearchBaris(P, j, '-'))
+		{
+			++j;
+			j %= PanjangPeta(P);
+		}
+
+		while (Letak(P,i,j) != '-')
+		{
+			srand(i*time(NULL));
+			++i;
+			i %= LebarPeta(P);
+		}
+
+		Letak(P,i,j) = 'E';
+		InsertMaps(kata, P);
+		X(Enemy[l]) = j;
+		Y(Enemy[l]) = i;
+		STR(Enemy[l]) = 50+10*l*pow(-1,l);
+		DEF(Enemy[l]) = 10+10*l*pow(-1,l+1);
+		HP(Enemy[l]) = 20+10*l*pow(-1,l);
+		HPMAX(Enemy[l]) = 20+10*l*pow(-1,l+1);
+		LVL(Enemy[l]) = 1;
+		EXP(Enemy[l]) = 0;
+		if (l==1)
+		{
+			Strcat(NAME(Enemy[l]),"Agung");
+		}
+		else if (l==2)
+		{
+			Strcat(NAME(Enemy[l]),"Yos");
+		}
+		else
+		{
+			Strcat(NAME(Enemy[l]),"Jau cups");
+		}
+	}	
+	
+	PrintLayar(kata);
+	int k = 3;
+	POINT initial;
 	unsigned char CC[2];
 	while (k != 0)
 	{
 		gets(CC);
-		kata[Y(Utama)][X(Utama)] = '-';
-		if (Strcmp(CC, "GD") && (kata[Y(Utama)+1][X(Utama)] == '-' || kata[Y(Utama)+1][X(Utama)] == 'M' || kata[Y(Utama)+1][X(Utama)] == 'E'))
+		Ordinat(initial) = X(Utama);
+		Absis(initial) = Y(Utama);
+
+		Letak(P,Y(Utama),X(Utama)) = '-';
+		
+		if (Strcmp(CC, "GD"))
 		{
 			GerakBawah(&Posisi(Utama));
+			if (!isPath(P, Posisi(Utama)))
+			{
+				GerakAtas(&Posisi(Utama));
+			}
 		}
-		else if (Strcmp(CC, "GU") && (kata[Y(Utama)-1][X(Utama)] == '-' || kata[Y(Utama)-1][X(Utama)] == 'M' || kata[Y(Utama)-1][X(Utama)] == 'E'))
+		else if (Strcmp(CC, "GU"))
 		{
 			GerakAtas(&Posisi(Utama));
+			if (!isPath(P, Posisi(Utama)))
+			{
+				GerakBawah(&Posisi(Utama));
+			}
+
 		}
-		else if (Strcmp(CC, "GL") && (kata[Y(Utama)][X(Utama)-1] == '-' || kata[Y(Utama)][X(Utama)-1] == 'M' || kata[Y(Utama)][X(Utama)-1] == 'E'))
+		else if (Strcmp(CC, "GL"))
 		{
 			GerakKiri(&Posisi(Utama));
+			if (!isPath(P, Posisi(Utama)))
+			{
+				GerakKanan(&Posisi(Utama));
+			}
 		}
-		else if (Strcmp(CC, "GR") && (kata[Y(Utama)][X(Utama)+1] == '-' || kata[Y(Utama)][X(Utama)+1] == 'M' || kata[Y(Utama)][X(Utama)+1] == 'E'))
+		else if (Strcmp(CC, "GR"))
 		{
 			GerakKanan(&Posisi(Utama));
+			if (!isPath(P, Posisi(Utama)))
+			{
+				GerakKiri(&Posisi(Utama));
+			}
 		}
-		if (kata[Y(Utama)][X(Utama)] == 'M')
+
+
+		if (Letak(P, Y(Utama), X(Utama)) == 'M')
 		{
 			RestoredHP(&Utama);
 			InsertStats(kata, Utama, uj);
-			kata[Y(Utama)][X(Utama)] = 'P';
 		}
-		else if (kata[Y(Utama)][X(Utama)] == 'E')
+		
+		else if (Letak(P, Y(Utama), X(Utama)) == 'E')
 		{
 			int z = 0;
 			boolean found = false, win;
@@ -191,86 +229,95 @@ int main()
 				++z;
 			}
 			--z;
-			BattleOn(&Utama, Enemy[1], yuhu, &win);
-			printf("%d", HP(Utama));
+			BattleOn(&Utama, Enemy[z], yuhu, &win);
 			InsertStats(kata, Utama, uj);
 			if (win)
 			{
-				kata[Y(Utama)][X(Utama)] = 'P';
+				Letak(P, Y(Utama), X(Utama)) = 'P';
+			}
+			else
+			{
+				if (isDeath(Utama))
+				{
+					break;
+				}
+
+				else
+				{
+					X(Utama) = Ordinat(initial);
+					Y(Utama) = Absis(initial);
+				}
 			}
 		}
+
 		else
 		{
-			kata[Y(Utama)][X(Utama)] = 'P';			
+			Letak(P, Y(Utama), X(Utama)) = 'P';			
 		}
+		
+		Letak(P,Y(Utama),X(Utama)) = 'P';
 		system("clear");
+		InsertMaps(kata, P);
+		PrintLayar(kata);
 	
-		for (q = 0; q < ui; ++q)
-		{
-			for (r = 0; r < uj; ++r)
-			{
-				Converter(kata[q][r]);
-			}
-			printf("\n");
-		}	
 	}
 	system("clear");
 	return 0;
 }
 
-void MakeTable(unsigned char* AA, int A, int B)
+void MakeTable(unsigned char* CC, int A, int B)
 {
 	int i, j;
 	for (i = 0; i < 1 && i < A; ++i)
 	{
-		AA[i*B] = (unsigned char) 201;
+		CC[i*B] = (unsigned char) 201;
 		for (j = 1; j < B-1; ++j)
 		{
-			AA[i*B+j] = (unsigned char) 205;
+			CC[i*B+j] = (unsigned char) 205;
 		}
-		AA[i*B+j] = (unsigned char) 187;
+		CC[i*B+j] = (unsigned char) 187;
 	}
 
 	for (; i < 2 && i < A; ++i)
 	{
-		AA[i*B] = (unsigned char) 186;
+		CC[i*B] = (unsigned char) 186;
 		for (j = 1; j < B-1; ++j)
 		{
-			AA[i*B+j] = ' ';
+			CC[i*B+j] = ' ';
 		}
-		AA[i*B+j] = (unsigned char) 186;
+		CC[i*B+j] = (unsigned char) 186;
 	}
 
 	for (; i < 3 && i < A; ++i)
 	{
-		AA[i*B] = (unsigned char) 204;
+		CC[i*B] = (unsigned char) 204;
 		for (j = 1; j < B-1; ++j)
 		{
-			AA[i*B+j] = (unsigned char) 205;
+			CC[i*B+j] = (unsigned char) 205;
 		}
-		AA[i*B+j] = (unsigned char) 185;
+		CC[i*B+j] = (unsigned char) 185;
 	}
 	for (; i < A-1; ++i)
 	{
-		AA[i*B] = (unsigned char) 186;
+		CC[i*B] = (unsigned char) 186;
 		for (j = 1; j < B-1; ++j)
 		{
-			AA[i*B+j] = ' ';
+			CC[i*B+j] = ' ';
 		}
-		AA[i*B+j] = (unsigned char) 186;
+		CC[i*B+j] = (unsigned char) 186;
 	}
 	for (i = A-1; i < A; ++i)
 	{
-		AA[i*B] = (unsigned char) 200;
+		CC[i*B] = (unsigned char) 200;
 		for (j = 1; j < B-1; ++j)
 		{
-			AA[i*B+j] = (unsigned char) 205;
+			CC[i*B+j] = (unsigned char) 205;
 		}
-		AA[i*B+j] = (unsigned char) 188;
+		CC[i*B+j] = (unsigned char) 188;
 	}
 }
 
-void InsertMaps (unsigned char* CC, PETA P, int ui, int uj)
+void InsertMaps (unsigned char* CC, PETA P)
 {
 	int i, tanda = 0, found = 0;
 	int CCeff = ui;
@@ -279,9 +326,9 @@ void InsertMaps (unsigned char* CC, PETA P, int ui, int uj)
 	int tengahp = (tanda+CCeff-LebarPeta(P)+2)/2, tengahl = (uj-PanjangPeta(P)+4)/2;
 	int j;
 	
-	for (i = tengahp; i < tengahp+LebarPeta(P)-1; ++i)
+	for (i = tengahp; i < tengahp+LebarPeta(P); ++i)
 	{
-		for (j = tengahl; j < tengahl+PanjangPeta(P)-2; ++j)
+		for (j = tengahl; j < tengahl+PanjangPeta(P)-1; ++j)
 		{
 			CC[i*uj+j] = Letak(P, i-tengahp, j-tengahl);
 		}		
@@ -464,7 +511,8 @@ void MakeStack(Stack *st)
 	Queue temp;
 
     z = 1;
-    while(z <= 10){
+    while(z <= 10)
+    {
     	CreateEmptyQueue(&temp);
 		for (int i = 1; i <= 4; i++)
 		{
@@ -474,15 +522,57 @@ void MakeStack(Stack *st)
 			srand(rand()*i*11);
     		r = rand() % 8;
 
-			if(r == 0 || r == 4 || r == 5){
+			if(r == 0 || r == 4 || r == 5)
+			{
 				Add(&temp,'A');	
-			}else if(r == 3 || r == 1 || r == 7){
+			}
+			else if(r == 3 || r == 1 || r == 7)
+			{
 				Add(&temp,'F');
-			}else if(r == 2 || r == 6){
+			}
+			else if(r == 2 || r == 6)
+			{
 				Add(&temp,'B');
 			}
 		}
 		Push(st,temp);
 		z++;
     }
+}
+
+void PrintLayar (unsigned char* CC)
+{
+	int i, j;
+	for (i = 0; i < ui; ++i)
+	{
+		for (j = 0; j < uj; ++j)
+		{
+			Converter(CC[uj*i+j]);
+		}
+		printf("\n");
+	}
+}
+
+void DeretPrima ()
+{
+	long i, N = 50001;
+	boolean a[50001];
+	prima[0] = 1;
+	for (i = 2; i <= N; ++i)
+	{
+		a[i] = true;
+	}
+	long k = 1, j;
+	for (i = 2; i <= N; ++i)
+	{
+		if (a[i] == true)
+		{
+			prima[k] = i;
+			for (j = 2; j < floor(N/i) + 1; ++j)
+			{
+				a[i*j] = false;
+			}
+			++k;
+		}
+	}
 }

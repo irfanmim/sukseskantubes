@@ -206,3 +206,39 @@ boolean isMedicine (PETA P, POINT T)
 {
 	return (Letak(P,Ordinat(T),Absis(T)) == 'M');
 }
+
+boolean SearchKolom (PETA P, int j, char CC)
+{
+    boolean found = false;
+    int i = 0;
+    while (!found && i < LebarPeta(P))
+    {
+        if (Letak(P,i,j) == CC)
+        {
+            found = true;
+        }
+        else
+        {
+            ++i;
+        }
+    }
+    return found;
+}
+
+boolean SearchBaris (PETA P, int i, char CC)
+{
+    boolean found = false;
+    int j = 0;
+    while (!found && j < LebarPeta(P))
+    {
+        if (Letak(P,i,j) == CC)
+        {
+            found = true;
+        }
+        else
+        {
+            ++j;
+        }
+    }
+    return found;
+}

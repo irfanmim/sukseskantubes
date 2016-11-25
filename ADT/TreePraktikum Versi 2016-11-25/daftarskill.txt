@@ -1,0 +1,10 @@
+InitStatus
+ATTACK
+AtkUp
+Haha
+Hehe
+Hihi
+DEFENSE
+DefUp
+Tanker
+END.

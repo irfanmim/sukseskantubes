@@ -49,10 +49,10 @@ void RestoredHP (player *P1)
 	HP(*P1) = HPMAX(*P1);
 }
 
-boolean isDeath (player *P1)
+boolean isDeath (player P1)
 /*	Mengecek apakah pemain sudah mati atau belum */
 {
-	return (HP(*P1) <= 0);
+	return (HP(P1) <= 0);
 }
 
 //BATTLE
