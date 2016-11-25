@@ -34,6 +34,8 @@ typedef struct {
 #define NAME(P)		(P).name
 #define HPMAX(P)	(P).HPMAX
 
+void gotoxy(int x, int y);
+
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */
 void HPUP (player *P1, int N);
 /*	Mengembalikan HP Pemain sejumlah N */
@@ -54,16 +56,19 @@ void bertarungreal(char lawan, char cplayer,player *me, player *enemy);
 
 void bertarungstatus(char lawan, char cplayer, player me, player enemy);
 
-void PrintHeader(player me, player enemy, int round, Queue qenemy, int i,int  r/*, int lebar, int itnggi*/);
+void PrintHeader(player me, player enemy, int round, Queue qenemy, int i,int  r,int lebar, int tinggi);
 
-void PrintHeaderInBattle(player me, player enemy, int round, Queue qenemy, int i,int  r,int x/*, int lebar, int tinggi*/);
+void PrintHeaderInBattle(player me, player enemy, int round, Queue qenemy, int i,int  r,int x ,int lebar, int tinggi);
 
-void PrintAndInput(Queue *Q, int *i/*, int lebar, int tinggi*/);
+void PrintAndInput(Queue *Q, int *i ,int lebar, int tinggi);
 
-void PrintCommandInBattle(Queue Q, int i/*,int lebar, int tinggi*/);
+//tambahan
+void PrintWithoutInput(Queue *Q, int *i, int lebar, int tinggi);
+
+void PrintCommandInBattle(Queue Q, int i,int lebar, int tinggi);
 
 void RandomAngka(int *i, int *r);
 
-void BattleOn(player *me, player enemy, Stack enemyatk , boolean *win);
+void BattleOn(player *me, player enemy, Stack enemyatk ,boolean *win, int lebar, int tinggi);
 
 #endif
