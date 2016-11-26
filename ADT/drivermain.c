@@ -28,13 +28,26 @@ int main()
 
 	/* KAMUS */
 	boolean validasi;
-	int q, r;
-	PETA P;
+	int q, r, s = 0;
+	PETA P[10];
 	player Utama, Enemy[3];
 	unsigned char mapu[100][100], space;
 
-	char yoho[] = "A.txt";
-	ReadPeta(&P, yoho);
+	char nana[] = "List Peta.txt";
+	FILE *listed;
+	listed = fopen(nana,"r");
+	while (!feof(listed))
+	{
+		char bin[10], bins[10];
+		fgets(bin, 10, listed);
+		sscanf(bin, "%s", bins);
+		Strcat(bins,".txt");
+		ReadPeta(&P[s], bins);
+		++s;
+	}
+
+//	char yoho[] = "A.txt"
+//	ReadPeta(&P, yoho);
 
 	/* ALGORITMA */
 	printf("Masukkan ukuruan layar:\n");
@@ -69,26 +82,26 @@ int main()
 	int CCeff = ui;
 	tanda = 2;
 	i = 0;
-	int tengahp = (tanda+CCeff-LebarPeta(P)+2)/2, tengahl = (uj-PanjangPeta(P)+4)/2;
+	int tengahp = (tanda+CCeff-LebarPeta(P[2])+2)/2, tengahl = (uj-PanjangPeta(P[2])+4)/2;
 	int j;
 
 	/* RANDOM AWAL UNTUK LOKASI PLAYER */
-	i = rand()%LebarPeta(P);
-	j = rand()%PanjangPeta(P);
+	i = rand()%LebarPeta(P[2]);
+	j = rand()%PanjangPeta(P[2]);
 
-	while (!SearchKolom(P, i, '-'))
+	while (!SearchKolom(P[2], i, '-'))
 	{
 		++i;
 	}
 
-	while (Letak(P,i,j) != '-')
+	while (Letak(P[2],i,j) != '-')
 	{
 		srand(j*time(NULL));
 		j = rand();
-		j %= PanjangPeta(P);
+		j %= PanjangPeta(P[2]);
 	}
 
-	Letak(P,i,j) = 'P';
+	Letak(P[2],i,j) = 'P';
 	X(Utama) = j;
 	Y(Utama) = i;
 	HP(Utama) = 1;
@@ -103,44 +116,44 @@ int main()
 	int l;
 	for (l = 0; l <= 2; ++l)
 	{
-		i = rand()%LebarPeta(P);
-		j = rand()%PanjangPeta(P);
+		i = rand()%LebarPeta(P[2]);
+		j = rand()%PanjangPeta(P[2]);
 
-		while (!SearchBaris(P, j, '-'))
+		while (!SearchBaris(P[2], j, '-'))
 		{
 			++j;
 		}
 
-		while (Letak(P,i,j) != '-')
+		while (Letak(P[2],i,j) != '-')
 		{
 			srand(i*time(NULL));
 			++i;
-			i %= LebarPeta(P);
+			i %= LebarPeta(P[2]);
 		}
-		Letak(P,i,j) = 'M';
+		Letak(P[2],i,j) = 'M';
 	}
 
 	/* RANDOM UNTUK LOKASI ENEMY */
 	for (l = 0; l <= 2; ++l)
 	{
-		i = rand()%LebarPeta(P);
-		j = rand()%PanjangPeta(P);
+		i = rand()%LebarPeta(P[2]);
+		j = rand()%PanjangPeta(P[2]);
 
-		while (!SearchBaris(P, j, '-'))
+		while (!SearchBaris(P[2], j, '-'))
 		{
 			++j;
-			j %= PanjangPeta(P);
+			j %= PanjangPeta(P[2]);
 		}
 
-		while (Letak(P,i,j) != '-')
+		while (Letak(P[2],i,j) != '-')
 		{
 			srand(i*time(NULL));
 			++i;
-			i %= LebarPeta(P);
+			i %= LebarPeta(P[2]);
 		}
 
-		Letak(P,i,j) = 'E';
-		InsertMaps(kata, P);
+		Letak(P[2],i,j) = 'E';
+		InsertMaps(kata, P[2]);
 		X(Enemy[l]) = j;
 		Y(Enemy[l]) = i;
 		STR(Enemy[l]) = 50+10*l*pow(-1,l);
@@ -173,12 +186,12 @@ int main()
 		Ordinat(initial) = X(Utama);
 		Absis(initial) = Y(Utama);
 
-		Letak(P,Y(Utama),X(Utama)) = '-';
+		Letak(P[2],Y(Utama),X(Utama)) = '-';
 		
 		if (Strcmp(CC, "GD"))
 		{
 			GerakBawah(&Posisi(Utama));
-			if (!isPath(P, Posisi(Utama)))
+			if (!isPath(P[2], Posisi(Utama)))
 			{
 				GerakAtas(&Posisi(Utama));
 			}
@@ -186,7 +199,7 @@ int main()
 		else if (Strcmp(CC, "GU"))
 		{
 			GerakAtas(&Posisi(Utama));
-			if (!isPath(P, Posisi(Utama)))
+			if (!isPath(P[2], Posisi(Utama)))
 			{
 				GerakBawah(&Posisi(Utama));
 			}
@@ -195,7 +208,7 @@ int main()
 		else if (Strcmp(CC, "GL"))
 		{
 			GerakKiri(&Posisi(Utama));
-			if (!isPath(P, Posisi(Utama)))
+			if (!isPath(P[2], Posisi(Utama)))
 			{
 				GerakKanan(&Posisi(Utama));
 			}
@@ -203,20 +216,20 @@ int main()
 		else if (Strcmp(CC, "GR"))
 		{
 			GerakKanan(&Posisi(Utama));
-			if (!isPath(P, Posisi(Utama)))
+			if (!isPath(P[2], Posisi(Utama)))
 			{
 				GerakKiri(&Posisi(Utama));
 			}
 		}
 
 
-		if (Letak(P, Y(Utama), X(Utama)) == 'M')
+		if (Letak(P[2], Y(Utama), X(Utama)) == 'M')
 		{
 			RestoredHP(&Utama);
 			InsertStats(kata, Utama, uj);
 		}
 		
-		else if (Letak(P, Y(Utama), X(Utama)) == 'E')
+		else if (Letak(P[2], Y(Utama), X(Utama)) == 'E')
 		{
 			int z = 0;
 			boolean found = false, win;
@@ -233,7 +246,7 @@ int main()
 			InsertStats(kata, Utama, uj);
 			if (win)
 			{
-				Letak(P, Y(Utama), X(Utama)) = 'P';
+				Letak(P[2], Y(Utama), X(Utama)) = 'P';
 			}
 			else
 			{
@@ -252,12 +265,12 @@ int main()
 
 		else
 		{
-			Letak(P, Y(Utama), X(Utama)) = 'P';			
+			Letak(P[2], Y(Utama), X(Utama)) = 'P';			
 		}
 		
-		Letak(P,Y(Utama),X(Utama)) = 'P';
+		Letak(P[2],Y(Utama),X(Utama)) = 'P';
 		system("clear");
-		InsertMaps(kata, P);
+		InsertMaps(kata, P[2]);
 		PrintLayar(kata);
 	
 	}

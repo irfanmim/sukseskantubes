@@ -21,7 +21,7 @@ void ReadPeta(PETA *P, str filetxt)
         (*P).peta[i][strlen((*P).peta[i])] = '\0';
         ++i;
     } while (!feof(source));
-    MakePeta(i-1, strlen((*P).peta[0])-1, P);
+    MakePeta(i, strlen((*P).peta[0])-1, P);
     fclose(source);
 }
 
