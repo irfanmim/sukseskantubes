@@ -39,7 +39,7 @@ void CopyPETA (PETA P, PETA *P1);
 
 void GeneratePeta(PETA *P, int LB, int PNJ);
 
-void BreakdownPeta(PETA P,indeks Y, indeks X);
+void BreakdownPeta(PETA P, indeks Y, indeks X);
 
 boolean IsUkuranSama (PETA P1, PETA P2);
 
@@ -53,8 +53,10 @@ boolean isMedicine (PETA P, POINT T);
 
 boolean isPath (PETA P, POINT T);
 
-boolean SearchKolom (PETA P, int j, char CC);
+boolean SearchKolom (PETA P, int i, char CC);
 
-boolean SearchBaris (PETA P, int i, char CC);
+boolean SearchBaris (PETA P, int j, char CC);
 
+POINT FindKolom (PETA P, int i, char CC);
+POINT FindBaris (PETA P, int j, char CC);
 #endif

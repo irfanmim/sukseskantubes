@@ -3,6 +3,7 @@
 #include <time.h>	
 #include "boolean.h"
 #include "custring.h"
+#include "graph.h"
 #include "point.h"
 #include "peta.h"
 #include "player.h"
@@ -27,11 +28,12 @@ int main()
 	system("clear");
 
 	/* KAMUS */
-	boolean validasi;
-	int q, r, s = 0;
+	adrNode Pr;
+	int q, s = 0;
+	Graph G;
 	PETA P[10];
 	player Utama, Enemy[3];
-	unsigned char mapu[100][100], space;
+	unsigned char space;
 
 	char nana[] = "List Peta.txt";
 	FILE *listed;
@@ -45,10 +47,37 @@ int main()
 		ReadPeta(&P[s], bins);
 		++s;
 	}
-
-//	char yoho[] = "A.txt"
-//	ReadPeta(&P, yoho);
-
+	
+	CreateGraph(0, MakePOINT(0,0), &G);
+	
+	for (q = 0; q < s; ++q)
+	{
+		if (SearchKolom(P[q], LebarPeta(P[q])-1, '-'))
+		{
+			InsertNode(&G, q, FindKolom(P[q], LebarPeta(P[q])-1, '-'), &Pr);
+		}
+		if (SearchKolom(P[q], 0, '-'))
+		{
+			InsertNode(&G, q, FindKolom(P[q],0,'-'), &Pr);
+		}
+		if (SearchBaris(P[q], PanjangPeta(P[q])-1, '-'))
+		{
+			InsertNode(&G, q, FindBaris(P[q], PanjangPeta(P[q])-1, '-'), &Pr);
+		}
+		if (SearchBaris(P[q], 0, '-'))
+		{
+			InsertNode(&G, q, FindBaris(P[q], 0, '-'), &Pr);
+		}
+	}
+	
+	InsertEdge(&G, 0, FindBaris(P[0], PanjangPeta(P[0])-1, '-'), 1, FindBaris(P[1], 0, '-'));
+	InsertEdge(&G, 1, FindBaris(P[1], 0, '-'), 0, FindBaris(P[0], PanjangPeta(P[0])-1, '-'));
+	if (SearchEdge(G, 0, FindBaris(P[0], PanjangPeta(P[0])-1, '-'), 1, FindBaris(P[1], 0, '-')))
+	{
+		printf("Done\n");
+		printf("%d %d ",Absis(FindBaris(P[0], PanjangPeta(P[0])-1, '-')), Ordinat(FindBaris(P[0], PanjangPeta(P[0])-1, '-')));
+		printf("%d %d",Absis(FindBaris(P[1], 0, '-')), Ordinat(FindBaris(P[1], 0, '-')));
+	}
 	/* ALGORITMA */
 	printf("Masukkan ukuruan layar:\n");
 	printf("Ukuran Lebar minimal adalah 20 dan Panjang minimal 75\n");
@@ -78,34 +107,30 @@ int main()
 
 	system("clear");
 
-	int i, tanda = 0, found = 0;
-	int CCeff = ui;
-	tanda = 2;
-	i = 0;
-	int tengahp = (tanda+CCeff-LebarPeta(P[2])+2)/2, tengahl = (uj-PanjangPeta(P[2])+4)/2;
+	int i = 0;
 	int j;
 
 	/* RANDOM AWAL UNTUK LOKASI PLAYER */
-	i = rand()%LebarPeta(P[2]);
-	j = rand()%PanjangPeta(P[2]);
+	i = rand()%LebarPeta(P[0]);
+	j = rand()%PanjangPeta(P[0]);
 
-	while (!SearchKolom(P[2], i, '-'))
+	while (!SearchKolom(P[0], i, '-'))
 	{
 		++i;
 	}
 
-	while (Letak(P[2],i,j) != '-')
+	while (Letak(P[0],i,j) != '-')
 	{
 		srand(j*time(NULL));
 		j = rand();
-		j %= PanjangPeta(P[2]);
+		j %= PanjangPeta(P[0]);
 	}
 
-	Letak(P[2],i,j) = 'P';
+	Letak(P[0],i,j) = 'P';
 	X(Utama) = j;
 	Y(Utama) = i;
-	HP(Utama) = 1;
-	HPMAX(Utama) = 10;
+	HP(Utama) = 100;
+	HPMAX(Utama) = 100;
 	STR(Utama) = 999;
 	DEF(Utama) = 999;
 	LVL(Utama) = 100;	
@@ -116,44 +141,44 @@ int main()
 	int l;
 	for (l = 0; l <= 2; ++l)
 	{
-		i = rand()%LebarPeta(P[2]);
-		j = rand()%PanjangPeta(P[2]);
+		i = rand()%LebarPeta(P[0]);
+		j = rand()%PanjangPeta(P[0]);
 
-		while (!SearchBaris(P[2], j, '-'))
+		while (!SearchBaris(P[0], j, '-'))
 		{
 			++j;
 		}
 
-		while (Letak(P[2],i,j) != '-')
+		while (Letak(P[0],i,j) != '-')
 		{
 			srand(i*time(NULL));
 			++i;
-			i %= LebarPeta(P[2]);
+			i %= LebarPeta(P[0]);
 		}
-		Letak(P[2],i,j) = 'M';
+		Letak(P[0],i,j) = 'M';
 	}
 
 	/* RANDOM UNTUK LOKASI ENEMY */
 	for (l = 0; l <= 2; ++l)
 	{
-		i = rand()%LebarPeta(P[2]);
-		j = rand()%PanjangPeta(P[2]);
+		i = rand()%LebarPeta(P[0]);
+		j = rand()%PanjangPeta(P[0]);
 
-		while (!SearchBaris(P[2], j, '-'))
+		while (!SearchBaris(P[0], j, '-'))
 		{
 			++j;
-			j %= PanjangPeta(P[2]);
+			j %= PanjangPeta(P[0]);
 		}
 
-		while (Letak(P[2],i,j) != '-')
+		while (Letak(P[0],i,j) != '-')
 		{
 			srand(i*time(NULL));
 			++i;
-			i %= LebarPeta(P[2]);
+			i %= LebarPeta(P[0]);
 		}
 
-		Letak(P[2],i,j) = 'E';
-		InsertMaps(kata, P[2]);
+		Letak(P[0],i,j) = 'E';
+		InsertMaps(kata, P[0]);
 		X(Enemy[l]) = j;
 		Y(Enemy[l]) = i;
 		STR(Enemy[l]) = 50+10*l*pow(-1,l);
@@ -180,56 +205,147 @@ int main()
 	int k = 3;
 	POINT initial;
 	unsigned char CC[2];
+	i = 0;
 	while (k != 0)
 	{
 		gets(CC);
 		Ordinat(initial) = X(Utama);
 		Absis(initial) = Y(Utama);
 
-		Letak(P[2],Y(Utama),X(Utama)) = '-';
+		Letak(P[i],Y(Utama),X(Utama)) = '-';
 		
 		if (Strcmp(CC, "GD"))
 		{
 			GerakBawah(&Posisi(Utama));
-			if (!isPath(P[2], Posisi(Utama)))
+			if (!isPath(P[i], Posisi(Utama)))
 			{
-				GerakAtas(&Posisi(Utama));
+				if (Letak(P[i],Y(Utama),X(Utama)) == '\0')
+				{
+					j = 0;
+					while (j < 5)
+					{
+						if (SearchEdge(G, i, Posisi(Utama), j, FindKolom(P[j], 0, '-')) == Nil)
+						{
+							++j;
+						}
+						else
+						{
+							Posisi(Utama) = FindKolom(P[j], 0, '-');
+							i = j;
+						}
+					}
+				}
+				else
+				{
+					GerakAtas(&Posisi(Utama));
+				}
 			}
 		}
 		else if (Strcmp(CC, "GU"))
 		{
 			GerakAtas(&Posisi(Utama));
-			if (!isPath(P[2], Posisi(Utama)))
+			if (!isPath(P[i], Posisi(Utama)))
 			{
-				GerakBawah(&Posisi(Utama));
+				if (Letak(P[i],Y(Utama),X(Utama)) == '\0')
+				{
+					j = 0;
+					while (j < 5)
+					{
+						if (SearchEdge(G, i, Posisi(Utama), j, FindKolom(P[j], LebarPeta(P[j])-1, '-')) == Nil)
+						{
+							++j;
+						}
+						else
+						{
+							Posisi(Utama) = FindKolom(P[j], LebarPeta(P[j])-1, '-');
+							i = j;
+						}
+					}
+					if (j >= 6)
+					{
+						GerakBawah(&Posisi(Utama));
+					}
+				}
+				else
+				{
+					GerakBawah(&Posisi(Utama));
+				}
 			}
 
 		}
+
 		else if (Strcmp(CC, "GL"))
 		{
 			GerakKiri(&Posisi(Utama));
-			if (!isPath(P[2], Posisi(Utama)))
+			if (!isPath(P[i], Posisi(Utama)) || X(Utama) < 0)
 			{
-				GerakKanan(&Posisi(Utama));
+				if (X(Utama) < 0)
+				{
+					GerakKanan(&Posisi(Utama));
+					j = 0;
+					while (j < 5)
+					{
+						if (SearchEdge(G, i, Posisi(Utama), j, FindBaris(P[j], PanjangPeta(P[j])-1, '-')) == Nil)
+						{
+							++j;
+						}
+						else
+						{
+							Posisi(Utama) = FindBaris(P[j], PanjangPeta(P[j])-1, '-');
+							Letak(P[j],Y(Utama), X(Utama)) = 'P';
+							MakeTable(kata, ui, uj);
+							InsertStats(kata, Utama, uj);
+							i = j;
+						}
+					}
+				}
+				else
+				{
+					GerakKanan(&Posisi(Utama));
+				}
 			}
 		}
+
 		else if (Strcmp(CC, "GR"))
 		{
 			GerakKanan(&Posisi(Utama));
-			if (!isPath(P[2], Posisi(Utama)))
+			if (!isPath(P[i], Posisi(Utama)) || X(Utama) >= PanjangPeta(P[i]))
 			{
-				GerakKiri(&Posisi(Utama));
+				if (X(Utama) >= PanjangPeta(P[i]))
+				{
+					GerakKiri(&Posisi(Utama));
+					j = 0;
+					while (j < 5)
+					{
+						if (SearchEdge(G, i, Posisi(Utama), j, FindBaris(P[j], 0, '-')) == Nil)
+						{
+							++j;
+						}
+						else
+						{
+							Posisi(Utama) = FindBaris(P[j], 0, '-');
+							Letak(P[j], Y(Utama), X(Utama)) = 'P';
+							MakeTable(kata, ui, uj);
+							InsertStats(kata, Utama, uj);
+							i = j;
+						}
+					}
+				}
+				else
+				{
+					GerakKiri(&Posisi(Utama));
+				}
 			}
 		}
 
 
-		if (Letak(P[2], Y(Utama), X(Utama)) == 'M')
+		if (Letak(P[i], Y(Utama), X(Utama)) == 'M')
 		{
 			RestoredHP(&Utama);
 			InsertStats(kata, Utama, uj);
 		}
 		
-		else if (Letak(P[2], Y(Utama), X(Utama)) == 'E')
+		else if (Letak(P[i], Y(Utama), X(Utama)) == 'E')
 		{
 			int z = 0;
 			boolean found = false, win;
@@ -246,7 +362,7 @@ int main()
 			InsertStats(kata, Utama, uj);
 			if (win)
 			{
-				Letak(P[2], Y(Utama), X(Utama)) = 'P';
+				Letak(P[i], Y(Utama), X(Utama)) = 'P';
 			}
 			else
 			{
@@ -262,15 +378,15 @@ int main()
 				}
 			}
 		}
-
+		
 		else
 		{
-			Letak(P[2], Y(Utama), X(Utama)) = 'P';			
+			Letak(P[i], Y(Utama), X(Utama)) = 'P';			
 		}
 		
-		Letak(P[2],Y(Utama),X(Utama)) = 'P';
+		Letak(P[i],Y(Utama),X(Utama)) = 'P';
 		system("clear");
-		InsertMaps(kata, P[2]);
+		InsertMaps(kata, P[i]);
 		PrintLayar(kata);
 	
 	}
@@ -332,7 +448,7 @@ void MakeTable(unsigned char* CC, int A, int B)
 
 void InsertMaps (unsigned char* CC, PETA P)
 {
-	int i, tanda = 0, found = 0;
+	int i, tanda = 0;
 	int CCeff = ui;
 	tanda = 2;
 	i = 0;
@@ -341,7 +457,7 @@ void InsertMaps (unsigned char* CC, PETA P)
 	
 	for (i = tengahp; i < tengahp+LebarPeta(P); ++i)
 	{
-		for (j = tengahl; j < tengahl+PanjangPeta(P)-1; ++j)
+		for (j = tengahl; j < tengahl+PanjangPeta(P); ++j)
 		{
 			CC[i*uj+j] = Letak(P, i-tengahp, j-tengahl);
 		}		
@@ -527,7 +643,7 @@ void MakeStack(Stack *st)
     while(z <= 10)
     {
     	CreateEmptyQueue(&temp);
-		for (int i = 1; i <= 4; i++)
+		for (i = 1; i <= 4; i++)
 		{
 			srand(time(NULL)*z*i);
 			srand((rand()*13)+401*i);
