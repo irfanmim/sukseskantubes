@@ -19,7 +19,7 @@ typedef struct {
 	long int HPMAX;
 	int LVL;
 	long int EXP;
-	long int STR;
+	long int ATK;
 	long int DEF;
 } player;
 
@@ -30,13 +30,15 @@ typedef struct {
 #define Y(P) 		(P).posisi.Y
 #define HP(P) 		(P).HP
 #define EXP(P) 		(P).EXP
-#define STR(P) 		(P).STR
+#define ATK(P) 		(P).ATK
 #define DEF(P)		(P).DEF
 #define LVL(P) 		(P).LVL
 #define NAME(P)		(P).name
 #define HPMAX(P)	(P).HPMAX
 
-/* *** DEFINISI PROTOTIPE PRIMITIF PADA PLAYER *** */
+void gotoxy(int x, int y);
+
+/* *** DEFINISI PROTOTIPE PRIMITIF *** */
 void HPUP (player *P1, int N);
 /*	Mengembalikan HP Pemain sejumlah N */
 void HPDOWN (player *P1, player P2);
@@ -48,26 +50,27 @@ void LVLUP (player *P1, int Exp[]);
 /*	Menaikkan Level Pemain sebanyak 1 */
 void RestoredHP (player *P1);
 /*	Mengembalikan HP Pemain menjadi Maksimum */
-boolean isDeath (player P1);
+boolean isDeath (player *P1);
 /*	Mengecek apakah pemain sudah mati atau belum */
 
-
-/* *** DEFINISI PROTOTIPE PRIMITIF PADA SAAT MODE BERTARUNG *** */
+//BATTLE
 void bertarungreal(char lawan, char cplayer,player *me, player *enemy);
 
 void bertarungstatus(char lawan, char cplayer, player me, player enemy);
 
-void PrintHeader(player me, player enemy, int round, Queue qenemy, int i,int  r);
+void PrintHeader(player me, player enemy, int round, Queue qenemy, int i,int  r,int lebar, int tinggi);
 
-void PrintHeaderInBattle(player me, player enemy, int round, Queue qenemy, int i,int  r,int x);
+void PrintHeaderInBattle(player me, player enemy, int round, Queue qenemy, int i,int  r,int x ,int lebar, int tinggi);
 
-void PrintAndInput(Queue *Q, int *i);
+void PrintAndInput(Queue *Q, int *i ,int lebar, int tinggi);
 
-void PrintCommandInBattle(Queue Q, int i);
+//tambahan
+void PrintWithoutInput(Queue *Q, int *i, int lebar, int tinggi);
+
+void PrintCommandInBattle(Queue Q, int i,int lebar, int tinggi);
 
 void RandomAngka(int *i, int *r);
 
-void BattleOn(player *me, player enemy, Stack enemySTR, boolean *win);
-
+void BattleOn(player *me, player enemy, Stack enemyatk ,boolean *win, int lebar, int tinggi);
 
 #endif
