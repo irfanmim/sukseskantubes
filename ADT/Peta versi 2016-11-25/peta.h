@@ -51,6 +51,8 @@ boolean isEnemy (PETA P, POINT T);
 
 boolean isMedicine (PETA P, POINT T);
 
+boolean isPath (PETA P, POINT T);
+
 boolean SearchKolom (PETA P, int j, char CC);
 
 boolean SearchBaris (PETA P, int i, char CC);

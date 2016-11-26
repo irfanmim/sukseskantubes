@@ -31,6 +31,7 @@ void MakeTree (infotype Akar, SkillTree L, SkillTree R, SkillTree *P)
 {
 	*P = Tree(Akar, L, R);
 }
+
 /* Manajemen Memory */
 addrNode AlokNode (infotype X)
 /* Mengirimkan addrNode hasil AlokNode sebuah elemen */
@@ -51,6 +52,7 @@ addrNode AlokNode (infotype X)
 	
 	return P;
 }
+
 void DealokNode (addrNode P)
 /* I.S. P terdefinisi */
 /* F.S. P dikembalikan ke sistem */
@@ -58,6 +60,7 @@ void DealokNode (addrNode P)
 {
 	free(P);
 }
+
 /* *** Predikat-Predikat Penting *** */
 boolean IsTreeEmpty (SkillTree P)
 /* Mengirimkan true jika P adalah pohon biner kosong */
@@ -75,6 +78,7 @@ boolean IsTreeOneElmt (SkillTree P)
 		return ((Left(P) == Nil) && (Right(P) == Nil));
 	}
 }
+
 boolean IsUnerLeft (SkillTree P)
 /* Mengirimkan true jika pohon biner tidak kosong P adalah pohon unerleft: hanya mempunyai subpohon kiri */
 {
@@ -96,6 +100,7 @@ boolean IsUnerRight (SkillTree P)
 		return ((Left(P) == Nil) && (Right(P) != Nil));
 	}
 }
+
 boolean IsBiner (SkillTree P)
 /* Mengirimkan true jika pohon biner tidak kosong P adalah pohon biner: mempunyai subpohon kiri dan subpohon kanan*/
 {
@@ -106,6 +111,7 @@ boolean IsBiner (SkillTree P)
 		return ((Left(P) != Nil) && (Right(P) != Nil));
 	}
 }
+
 boolean IsSkewLeft (SkillTree P)
 /* Mengirimkan true jika P adalah pohon condong kiri */
 /* Pohon kosong adalah pohon condong kiri */

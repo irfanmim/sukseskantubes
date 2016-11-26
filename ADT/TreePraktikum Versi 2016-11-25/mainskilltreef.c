@@ -15,12 +15,12 @@ int main () {
 	SkillTree Tes, P;
 	
 	// Algoritma
-	MakeTree(1, Nil, Nil, &Tes);
-	strcpy(Name(Tes), "Tes");
-	printf("Tes %d", IsSkewLeft(Tes));
-
+	MakeTree(1, Nil, Nil, &S);
+	strcpy(Name(S), "Tes");
+	printf("Tes %d", IsSkewLeft(S));
 	printf("Starting .. \n");
 	InitSkillTree(&S);
+	ping bug ping nl
 	SearchAndLearn(&S, "Hihi");
 	printf("Hahaha");
 	SearchAndLearn(&S, "InitStatus");
@@ -32,7 +32,7 @@ int main () {
 	printf("Learn hihi .. \n");
 	ShowSkill(S);
 	ShowAvailable(S);
-	printf("%d\n %d\n", IsSkewLeft(S), IsSkewRight(S)); bug bug nl
+	printf("%d\n %d\n", IsSkewLeft(Left(S)), IsSkewRight(S)); bug bug nl
 	printf("Ada skill Hoho : %d", Search(S, "Hoho")); printf("\n"); 
 	printf("Ada skill Huhu ? : %d", Search(S, "Huhu")); printf("\n");
 	AddDaunTerkiri(&S, 9, "HmHm");
