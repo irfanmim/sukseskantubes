@@ -358,7 +358,7 @@ void PrintAndInput(Queue *Q, int *i, int lebar, int tinggi){
 
 	gotoxy(0,tinggi-1);
 	printf("║Command : ");
-	scanf(" %c", &input);
+	scanf("%c", &input);
 	if ( input == 'D' ) {
 		if(!IsEmptyQueue(*Q)){	
 			DelTail(Q,&temp);
@@ -484,6 +484,9 @@ void PrintCommandInBattle(Queue Q, int i,int lebar, int tinggi){
 		}
 	}
 
+	gotoxy(2,tinggi-1);
+	printf("Press enter to continue");
+
 }
 
 void RandomAngka(int *i, int *r){
@@ -540,12 +543,12 @@ void BattleOn(player *me, player enemy, Stack enemyatk, boolean *win, int lebar,
 				printf("Are you sure with this command? (Y/N) > ");
 				//printf("Answer ");
 				char ans;
-				scanf(" %c",&ans);
+				scanf("%c",&ans);
 				//getchar();
 				while(ans != 'Y' && ans != 'y' && ans != 'N' && ans != 'n'){
 					gotoxy(40,tinggi-1);
-					printf("Answer error, Answer again :");
-					scanf(" %c",&ans);
+					//printf("Answer error, Answer again :");
+					scanf("%c",&ans);
 				}	
 				if(ans == 'Y' || ans == 'y'){
 					selesai = true;
@@ -554,6 +557,10 @@ void BattleOn(player *me, player enemy, Stack enemyatk, boolean *win, int lebar,
 					i--;
 				}
 					
+			}
+			gotoxy(2,tinggi-1);
+			for (int w = 0; w <= lebar-3; w++){
+				printf(" ");
 			}
 			system("clear");
 
@@ -588,7 +595,7 @@ void BattleOn(player *me, player enemy, Stack enemyatk, boolean *win, int lebar,
 
 			PrintCommandInBattle(atkpl,z,lebar,tinggi);
 
-			gotoxy(2,tinggi-1);
+			//gotoxy(2,tinggi-1);
 			while(getchar()!='\n');
 			
 			system("clear");
