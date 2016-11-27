@@ -242,7 +242,7 @@ void PrintHeaderInBattle(player me, player enemy, int round, Queue qenemy, int i
 	gotoxy(lebar - 43,2);
 	printf("║LVL:%d",LVL(me) );
 	gotoxy(lebar - 35,2);
-	printf("║HP :%ld",HP(me) );
+	printf("║HP:%ld",HP(me) );
 	gotoxy(lebar - 26,2);
 	printf("║STR:%ld",ATK(me) );
 	gotoxy(lebar - 18,2);
