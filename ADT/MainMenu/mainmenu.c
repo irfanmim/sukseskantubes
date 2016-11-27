@@ -70,4 +70,71 @@ void printlogo()
 	fclose(logo);
 	
 }
+
+void prolog() 
+// I.S : Sembarang
+// F.S : Menghasilkan prolog cerita sebagai output 
+{
+	FILE * prolog;
+
+	char M[50][50];
+	int i, j, count; 	
+	char cc;
 	
+	prolog = fopen("Prolog.txt", "r");
+	count = 0; i = 0; j = 0;
+	while (cc != EOF) {
+		cc = fgetc(prolog);
+		if ((cc != EOF) && ((int)(cc) != 10)) {
+			M[i][j] = cc;
+			j++;
+		}
+		else { // cc == EOF or cc == nl
+			if ((int)(cc) == 10) {
+				i++;
+				count++;
+				j = 0;
+			}
+		}
+	}
+	for (i = 0; i < count; i++) {
+		printf("%s\n", M[i]);
+	}
+	
+	fclose(prolog);
+	
+}
+
+void epilog() 
+// I.S : Sembarang
+// F.S : Menghasilkan epilog cerita sebagai output 
+{
+	FILE * epilog;
+
+	char M[50][50];
+	int i, j, count; 	
+	char cc;
+	
+	epilog = fopen("Epilog.txt", "r");
+	count = 0; i = 0; j = 0;
+	while (cc != EOF) {
+		cc = fgetc(epilog);
+		if ((cc != EOF) && ((int)(cc) != 10)) {
+			M[i][j] = cc;
+			j++;
+		}
+		else { // cc == EOF or cc == nl
+			if ((int)(cc) == 10) {
+				i++;
+				count++;
+				j = 0;
+			}
+		}
+	}
+	for (i = 0; i < count; i++) {
+		printf("%s\n", M[i]);
+	}
+	
+	fclose(epilog);
+	
+}
