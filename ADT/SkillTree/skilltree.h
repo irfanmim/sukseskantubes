@@ -75,10 +75,10 @@ boolean IsSkewRight (SkillTree P);
 /* Mengirimkan true jika P adalah pohon condong kanan */
 /* Pohon kosong adalah pohon condong kanan */
 
-void AddDaunTerkiri (SkillTree *P, Infotype X, char * nama);
+void AddDaunTerkiri (SkillTree *P, Infotype X, char nama[]);
 /* I.S. P boleh kosong */
 /* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkiri */
-void AddDaunTerkanan (SkillTree *P, Infotype X, char * nama);
+void AddDaunTerkanan (SkillTree *P, Infotype X, char nama[]);
 /* I.S. P boleh kosong */
 /* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkanan */
 
@@ -93,13 +93,15 @@ void ShowSkill(SkillTree S);
 // I.S : Skill Tree P1 terdefinisi
 // F.S : Menampilkan seluruh daftar skill yang sudah dan belum dipelajari. Skill yang sudah dipelajari diberi keterangan (learned).
 
-boolean Search(SkillTree S, char * nama);
+boolean Search(SkillTree S, char nama[]);
 // Mengembalikan true jika terdapat skill dengan nama 'nama' di S
 
-void SearchAndLearn(SkillTree *S, char * nama);
+void SearchAndLearn(SkillTree *S, char nama[]);
 // I.S : S telah diinisialisasi, skill dengan nama 'nama' ada dalam S
 // F.S : Learnt skill 'nama' = true
 
+boolean IsLearnt(SkillTree S, char nama[]);
+// Mengirimkan true jika skill dengan nama 'nama' telah dipelajari (Learnt = True)
 
 
 #endif

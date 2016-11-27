@@ -23,9 +23,9 @@ void RandomDeque (Deque *D);
 void Randomize (PETA *P, int z, player *Enemy);
 
 /* KAMUS GLOBAL */
-boolean done[10];
+boolean done[11];
 int ui, uj;
-long int prima[50001];
+long int prima[50];
 unsigned char kata[100][100];
 
 int main()
@@ -34,13 +34,13 @@ int main()
 
 	/* KAMUS */
 	adrNode Pr;
-	int q, r, s = 0;
+	int q, r, rot = 0, s = 0;
 	Deque D;
 	jenis X;
 	Graph G;
 	FILE *listed;
-	PETA P[10];
-	player Utama, Enemy[50];
+	PETA P[11];
+	player Utama, Enemy[60];
 	unsigned char space;
 
 	/* ALGORITMA */
@@ -86,14 +86,20 @@ int main()
 		{
 			if (NodeAvaible(G, q, FindKolom(P[q], LebarPeta(P[q])-1, '-')))
 			{
-				while (!SearchKolom(P[r], 0, '-'))
+				rot = 0;
+				while (!SearchKolom(P[r], 0, '-') && rot < 8)
 				{
 					PutarPeta(&P[r]);
+					++rot;
 				}
-				InsertEdge(&G, q, FindKolom(P[q], LebarPeta(P[q])-1, '-'), r, FindKolom(P[r], 0, '-'));
-				InsertEdge(&G, r, FindKolom(P[r], 0, '-'), q, FindKolom(P[q], LebarPeta(P[q])-1, '-'));
-				printf("TIPE A (%d,%d) -> (%d,%d) \n", Absis(FindKolom(P[q], LebarPeta(P[q])-1, '-')), Ordinat(FindKolom(P[q], LebarPeta(P[q])-1, '-')), Absis(FindKolom(P[r], 0, '-')), Ordinat(FindKolom(P[r], 0, '-')));
-				++r;
+				if (rot < 8)
+				{
+					InsertEdge(&G, q, FindKolom(P[q], LebarPeta(P[q])-1, '-'), r, FindKolom(P[r], 0, '-'));
+					InsertEdge(&G, r, FindKolom(P[r], 0, '-'), q, FindKolom(P[q], LebarPeta(P[q])-1, '-'));
+					printf("TIPE A (%d,%d) -> (%d,%d) \n", Absis(FindKolom(P[q], LebarPeta(P[q])-1, '-')), Ordinat(FindKolom(P[q], LebarPeta(P[q])-1, '-')), Absis(FindKolom(P[r], 0, '-')), Ordinat(FindKolom(P[r], 0, '-')));
+					++r;
+					rot = 0;
+				}
 			}
 		}
 	
@@ -101,15 +107,20 @@ int main()
 		{
 			if (NodeAvaible(G, q, FindKolom(P[q], 0, '-')))
 			{
-				while (!SearchKolom(P[r], LebarPeta(P[r])-1, '-'))
+				rot = 0;
+				while (!SearchKolom(P[r], LebarPeta(P[r])-1, '-') && rot < 8)
 				{
 					PutarPeta(&P[r]);
+					++rot;
 				}
-				InsertEdge(&G, q, FindKolom(P[q], 0, '-'), r, FindKolom(P[r], LebarPeta(P[r])-1, '-'));
-				InsertEdge(&G, r, FindKolom(P[r], LebarPeta(P[r])-1, '-'), q, FindKolom(P[q], 0, '-'));
-				printf("TIPE B (%d,%d) -> (%d,%d) \n", Absis(FindKolom(P[q], 0, '-')), Ordinat(FindKolom(P[q], 0, '-')), Absis(FindKolom(P[r], LebarPeta(P[r])-1, '-')), Ordinat(FindKolom(P[r], LebarPeta(P[r])-1, '-')));
-				++r;
-
+				if (rot < 8)
+				{
+					InsertEdge(&G, q, FindKolom(P[q], 0, '-'), r, FindKolom(P[r], LebarPeta(P[r])-1, '-'));
+					InsertEdge(&G, r, FindKolom(P[r], LebarPeta(P[r])-1, '-'), q, FindKolom(P[q], 0, '-'));
+					printf("TIPE B (%d,%d) -> (%d,%d) \n", Absis(FindKolom(P[q], 0, '-')), Ordinat(FindKolom(P[q], 0, '-')), Absis(FindKolom(P[r], LebarPeta(P[r])-1, '-')), Ordinat(FindKolom(P[r], LebarPeta(P[r])-1, '-')));
+					++r;
+					rot = 0;
+				}
 			}
 		}
 	
@@ -117,14 +128,20 @@ int main()
 		{
 			if (NodeAvaible(G, q, FindBaris(P[q], PanjangPeta(P[q])-1, '-')))
 			{
-				while (!SearchBaris(P[r], 0, '-'))
+				rot = 0;
+				while (!SearchBaris(P[r], 0, '-') && rot < 8)
 				{
 					PutarPeta(&P[r]);
+					++rot;
 				}
-				InsertEdge(&G, q, FindBaris(P[q], PanjangPeta(P[q])-1, '-'), r, FindBaris(P[r], 0, '-'));
-				InsertEdge(&G, r, FindBaris(P[r], 0, '-'), q, FindBaris(P[q], PanjangPeta(P[q])-1, '-'));
-				printf("TIPE C (%d,%d) -> (%d,%d) \n", Absis(FindBaris(P[q], PanjangPeta(P[q])-1, '-')), Ordinat(FindBaris(P[q], PanjangPeta(P[q])-1, '-')), Absis(FindKolom(P[r], 0, '-')), Ordinat(FindKolom(P[r], 0, '-')));				
-				++r;
+				if (rot < 8)
+				{
+					InsertEdge(&G, q, FindBaris(P[q], PanjangPeta(P[q])-1, '-'), r, FindBaris(P[r], 0, '-'));
+					InsertEdge(&G, r, FindBaris(P[r], 0, '-'), q, FindBaris(P[q], PanjangPeta(P[q])-1, '-'));
+					printf("TIPE C (%d,%d) -> (%d,%d) \n", Absis(FindBaris(P[q], PanjangPeta(P[q])-1, '-')), Ordinat(FindBaris(P[q], PanjangPeta(P[q])-1, '-')), Absis(FindKolom(P[r], 0, '-')), Ordinat(FindKolom(P[r], 0, '-')));				
+					++r;
+					rot = 0;
+				}
 			}			
 		}
 	
@@ -132,19 +149,25 @@ int main()
 		{
 			if (NodeAvaible(G, q, FindBaris(P[q], 0, '-')))
 			{
-				while (!SearchBaris(P[r], PanjangPeta(P[r])-1, '-'))
+				rot = 0;
+				while (!SearchBaris(P[r], PanjangPeta(P[r])-1, '-') && rot < 8)
 				{
 					PutarPeta(&P[r]);
+					++rot;
 				}
-				InsertEdge(&G, q, FindBaris(P[q], 0, '-'), r, FindBaris(P[r], PanjangPeta(P[r])-1, '-'));
-				InsertEdge(&G, r, FindBaris(P[r], PanjangPeta(P[r])-1, '-'), q, FindBaris(P[q], 0, '-'));
-				printf("TIPE D (%d,%d) -> (%d,%d) \n", Absis(FindBaris(P[q], 0, '-')), Ordinat(FindBaris(P[q], 0, '-')), Absis(FindBaris(P[r], PanjangPeta(P[r])-1, '-')), Ordinat(FindBaris(P[r], PanjangPeta(P[r])-1, '-')));				
-				++r;
+				if (rot < 8)
+				{
+					InsertEdge(&G, q, FindBaris(P[q], 0, '-'), r, FindBaris(P[r], PanjangPeta(P[r])-1, '-'));
+					InsertEdge(&G, r, FindBaris(P[r], PanjangPeta(P[r])-1, '-'), q, FindBaris(P[q], 0, '-'));
+					printf("TIPE D (%d,%d) -> (%d,%d) \n", Absis(FindBaris(P[q], 0, '-')), Ordinat(FindBaris(P[q], 0, '-')), Absis(FindBaris(P[r], PanjangPeta(P[r])-1, '-')), Ordinat(FindBaris(P[r], PanjangPeta(P[r])-1, '-')));				
+					++r;
+					rot = 0;
+				}
 			}
 		}
 	}
 
-	system("clear");
+//	system("clear");
 	printf("Masukkan ukuruan layar:\n");
 	printf("Ukuran Lebar minimal adalah 20 dan Panjang minimal 75\n");
 

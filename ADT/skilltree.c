@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "custring.h"
+#include "mesinkata.h"
 
 SkillTree Tree (Infotype Akar, SkillTree L, SkillTree R)
 /* Menghasilkan sebuah pohon biner dari A, L, dan R, jika alokNode berhasil */
@@ -215,37 +216,30 @@ void InitSkillTree(SkillTree *S)
 	char line[50];
 	char temp[50];
 	int i;
+	Kata CKata;
 	
 	// Algoritma
 	i = 0;
-	fgets(line, 50, daftarskill);
-	sscanf(line, "%s", temp);
-	AddDaunTerkiri(S, i, temp);
+	STARTKATA();
+	AddDaunTerkiri(S, i, CKata);
 	i++;
-	
 	while (!feof(daftarskill)) {
-		// ATTACK SKILL TREE
-		while(Strcmp(line, "ATTACK\n")) {
-			fgets(line, 50, daftarskill);
+		while(!Strcmp(CKata, "ATTACK")) {
+			ADVKATA();
 		}
-		while(Strcmp(line, "DEFENSE\n"))  {
-			sscanf(line, "%s", temp);
-			puts(line);
-			if (Strcmp(temp, "ATTACK")) {
-				AddDaunTerkiri(S, i, temp);
-				i++;
-			}
-			fgets(line, 50, daftarskill);
+		// CKata == ATTACK
+		ADVKATA();
+		while(!Strcmp(CKata, "DEFENSE")) {
+			AddDaunTerkiri(S, i, CKata);
+			i++;
+			ADVKATA();
 		}
-		// DEFENSE SKILL TREE
-		while(Strcmp(line, "END.")) {
-			sscanf(line, "%s", temp);
-			puts(line);
-			if (Strcmp(temp, "DEFENSE")) {
-				AddDaunTerkanan(S, i, temp);
-				i++;
-			}
-			fgets(line, 50, daftarskill);
+		// CKata == DEFENSE
+		ADVKATA();
+		while(!Strcmp(CKata, "END")) {
+			AddDaunTerkanan(S, i, CKata);
+			i++;
+			ADVKATA();
 		}
 	}
 	

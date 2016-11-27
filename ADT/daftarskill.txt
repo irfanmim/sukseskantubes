@@ -1,12 +1,1 @@
-InitStatus
-ATTACK
-ATKUP
-Slayer
-Berserk
-Terror
-DEFENSE
-DEFUP
-TortoiseShell
-DemonPact
-Guardian
-END.
+InitStatus ATTACK ATKUP Slayer Berserk Terror DEFENSE DEFUP TortoiseShell DemonPact Guardian.
