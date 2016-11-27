@@ -1,10 +1,12 @@
+
+/* File : stacklist.h */
 #ifndef _SOQLIST_H
 #define _SOQLIST_H
 
 #include "boolean.h"
-#include "custring.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 
 /* Konstanta */
@@ -134,5 +136,8 @@ void PrintQueueClosed (Queue Q, int i,int r);
 
 void PrintQueuewithpointer (Queue Q, int x, int i, int r, boolean lawan);
 
+void buatsoq( char T[] , Stack *S, int *nb);
+
+void DealokAllQueue(Queue *Q);
 
 #endif

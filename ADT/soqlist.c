@@ -1,4 +1,3 @@
-#include "custring.h"
 #include "soqlist.h"
 
 /* Prototype manajemen memori */
@@ -126,6 +125,7 @@ void Add (Queue * Q, infotypeq X){
 void Del(Queue * Q, infotypeq * X){
     *X = InfoHead(*Q);
     if(Head(*Q) == Tail(*Q)){
+        DealokasiQueue(Head(*Q));
         CreateEmptyQueue(Q);
     }else{
         addressq P = Head(*Q);
@@ -337,5 +337,95 @@ void PrintQueuewithpointer (Queue Q, int x, int i, int r, boolean lawan){
             P = Next(P);
             count++;
         }
+    }
+}
+
+void buatsoq( char T[], Stack *S, int *nb) {
+
+    FILE* pita;
+    Queue Q, Qtemp;
+    Queue final[2][50];
+    int i,j;
+    char isifile[1][300];
+    char temp[1][100];
+    int a,b,l,s,k;
+    int r;
+    char ct;
+
+
+    CreateEmptyQueue(&Q);
+    pita = fopen(T,"r");
+
+    //Isi file dipindah ke array isifile 
+    i = 0;
+    while ( !feof(pita) ) {
+        fscanf(pita, "%c", &isifile[0][i]);
+        i++;    
+    }
+
+    fclose(pita);
+
+    //Masukkin array ke Queue
+    a=0;
+    j=0;
+    srand(time(NULL));
+    while ( isifile[0][j] != '\0' ) {
+        if ( isifile[0][j] != '\n' ) {
+            Add( &Q, isifile[0][j] );
+            a++;
+        }
+        else {
+            for ( b=0; b<a;b++) {
+                Del(&Q, &ct);
+                temp[0][b] = ct;
+            }
+
+            //Random Array
+            for (l = 0; l<a; l++) {
+                r = rand() % a;
+                ct = temp[0][l];
+                temp[0][l] = temp[0][r];
+                temp[0][r] = ct;
+            }
+
+            for ( b=0; b<a;b++) {
+                Add(&Q, temp[0][b]);
+            }
+            
+            final[0][s] = Q;
+            
+            s++;
+            CreateEmptyQueue(&Q);
+            a = 0;
+        }
+        j++;
+    }
+
+    
+    //Random Array
+    //srand(time(NULL));
+    
+    for (l = 0; l<s; l++) {
+        r = rand() % s;
+        //printf("%d\n", r);
+        Qtemp = final[0][l];
+        final[0][l] = final[0][r];
+        final[0][r] = Qtemp;
+    }
+
+    k = 0;
+    CreateEmpty(S);
+
+    for (l=0; l<s;l++) {
+        Push(S,final[0][l]);
+    }
+
+    *nb = s; 
+}
+
+void DealokAllQueue(Queue *Q){
+    infotypeq temp;
+    while(!IsEmptyQueue(*Q)){
+        Del(Q,&temp);
     }
 }

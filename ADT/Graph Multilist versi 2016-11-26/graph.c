@@ -2,13 +2,15 @@
 #include <stdio.h>
 #include "boolean.h"
 #include "graph.h"
+#include "peta.h"
+#include "point.h"
 
 /* *** Konstruktor *** */
-void CreateGraph (infotype X, Graph *L)
+void CreateGraph (infotype X, POINT T, Graph *L)
 /* I.S. Sembarang */ 
 /* F.S. Terbentuk Graph dengan satu simpul dengan Id=X */
 {
-	adrNode P = AlokNode(X);
+	adrNode P = AlokNode(X,T);
 	if (P != Nil)
 	{
 		First(*L) = P;
@@ -16,10 +18,10 @@ void CreateGraph (infotype X, Graph *L)
 }
 
 /* *** Manajemen Memory List Simpul (Leader) *** */
-adrNode AlokNode (infotype X)
+adrNode AlokNode (infotype X, POINT T)
 /* Mengembalikan address hasil alokasi Simpul X. */
 /* Jika alokasi berhasil, maka address tidak Nil, misalnya menghasilkan P, maka Id(P)=X, */
-/* NPred(P)=0, Trail(P)=Nil, dan Next(P)=Nil. Jika alokasi gagal, mengembalikan Nil. */
+/* NPred(P)=0, Trail(P)=Nil, dan Nxt(P)=Nil. Jika alokasi gagal, mengembalikan Nil. */
 {
 	adrNode P = (adrNode) malloc (sizeof(Node));
 	if (P != Nil)
@@ -27,7 +29,8 @@ adrNode AlokNode (infotype X)
 		Id(P) = X;
 		NPred(P) = 0;
 		Trail(P) = Nil;
-		Next(P) = Nil;
+		Nxt(P) = Nil;
+		Loc(P) = T;
 	}
 	return P;
 }
@@ -42,13 +45,13 @@ void DealokNode (adrNode P)
 adrSuccNode AlokSuccNode (adrNode Pn)
 /* Mengembalikan address hasil alokasi. */
 /* Jika alokasi berhasil, maka address tidak Nil, misalnya menghasilkan Pt, maka
-   Succ(Pt)=Pn dan Next(Pt)=Nil. Jika alokasi gagal, mengembalikan Nil. */
+   Succ(Pt)=Pn dan Nxt(Pt)=Nil. Jika alokasi gagal, mengembalikan Nil. */
 {
 	adrSuccNode P = (adrSuccNode) malloc (sizeof(SuccNode));
 	if (P != Nil)
 	{
 		Succ(P) = Pn;
-		Next(P) = Nil;
+		Nxt(P) = Nil;
 	}
 	return P;
 }
@@ -61,7 +64,7 @@ void DealokSuccNode (adrSuccNode P)
 }
 
 /* *** Fungsi/Prosedur Lain *** */
-adrNode SearchNode (Graph G, infotype X)
+adrNode SearchNode (Graph G, infotype X, POINT T)
 /* mengembalikan address simpul dengan Id=X jika sudah ada pada graph G, Nil jika belum */
 {
 	adrNode P;
@@ -69,24 +72,24 @@ adrNode SearchNode (Graph G, infotype X)
 	P = First(G);
 	while (!found && P != Nil)
 	{
-		if (Id(P) == X)
+		if (Id(P) == X && EQ(Loc(P),T))
 		{
 			found = true;
 		}
 		else
 		{
-			P = Next(P);
+			P = Nxt(P);
 		}
 	}
 
 	return P;
 }
 
-adrSuccNode SearchEdge (Graph G, infotype prec, infotype succ)
+adrSuccNode SearchEdge (Graph G, infotype prec, POINT Tprec, infotype succ, POINT Tsucc)
 /* mengembalikan address trailer yang menyimpan info busur (prec,succ) jika sudah ada pada
    graph G, Nil jika belum */
 {
-	adrNode P = SearchNode(G, prec);
+	adrNode P = SearchNode(G, prec, Tprec);
 	boolean found;
 	if (P != Nil)
 	{
@@ -94,13 +97,13 @@ adrSuccNode SearchEdge (Graph G, infotype prec, infotype succ)
 		adrSuccNode Psucc = Trail(P);
 		while (!found && Psucc != Nil)
 		{
-			if (Id(Succ(Psucc)) == succ)
+			if (Id(Succ(Psucc)) == succ && EQ(Loc(Succ(Psucc)),Tsucc))
 			{
 				found = true;
 			}
 			else
 			{
-				Psucc = Next(Psucc);
+				Psucc = Nxt(Psucc);
 			}
 		}
 		return Psucc;
@@ -111,52 +114,52 @@ adrSuccNode SearchEdge (Graph G, infotype prec, infotype succ)
 	}
 }
 
-void InsertNode (Graph *G, infotype X, adrNode *Pn)
+void InsertNode (Graph *G, infotype X, POINT T, adrNode *Pn)
 /* Menambahkan simpul X ke dalam graph, jika alokasi X berhasil. */
 /* I.S. G terdefinisi, X terdefinisi dan belum ada pada G. */
 /* F.S. Jika alokasi berhasil, X menjadi elemen terakhir G, Pn berisi address simpul X.
    Jika alokasi gagal, G tetap, Pn berisi Nil */
 {
-	*Pn = AlokNode(X);
+	*Pn = AlokNode(X,T);
 	if (*Pn != Nil)
 	{
 		adrNode P = First(*G);
-		while (Next(P) != Nil)
+		while (Nxt(P) != Nil)
 		{
-			P = Next(P);
+			P = Nxt(P);
 		}
-		Next(P) = *Pn;
+		Nxt(P) = *Pn;
 	}
 }
 
-void InsertEdge (Graph *G, infotype prec, infotype succ)
+void InsertEdge (Graph *G, infotype prec, POINT Tprec, infotype succ, POINT Tsucc)
 /* Menambahkan busur dari prec menuju succ ke dalam G */
 /* I.S. G, prec, succ terdefinisi. */
 /* F.S. Jika belum ada busur (prec,succ) di G, maka tambahkan busur (prec,succ) ke G.
    Jika simpul prec/succ belum ada pada G, tambahkan simpul tersebut dahulu.
    Jika sudah ada busur (prec,succ) di G, maka G tetap. */
 {
-	adrNode Pr = SearchNode(*G, prec), Ps = SearchNode(*G, succ);
+	adrNode Pr = SearchNode(*G, prec, Tprec), Ps = SearchNode(*G, succ, Tsucc);
 	if (Pr == Nil)
 	{
-		InsertNode(G, prec, &Pr);
+		InsertNode(G, prec, Tprec, &Pr);
 	}
 
 	if (Ps == Nil)
 	{
-		InsertNode(G, succ, &Ps);
+		InsertNode(G, succ, Tsucc, &Ps);
 	}
 
-	if (!SearchEdge(*G, prec, succ))
+	if (!SearchEdge(*G, prec, Tprec, succ, Tsucc))
 	{
 		if (Trail(Pr) != Nil)
 		{
 			adrSuccNode Pre = Trail(Pr);
-			while (Next(Pre) != Nil)
+			while (Nxt(Pre) != Nil)
 			{
-				Pre = Next(Pre);
+				Pre = Nxt(Pre);
 			}
-			Next(Pre) = AlokSuccNode(Ps);
+			Nxt(Pre) = AlokSuccNode(Ps);
 		}
 		else
 		{
@@ -166,7 +169,8 @@ void InsertEdge (Graph *G, infotype prec, infotype succ)
 	}
 }
 
-void DeleteNode (Graph *G, infotype X)
+
+void DeleteNode (Graph *G, infotype X, POINT T)
 /* Menghapus simpul X dari G */
 /* I.S. G terdefinisi, X terdefinisi dan ada pada G, jumlah simpul pada G lebih dari 1. */
 /* F.S. simpul X dan semua busur yang terhubung dengan X dihapus dari G. */
@@ -175,11 +179,11 @@ void DeleteNode (Graph *G, infotype X)
 	adrSuccNode Ps, Psrec;
 
 	/* KASUS KHUSUS KETIKA First(*G) == X */
-	if (Id(P) == X)
+	if (Id(P) == X && EQ(Loc(P),T))
 	{
-		P = Next(P);
+		P = Nxt(P);
 	}
-	Ps = SearchEdge(*G, Id(P), X);
+	Ps = SearchEdge(*G, Id(P), Loc(P), X, T);
 
 	/* PEMROSESAN KASUS AWAL */
 	if (Ps != Nil)
@@ -189,14 +193,14 @@ void DeleteNode (Graph *G, infotype X)
 		Ps = Trail(P);
 		while (!found && Ps != Nil)
 		{
-			if (Id(Succ(Ps)) == X)
+			if (Id(Succ(Ps)) == X && EQ(Loc(Succ(Ps)),T))
 			{
 				found = true;
 			}
 			else
 			{
 				Psrec = Ps;
-				Ps = Next(Ps);
+				Ps = Nxt(Ps);
 			}
 		}
 
@@ -204,25 +208,25 @@ void DeleteNode (Graph *G, infotype X)
 		{	
 			if (Ps == Trail(P))
 			{
-				Trail(P) = Next(Ps);
+				Trail(P) = Nxt(Ps);
 			}
 			else
 			{
-				Next(Psrec) = Next(Ps);
+				Nxt(Psrec) = Nxt(Ps);
 			}
-			Next(Ps) = Nil;
+			Nxt(Ps) = Nil;
 			DealokSuccNode(Ps);
 			--NPred(P);
 		}
 	}
 
 	/* PEMROSESAN KASUS KASUS BERIKUTNYA */
-	P = Next(P);
+	P = Nxt(P);
 	while (P != Nil)
 	{
 		if (Id(P) != X)
 		{
-			Ps = SearchEdge(*G, Id(P), X);
+			Ps = SearchEdge(*G, Id(P), Loc(P), X, T);
 			if (Ps != Nil)
 			{
 				boolean found = false;
@@ -230,14 +234,14 @@ void DeleteNode (Graph *G, infotype X)
 				Ps = Trail(P);
 				while (!found && Ps != Nil)
 				{
-					if (Id(Succ(Ps)) == X)
+					if (Id(Succ(Ps)) == X && EQ(Loc(Succ(Ps)),T))
 					{
 						found = true;
 					}
 					else
 					{
 						Psrec = Ps;
-						Ps = Next(Ps);
+						Ps = Nxt(Ps);
 					}
 				}
 
@@ -245,28 +249,28 @@ void DeleteNode (Graph *G, infotype X)
 				{	
 					if (Ps == Trail(P))
 					{
-						Trail(P) = Next(Ps);
+						Trail(P) = Nxt(Ps);
 					}
 					else
 					{
-						Next(Psrec) = Next(Ps);
+						Nxt(Psrec) = Nxt(Ps);
 					}
-					Next(Ps) = Nil;
+					Nxt(Ps) = Nil;
 					DealokSuccNode(Ps);
 					--NPred(P);
 				}
 			}
 		}
-		P = Next(P);
+		P = Nxt(P);
 	}
 
 	prec = Nil;
 	P = First(*G);
 
-	if (Id(P) == X)
+	if (Id(P) == X && EQ(Loc(P),T))
 	{
 		prec = P;
-		First(*G) = Next(P);
+		First(*G) = Nxt(P);
 		DealokNode(P);
 	}
 	else
@@ -277,50 +281,14 @@ void DeleteNode (Graph *G, infotype X)
 			if (Id(P) != X)
 			{
 				prec = P;
-				P = Next(P);
+				P = Nxt(P);
 			}
 			else
 			{
-				Next(prec) = Next(P);
+				Nxt(prec) = Nxt(P);
 				DealokNode(P);
 				found = true;
 			}
 		}
-	}
-}
-
-boolean IsPathExist (Graph G, infotype from, infotype to)
-/* mengembalikan true jika terdapat jalur (dengan memperhatikan arah dari busur) yang
-   menghubungkan “from” ke simpul “to” */
-/* Asumsi: from dan to ada pada G dan merupakan simpul yang berbeda */
-{
-	adrNode F = SearchNode(G, from);
-	if (F != Nil)
-	{
-		if (SearchEdge(G, from, to) == Nil)
-		{
-			boolean found = false;
-			adrSuccNode Fs = Trail(F);
-			while (Fs != Nil && !found)
-			{
-				if (IsPathExist(G, Id(Succ(Fs)), to))
-				{
-					Fs = Next(Fs);
-				}
-				else
-				{
-					found = true;
-				}
-			}
-			return found;
-		}
-		else
-		{
-			return true;
-		}
-	}
-	else
-	{
-		return false;
 	}
 }

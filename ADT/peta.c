@@ -18,10 +18,10 @@ void ReadPeta(PETA *P, str filetxt)
     do
     {
         fgets((*P).peta[i], CharMax, source);
-        (*P).peta[i][strlen((*P).peta[i])] = '\0';
+        sscanf((*P).peta[i], "%s", (*P).peta[i]);
         ++i;
     } while (!feof(source));
-    MakePeta(i, strlen((*P).peta[0])-1, P);
+    MakePeta(i, strlen((*P).peta[0]), P);
     fclose(source);
 }
 
@@ -247,4 +247,40 @@ boolean SearchBaris (PETA P, int j, char CC)
         }
     }
     return found;
+}
+
+POINT FindKolom (PETA P, int i, char CC)
+{
+    boolean found = false;
+    int j = 0;
+    while (!found && j < PanjangPeta(P))
+    {
+        if (Letak(P,i,j) == CC)
+        {
+            found = true;
+        }
+        else
+        {
+            ++j;
+        }
+    }
+    return MakePOINT(j,i);
+}
+
+POINT FindBaris (PETA P, int j, char CC)
+{
+    boolean found = false;
+    int i = 0;
+    while (!found && i < LebarPeta(P))
+    {
+        if (Letak(P,i,j) == CC)
+        {
+            found = true;
+        }
+        else
+        {
+            ++i;
+        }
+    }
+    return MakePOINT(j,i);
 }
