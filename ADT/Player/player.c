@@ -485,7 +485,7 @@ void PrintAndInput(Queue *Q, int *i, int lebar, int tinggi, int *menang){
 	gotoxy(0,tinggi-1);
 	printf("║Command : ");
 	scanf("%c", &input);
-	if ( input == 'D' ) {
+	if ( input == 'E' ) {
 		if(!IsEmptyQueue(*Q)){	
 			DelTail(Q,&temp);
 			*i = *i -1;
