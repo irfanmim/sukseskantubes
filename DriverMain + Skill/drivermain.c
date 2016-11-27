@@ -42,9 +42,22 @@ int main()
 	PETA P[11];
 	player Utama, Enemy[60];
 	unsigned char space;
-	char temp[];
+	char temp[50];
+	int Exp[11];
+	
 	
 	/* ALGORITMA */
+	Exp[0] = 25;
+	Exp[1] = 130;
+	Exp[2] = 200;
+	Exp[3] = 275;
+	Exp[4] = 365;
+	Exp[5] = 440;
+	Exp[6] = 500;
+	Exp[7] = 580;
+	Exp[8] = 665;
+	Exp[9] = 750;
+	
 	CreateDeque(&D);
 	char nana[] = "List Peta.txt";
 	listed = fopen(nana,"r");
@@ -230,7 +243,7 @@ int main()
 	STR(Utama) = 999;
 	DEF(Utama) = 999;
 	LVL(Utama) = 100;	
-	SPt(Utama) = 0;
+	SPt(Utama) = 1;
 	InsertStats(kata, Utama, uj);
 	InitSkillTree(&(STREE(Utama)));					// Inisialisasi daftar skill pemain
 	SearchAndLearn(&(STREE(Utama)), "InitStatus");	// Learn root sebagai dasar pengambilan skill lain
@@ -285,6 +298,7 @@ int main()
 		HPMAX(Enemy[l]) = 20+10*l*pow(-1,l+1);
 		LVL(Enemy[l]) = 1;
 		EXP(Enemy[l]) = 0;
+		
 		if (l==1)
 		{
 			Strcat(NAME(Enemy[l]),"Agung");
@@ -449,11 +463,17 @@ int main()
 			printf("Skill yang dapat dipelajari : \n");
 			ShowAvailable(STREE(Utama));
 		}	
-		else if(Strcmp(CC, "Learn")) {
+		else if(Strcmp(CC, "LEARN")) {
 			printf("\nMasukkan nama skill yang ingin kamu pelajari : \n");
 			scanf("%s", temp);
 			if (Search(STREE(Utama), temp)) {
-				Learn(&Utama, temp);
+				if (CanLearn(STREE(Utama), temp)) {
+					Learn(&Utama, temp);
+					printf("Selamat, kamu telah mempelajari %s\n", temp);
+				}
+				else {
+					printf("Kamu belum dapat mempelajari skill tersebut\n");
+				}
 			}
 			else {
 				printf("Tidak ada skill dengan nama %s\n", temp);
@@ -512,8 +532,8 @@ int main()
 			if (win)
 			{
 				Letak(P[i], Y(Utama), X(Utama)) = 'P';
-				ExpUp(&Utama, Enemy);
-				if (IsLvlUp(&Utama, Exp)) {
+				ExpUp(&Utama, Enemy[z]);
+				if (isLvlUp(&Utama, Exp)) {
 					LVLUP(&Utama, Exp);
 					SPt(Utama) += 1;
 					printf("Selamat, kamu telah naik level. Kamu memperoleh 1 skill point.\n");

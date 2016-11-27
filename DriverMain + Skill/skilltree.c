@@ -338,7 +338,7 @@ boolean IsLearnt(SkillTree S, char nama[])
 }
 
 SkillTree SearchTree(SkillTree * S, char nama[])
-// Mengembalikan true jika terdapat skill dengan nama 'nama' di S
+// Mengembalikan skilltree dengan nama 'nama' di S
 {
 	if (IsTreeEmpty(*S)) {
 		return Nil;
@@ -357,3 +357,45 @@ SkillTree SearchTree(SkillTree * S, char nama[])
 		}
 	}
 }
+
+boolean CanLearn(SkillTree S, char nama[])
+// Mengirimkan true jika skill dengan nama 'nama' dapat dipelajari
+{
+	// Kamus Lokal
+	
+	// Algoritma
+	if (IsTreeEmpty(S)) {
+		return false;
+	}
+	else {
+			if (IsUnerLeft(S)) {
+				if (Learnt(S) && !Learnt(Left(S)) && (Strcmp(Name(Left(S)), nama))) {
+					return true;
+				}
+				else {
+					return (CanLearn(Left(S), nama));
+				}
+			}
+			else if (IsUnerRight(S)) {
+				if (Learnt(S) && !Learnt(Right(S)) && (Strcmp(Name(Right(S)), nama))) {
+					return true;
+				}
+				else {
+					return (CanLearn(Right(S), nama));
+				}
+			}
+			else if (IsBiner(S)) {
+				if (Learnt(S) && !Learnt(Left(S)) && (Strcmp(Name(Left(S)), nama))) {
+					return true;
+				}
+				else {
+					if (Learnt(S) && !Learnt(Right(S)) && (Strcmp(Name(Right(S)), nama))) {
+						return true;
+					}
+					else {
+						return (CanLearn(Left(S), nama) || CanLearn(Right(S), nama));
+					}
+				}
+			}
+		}
+}  

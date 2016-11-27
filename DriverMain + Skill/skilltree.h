@@ -105,5 +105,8 @@ boolean IsLearnt(SkillTree S, char nama[]);
 SkillTree SearchTree(SkillTree * S, char nama[]);
 // Mengembalikan SkillTree nama 'nama' di S
 
+boolean CanLearn(SkillTree S, char nama[]);
+// Mengirimkan true jika skill dengan nama 'nama' dapat dipelajari
+
 
 #endif
