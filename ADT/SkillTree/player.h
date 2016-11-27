@@ -58,7 +58,7 @@ void RestoredHP (player *P1);
 boolean isDeath (player P1);
 /*	Mengecek apakah pemain sudah mati atau belum */
 
-void ShowStatus(player P1)
+void ShowStatus(player P1);
 // I.S : P1 terdefinisi
 // F.S : Menampilkan current status P1 (HP, ATK, DEF)
 
@@ -80,7 +80,7 @@ void Slayer(player *P1);
 
 void Berserk(player *P1);
 
-void ATKUP(player *P1);
+void Terror(player *P1);
 
 // DEFEND
 void DEFUP(player *P1);

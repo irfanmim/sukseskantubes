@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include "battleandplayerf.h"
-#include "skilltreef.h"
+#include "player.h"
+#include "skilltree.h"
+#include "custring.h"
 
 #define bug printf("bug");
 #define nl printf("\n");
@@ -16,12 +17,11 @@ int main () {
 	
 	// Algoritma
 	MakeTree(1, Nil, Nil, &S);
-	strcpy(Name(S), "Tes");
+	Strcpy(Name(S), "Tes");
 	printf("Tes %d", IsSkewLeft(S));
 	printf("Starting .. \n");
 	InitSkillTree(&S);
 	ping bug ping nl
-	SearchAndLearn(&S, "Hihi");
 	printf("Hahaha");
 	SearchAndLearn(&S, "InitStatus");
 	printf("Skills loaded ... \n");

@@ -3,20 +3,20 @@
 // Deskripsi 		: Pra-Praktikum 12
 // Topik			: Binary Tree
 
-#include "skilltreef.h"
+#include "skilltree.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include "custring.h"
 
-SkillTree Tree (infotype Akar, SkillTree L, SkillTree R)
-/* Menghasilkan sebuah pohon biner dari A, L, dan R, jika AlokNode berhasil */
-/* Menghasilkan pohon kosong (Nil) jika AlokNode gagal */
+SkillTree Tree (Infotype Akar, SkillTree L, SkillTree R)
+/* Menghasilkan sebuah pohon biner dari A, L, dan R, jika alokNode berhasil */
+/* Menghasilkan pohon kosong (Nil) jika alokNode gagal */
 {
 	// Kamus
-	addrNode P;
+	AddrNode P;
 	
 	// Algoritma
-	P = AlokNode(Akar);
+	P = alokNode(Akar);
 	if (P != Nil) {
 		Left(P) = L;
 		Right(P) = R;
@@ -24,23 +24,23 @@ SkillTree Tree (infotype Akar, SkillTree L, SkillTree R)
 	return P;
 }
 
-void MakeTree (infotype Akar, SkillTree L, SkillTree R, SkillTree *P)
+void MakeTree (Infotype Akar, SkillTree L, SkillTree R, SkillTree *P)
 /* I.S. Akar, L, R terdefinisi. P Sembarang */
 /* F.S. Membentuk pohon P dengan Akar(P)=Akar, Left(P)=L, dan Right(P)=R 
-		jika AlokNode berhasil. P = Nil jika AlokNode gagal. */
+		jika alokNode berhasil. P = Nil jika alokNode gagal. */
 {
 	*P = Tree(Akar, L, R);
 }
 
 /* Manajemen Memory */
-addrNode AlokNode (infotype X)
-/* Mengirimkan addrNode hasil AlokNode sebuah elemen */
-/* Jika AlokNode berhasil, maka addrNode tidak Nil, dan misalnya menghasilkan P, 
+AddrNode alokNode (Infotype X)
+/* Mengirimkan AddrNode hasil alokNode sebuah elemen */
+/* Jika alokNode berhasil, maka AddrNode tidak Nil, dan misalnya menghasilkan P, 
   maka Akar(P) = X, Left(P) = Nil, Right(P)=Nil */
-/* Jika AlokNode gagal, mengirimkan Nil */
+/* Jika alokNode gagal, mengirimkan Nil */
 {
 	// Kamus
-	addrNode P;
+	AddrNode P;
 	
 	// Algoritma
 	P = (Node*) malloc (sizeof(Node));
@@ -53,10 +53,10 @@ addrNode AlokNode (infotype X)
 	return P;
 }
 
-void DealokNode (addrNode P)
+void DealokNode (AddrNode P)
 /* I.S. P terdefinisi */
 /* F.S. P dikembalikan ke sistem */
-/* Melakukan dealokasi/pengembalian addrNode P */
+/* Melakukan dealokasi/pengembalian AddrNode P */
 {
 	free(P);
 }
@@ -146,27 +146,27 @@ boolean IsSkewRight (SkillTree P)
 }
 	
 /* *** Operasi lain *** */
-void AddDaunTerkiri (SkillTree *P, infotype X, char * nama)
+void AddDaunTerkiri (SkillTree *P, Infotype X, char * nama)
 /* I.S. P boleh kosong */
 /* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkiri */
 {	
 	// Algoritma
 	if (IsTreeEmpty(*P)) {
-		*P = AlokNode(X);
-		strcpy(Name(*P), nama);
+		*P = alokNode(X);
+		Strcpy(Name(*P), nama);
 	}
 	else {
 		AddDaunTerkiri(&Left(*P), X, nama);
 	}
 }
-void AddDaunTerkanan (SkillTree *P, infotype X, char * nama)
+void AddDaunTerkanan (SkillTree *P, Infotype X, char * nama)
 /* I.S. P boleh kosong */
 /* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkanan */
 {	
 	// Algoritma
 	if (IsTreeEmpty(*P)) {
-		*P = AlokNode(X);
-		strcpy(Name(*P), nama);
+		*P = alokNode(X);
+		Strcpy(Name(*P), nama);
 	}
 	else {
 		AddDaunTerkanan(&Right(*P), X, nama);
@@ -225,23 +225,23 @@ void InitSkillTree(SkillTree *S)
 	
 	while (!feof(daftarskill)) {
 		// ATTACK SKILL TREE
-		while(strcmp(line, "ATTACK\n") != 0) {
+		while(Strcmp(line, "ATTACK\n")) {
 			fgets(line, 50, daftarskill);
 		}
-		while(strcmp(line, "DEFENSE\n") != 0) {
+		while(Strcmp(line, "DEFENSE\n"))  {
 			sscanf(line, "%s", temp);
 			puts(line);
-			if (strcmp(temp, "ATTACK") != 0) {
+			if (Strcmp(temp, "ATTACK")) {
 				AddDaunTerkiri(S, i, temp);
 				i++;
 			}
 			fgets(line, 50, daftarskill);
 		}
 		// DEFENSE SKILL TREE
-		while(strcmp(line, "END.") != 0) {
+		while(Strcmp(line, "END.")) {
 			sscanf(line, "%s", temp);
 			puts(line);
-			if (strcmp(temp, "DEFENSE") != 0) {
+			if (Strcmp(temp, "DEFENSE")) {
 				AddDaunTerkanan(S, i, temp);
 				i++;
 			}
@@ -278,7 +278,7 @@ boolean Search(SkillTree S, char * nama)
 		return false;
 	}
 	else {
-		if (strcmp(Name(S), nama) == 0)  {
+		if (Strcmp(Name(S), nama))  {
 			return true;
 		}
 		else { 
@@ -298,7 +298,7 @@ void SearchAndLearn(SkillTree *S, char * nama)
 		;
 	}
 	else {
-		if (strcmp(Name(*S), nama) == 0) {
+		if (Strcmp(Name(*S), nama)) {
 			Learnt(*S) = true;
 		}
 		else {

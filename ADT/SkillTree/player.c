@@ -54,9 +54,9 @@ boolean isDeath (player P1)
 
 void ShowStatus(player P1)
 // I.S : P1 terdefinisi
-// F.S : Menampilkan current status P1 (HP, ATK, DEF)
+// F.S : Menampilkan current status P1 (HP, STR, DEF)
 {
-	printf("HP : %ld\nATK : %ld\nDEF : %ld\n", HPMAX(P1), ATK(P1), DEF(P1));
+	printf("HP : %ld\nATK : %ld\nDEF : %ld\n", HPMAX(P1), STR(P1), DEF(P1));
 }
 
 /* *** PROSES SKILL TREE *** */
@@ -103,7 +103,7 @@ void ActivateSkill(player * P1, SkillTree *S)
 }
 	
 	
-void Learn(player *P1, char * name)
+void Learn(player *P1, char * nama)
 // I.S : Skill point >= nol
 // F.S : Mempelajari skill baru dalam skill tree
 {
@@ -120,20 +120,20 @@ void Learn(player *P1, char * name)
 
 void ATKUP(player *P1)
 {
-	ATK(*P1) += 5;
+	STR(*P1) += 5;
 }
 void Slayer(player *P1)
 {
-	ATK(*P1) += 10;
+	STR(*P1) += 10;
 }
 void Berserk(player *P1)
 {
 	DEF(*P1) -= 15;
-	ATK(*P1) = ATK(*P1) + ((5 / 100) * ATK(*P1));
+	STR(*P1) = STR(*P1) + ((5 / 100) * STR(*P1));
 }
 void Terror(player *P1)
 {
-	ATK(*P1) = ATK(*P1) + ((1/10) * ATK(*P1));
+	STR(*P1) = STR(*P1) + ((1/10) * STR(*P1));
 	HPMAX(*P1) = HPMAX(*P1) + ((5/100) * HPMAX(*P1));
 }
 
@@ -148,7 +148,7 @@ void TortoiseShell(player *P1)
 }
 void DemonPact(player *P1)
 {
-	ATK(*P1) -= 10;
+	STR(*P1) -= 10;
 	HPMAX(*P1) = HPMAX(*P1) + ((1/10) * HPMAX(*P1));
 }
 void Guardian(player *P1)

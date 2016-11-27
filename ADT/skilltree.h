@@ -1,6 +1,6 @@
 /* ADT Pohon Biner */
 /* Implementasi dengan menggunakan pointer */
-/* Penamaan type infotype, type addrNode, dan beberapa fungsi disesuikan 
+/* Penamaan type Infotype, type AddrNode, dan beberapa fungsi disesuikan 
    karena melibatkan modul list rekursif. */
 
 #ifndef _SKILLTREE_H
@@ -12,20 +12,20 @@
 #define Nil NULL
 
 /* *** Definisi Type Pohon Biner *** */
-/* typedef int infotype; */ /* type infotype sesuai pada modul listrek */
-typedef int infotype;	
-typedef struct tNode *addrNode;
+/* typedef int Infotype; */ /* type Infotype sesuai pada modul listrek */
+typedef int Infotype;	
+typedef struct tNode *AddrNode;
 typedef struct tNode { 
-	infotype info;
-	addrNode left;
-	addrNode right;
+	Infotype info;
+	AddrNode left;
+	AddrNode right;
 	boolean learnt;
 	char nama[20];
 } Node;
 
 /* Definisi PohonBiner : */
 /* Pohon Biner kosong : P = Nil */
-typedef addrNode SkillTree;
+typedef AddrNode SkillTree;
  
 /* *** PROTOTYPE *** */
 
@@ -37,24 +37,24 @@ typedef addrNode SkillTree;
 #define Name(P)	(P)->nama
 
 /* *** Konstruktor *** */
-SkillTree Tree (infotype Akar, SkillTree L, SkillTree R); 
+SkillTree Tree (Infotype Akar, SkillTree L, SkillTree R); 
 /* Menghasilkan sebuah pohon biner dari A, L, dan R, jika alokasi berhasil */
 /* Menghasilkan pohon kosong (Nil) jika alokasi gagal */
-void MakeTree (infotype Akar, SkillTree L, SkillTree R, SkillTree *P);
+void MakeTree (Infotype Akar, SkillTree L, SkillTree R, SkillTree *P);
 /* I.S. Akar, L, R terdefinisi. P Sembarang */
 /* F.S. Membentuk pohon P dengan Akar(P)=Akar, Left(P)=L, dan Right(P)=R 
 		jika alokasi berhasil. P = Nil jika alokasi gagal. */
 		
 /* Manajemen Memory */
-addrNode AlokNode (infotype X);
-/* Mengirimkan addrNode hasil alokasi sebuah elemen */
-/* Jika alokasi berhasil, maka addrNode tidak Nil, dan misalnya menghasilkan P, 
+AddrNode alokNode (Infotype X);
+/* Mengirimkan AddrNode hasil alokasi sebuah elemen */
+/* Jika alokasi berhasil, maka AddrNode tidak Nil, dan misalnya menghasilkan P, 
   maka Akar(P) = X, Left(P) = Nil, Right(P)=Nil */
 /* Jika alokasi gagal, mengirimkan Nil */
-void DealokNode (addrNode P);
+void DealokNode (AddrNode P);
 /* I.S. P terdefinisi */
 /* F.S. P dikembalikan ke sistem */
-/* Melakukan dealokasi/pengembalian addrNode P */
+/* Melakukan dealokasi/pengembalian AddrNode P */
 
 /* *** Predikat-Predikat Penting *** */
 boolean IsTreeEmpty (SkillTree P);
@@ -75,10 +75,10 @@ boolean IsSkewRight (SkillTree P);
 /* Mengirimkan true jika P adalah pohon condong kanan */
 /* Pohon kosong adalah pohon condong kanan */
 
-void AddDaunTerkiri (SkillTree *P, infotype X, char * nama);
+void AddDaunTerkiri (SkillTree *P, Infotype X, char * nama);
 /* I.S. P boleh kosong */
 /* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkiri */
-void AddDaunTerkanan (SkillTree *P, infotype X, char * nama);
+void AddDaunTerkanan (SkillTree *P, Infotype X, char * nama);
 /* I.S. P boleh kosong */
 /* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkanan */
 
