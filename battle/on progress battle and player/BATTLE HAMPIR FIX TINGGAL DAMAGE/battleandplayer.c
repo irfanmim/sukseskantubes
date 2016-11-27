@@ -300,7 +300,7 @@ void PrintHeaderInBattle(player me, player enemy, int round, Queue qenemy, int i
 
 }
 
-void PrintAndInput(Queue *Q, int *i, int lebar, int tinggi){
+void PrintAndInput(Queue *Q, int *i, int lebar, int tinggi, int *menang){
 	char input,temp;
 	int x,w;
 
@@ -367,6 +367,8 @@ void PrintAndInput(Queue *Q, int *i, int lebar, int tinggi){
 	}else if(input == 'A' || input == 'B' || input == 'F'){
 		*i = *i + 1;
 		Add(Q,input);
+	}else if (input == 'Q'){
+		*menang = *menang + 1;
 	}else{
 		printf("Masukan salah.\n");
 	}
@@ -510,12 +512,12 @@ void RandomAngka(int *i, int *r){
 
 void BattleOn(player *me, player enemy, Stack enemyatk, boolean *win, int lebar, int tinggi ){
 	Queue atkenm,atkpl;
-	int i,x,z,r1,r2,round;
+	int i,x,z,r1,r2,round,menang = 0;
 	addressq penemy,pplayer;
-	boolean selesai = false ;
+	boolean selesai = false;
 
 	round = 1;
-	while(HP(*me) > 0 && HP(enemy) > 0 && round <= 10){
+	while(HP(*me) > 0 && HP(enemy) > 0 && round <= 10 ){
 		CreateEmptyQueue(&atkpl);
 		Pop(&enemyatk,&atkenm);
 
@@ -527,42 +529,53 @@ void BattleOn(player *me, player enemy, Stack enemyatk, boolean *win, int lebar,
 			do{
 				PrintHeader(*me,enemy,round,atkenm,r1,r2,lebar,tinggi);
 				
-				PrintAndInput(&atkpl,&i,lebar,tinggi);
+				PrintAndInput(&atkpl,&i,lebar,tinggi,&menang);
 				//Jika masukan salah belum ditambah
 
 				system("clear");
-					
-			}while(i != 4);
-			PrintHeader(*me,enemy,round,atkenm,r1,r2,lebar,tinggi);
-			
-			PrintWithoutInput(&atkpl,&i,lebar,tinggi);
-			if (i == 4){
-				//Tambahin Print
-				//printf("\n");
-				gotoxy(2,tinggi-1);
-				printf("Are you sure with this command? (Y/N) > ");
-				//printf("Answer ");
-				char ans;
-				scanf("%c",&ans);
-				//getchar();
-				while(ans != 'Y' && ans != 'y' && ans != 'N' && ans != 'n'){
-					gotoxy(40,tinggi-1);
-					//printf("Answer error, Answer again :");
-					scanf("%c",&ans);
-				}	
-				if(ans == 'Y' || ans == 'y'){
+				
+				if(menang == 4){
+					HP(enemy) = 0;
+					i = 4;
 					selesai = true;
-				}else if(ans == 'N' || ans == 'n'){
-					DelTail(&atkpl,&ans);
-					i--;
 				}
-					
+			}while(i!=4);
+			if (menang != 4){
+				PrintHeader(*me,enemy,round,atkenm,r1,r2,lebar,tinggi);
+				
+				PrintWithoutInput(&atkpl,&i,lebar,tinggi);
+				if (i == 4){
+					//Tambahin Print
+					//printf("\n");
+					gotoxy(2,tinggi-1);
+					printf("Are you sure with this command? (Y/N) > ");
+					//printf("Answer ");
+					char ans;
+					scanf("%c",&ans);
+					//getchar();
+					while(ans != 'Y' && ans != 'y' && ans != 'N' && ans != 'n'){
+						gotoxy(40,tinggi-1);
+						for (int w = 40; w < lebar-1; w++){
+							printf(" ");
+						}
+						gotoxy(40,tinggi-1);
+						//printf("Answer error, Answer again :");
+						scanf("%c",&ans);
+					}	
+					if(ans == 'Y' || ans == 'y'){
+						selesai = true;
+					}else if(ans == 'N' || ans == 'n'){
+						DelTail(&atkpl,&ans);
+						i--;
+					}
+						
+				}
+				gotoxy(2,tinggi-1);
+				for (int w = 0; w <= lebar-3; w++){
+					printf(" ");
+				}
+				system("clear");
 			}
-			gotoxy(2,tinggi-1);
-			for (int w = 0; w <= lebar-3; w++){
-				printf(" ");
-			}
-			system("clear");
 
 		}
 
@@ -572,7 +585,7 @@ void BattleOn(player *me, player enemy, Stack enemyatk, boolean *win, int lebar,
 		penemy = Head(atkenm);
 
 		z = 0;
-		while(HP(*me) > 0 && HP(enemy) > 0 && z <= 3){
+		while(HP(*me) > 0 && HP(enemy) > 0 && z <= 3 ){
 			infotypeq prevplayer,prevlawan;
 			bertarungreal(Info(penemy),Info(pplayer),me,&enemy);
 			PrintHeaderInBattle(*me,enemy,round,atkenm,r1,r2,z,lebar,tinggi);

@@ -60,7 +60,7 @@ void PrintHeader(player me, player enemy, int round, Queue qenemy, int i,int  r,
 
 void PrintHeaderInBattle(player me, player enemy, int round, Queue qenemy, int i,int  r,int x ,int lebar, int tinggi);
 
-void PrintAndInput(Queue *Q, int *i ,int lebar, int tinggi);
+void PrintAndInput(Queue *Q, int *i ,int lebar, int tinggi, int *menang);
 
 //tambahan
 void PrintWithoutInput(Queue *Q, int *i, int lebar, int tinggi);
