@@ -49,6 +49,7 @@ AddrNode alokNode (Infotype X)
 		Akar(P) = X;
 		Left(P) = Nil;
 		Right(P) = Nil;
+		Learnt(P) = false;
 	}
 	
 	return P;
@@ -147,7 +148,7 @@ boolean IsSkewRight (SkillTree P)
 }
 	
 /* *** Operasi lain *** */
-void AddDaunTerkiri (SkillTree *P, Infotype X, char * nama)
+void AddDaunTerkiri (SkillTree *P, Infotype X, char nama[])
 /* I.S. P boleh kosong */
 /* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkiri */
 {	
@@ -160,7 +161,7 @@ void AddDaunTerkiri (SkillTree *P, Infotype X, char * nama)
 		AddDaunTerkiri(&Left(*P), X, nama);
 	}
 }
-void AddDaunTerkanan (SkillTree *P, Infotype X, char * nama)
+void AddDaunTerkanan (SkillTree *P, Infotype X, char nama[])
 /* I.S. P boleh kosong */
 /* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkanan */
 {	
@@ -216,37 +217,44 @@ void InitSkillTree(SkillTree *S)
 	char line[50];
 	char temp[50];
 	int i;
-	Kata CKata;
 	
 	// Algoritma
 	i = 0;
-	STARTKATA();
-	AddDaunTerkiri(S, i, CKata);
+	fgets(line, 50, daftarskill);
+	sscanf(line, "%s", temp);
+	AddDaunTerkiri(S, i, temp);
 	i++;
-	while (!feof(daftarskill)) {
-		while(!Strcmp(CKata, "ATTACK")) {
-			ADVKATA();
-		}
-		// CKata == ATTACK
-		ADVKATA();
-		while(!Strcmp(CKata, "DEFENSE")) {
-			AddDaunTerkiri(S, i, CKata);
-			i++;
-			ADVKATA();
-		}
-		// CKata == DEFENSE
-		ADVKATA();
-		while(!Strcmp(CKata, "END")) {
-			AddDaunTerkanan(S, i, CKata);
-			i++;
-			ADVKATA();
-		}
-	}
 	
+	char ATK[] = "ATTACK\n";
+	char DEF[] = "DEFENSE\n";
+	char E[] = "END.\n";
+	char I[] = "InitStatus\n";
+	while (!feof(daftarskill)) {
+		// ATTACK SKILL TREE
+		while(!Strcmp(line, ATK)) {
+			fgets(line, 50, daftarskill);
+		}
+		while(!Strcmp(line, DEF)) {
+			sscanf(line, "%s", temp);
+			if (!Strcmp(temp, "ATTACK")) {
+				AddDaunTerkiri(S, i, temp);
+				i++;
+			}
+			fgets(line, 50, daftarskill);
+		}
+		// DEFENSE SKILL TREE
+		while(!feof(daftarskill)) {
+			sscanf(line, "%s", temp);
+			if (!Strcmp(temp, "DEFENSE")) {
+				AddDaunTerkanan(S, i, temp);
+				i++;
+			}
+			fgets(line, 50, daftarskill);
+		}
+	}	
 	fclose(daftarskill);
 	
 }
-
 void ShowSkill(SkillTree S)
 // I.S : Skill Tree P1 terdefinisi
 // F.S : Menampilkan seluruh daftar skill yang sudah dan belum dipelajari. Skill yang sudah dipelajari diberi keterangan (learned).
@@ -265,7 +273,7 @@ void ShowSkill(SkillTree S)
 		ShowSkill(Right(S));
 	}
 }
-boolean Search(SkillTree S, char * nama)
+boolean Search(SkillTree S, char nama[])
 // Mengembalikan true jika terdapat skill dengan nama 'nama' di S
 {
 	if (IsTreeEmpty(S)) {
@@ -281,7 +289,7 @@ boolean Search(SkillTree S, char * nama)
 	}
 }
 
-void SearchAndLearn(SkillTree *S, char * nama)
+void SearchAndLearn(SkillTree *S, char nama[])
 // I.S : S telah diinisialisasi, skill dengan nama 'nama' ada dalam S
 // F.S : Learnt skill 'nama' = true
 {
@@ -308,3 +316,19 @@ void SearchAndLearn(SkillTree *S, char * nama)
 		}
 	}
 }
+
+boolean IsLearnt(SkillTree S, char nama[])
+// Mengirimkan true jika skill dengan nama 'nama' telah dipelajari (Learnt = True)
+{
+	if (IsTreeEmpty(S)) {
+		return false;
+	}
+	else {
+		if (Strcmp(Name(S), nama) && (Learnt(S)))  {
+			return true;
+		}
+		else { 
+			return (IsLearnt(Left(S), nama) || IsLearnt(Right(S), nama));
+		}
+	}
+}	
