@@ -493,7 +493,6 @@ int main()
 	return 0;
 }
 
-
 boolean NodeAvaible (Graph G, infotype q, POINT T)
 {
 	adrNode P = SearchNode(G, q, T);
@@ -507,55 +506,75 @@ boolean NodeAvaible (Graph G, infotype q, POINT T)
 	}
 }
 
-void MakeTable (unsigned char* CC, int A, int B)
+void Converter (unsigned char CC)
 {
-	int i, j;
-	for (i = 0; i < 1 && i < A; ++i)
+	if ((int) CC == 185)
 	{
-		CC[i*B] = (unsigned char) 201;
-		for (j = 1; j < B-1; ++j)
-		{
-			CC[i*B+j] = (unsigned char) 205;
-		}
-		CC[i*B+j] = (unsigned char) 187;
+		printf("\u2563");
 	}
+	else if ((int) CC == 186)
+	{
+		printf("\u2551");
+	}
+	else if ((int) CC == 187)
+	{
+		printf("\u2557");
+	}
+	else if ((int) CC == 188)
+	{
+		printf("\u255D");
+	}
+	else if ((int) CC == 200)
+	{
+		printf("\u255A");
+	}
+	else if ((int) CC == 201)
+	{
+		printf("\u2554");
+	}
+	else if ((int) CC == 202)
+	{
+		printf("\u2569");
+	}
+	else if ((int) CC == 203)
+	{
+		printf("\u2566");
+	}
+	else if ((int) CC == 204)
+	{
+		printf("\u2560");
+	}
+	else if ((int) CC == 205)
+	{
+		printf("\u2550");
+	}
+	else
+	{
+		printf("%c", CC);
+	}
+}
 
-	for (; i < 2 && i < A; ++i)
+void DeretPrima ()
+{
+	long i, N = 50001;
+	boolean a[50001];
+	prima[0] = 1;
+	for (i = 2; i <= N; ++i)
 	{
-		CC[i*B] = (unsigned char) 186;
-		for (j = 1; j < B-1; ++j)
-		{
-			CC[i*B+j] = ' ';
-		}
-		CC[i*B+j] = (unsigned char) 186;
+		a[i] = true;
 	}
-
-	for (; i < 3 && i < A; ++i)
+	long k = 1, j;
+	for (i = 2; i <= N; ++i)
 	{
-		CC[i*B] = (unsigned char) 204;
-		for (j = 1; j < B-1; ++j)
+		if (a[i] == true)
 		{
-			CC[i*B+j] = (unsigned char) 205;
+			prima[k] = i;
+			for (j = 2; j < floor(N/i) + 1; ++j)
+			{
+				a[i*j] = false;
+			}
+			++k;
 		}
-		CC[i*B+j] = (unsigned char) 185;
-	}
-	for (; i < A-1; ++i)
-	{
-		CC[i*B] = (unsigned char) 186;
-		for (j = 1; j < B-1; ++j)
-		{
-			CC[i*B+j] = ' ';
-		}
-		CC[i*B+j] = (unsigned char) 186;
-	}
-	for (i = A-1; i < A; ++i)
-	{
-		CC[i*B] = (unsigned char) 200;
-		for (j = 1; j < B-1; ++j)
-		{
-			CC[i*B+j] = (unsigned char) 205;
-		}
-		CC[i*B+j] = (unsigned char) 188;
 	}
 }
 
@@ -698,80 +717,6 @@ void InsertStats (unsigned char* CC, player P, int B)
 	}
 }
 
-void Converter (unsigned char CC)
-{
-	if ((int) CC == 185)
-	{
-		printf("\u2563");
-	}
-	else if ((int) CC == 186)
-	{
-		printf("\u2551");
-	}
-	else if ((int) CC == 187)
-	{
-		printf("\u2557");
-	}
-	else if ((int) CC == 188)
-	{
-		printf("\u255D");
-	}
-	else if ((int) CC == 200)
-	{
-		printf("\u255A");
-	}
-	else if ((int) CC == 201)
-	{
-		printf("\u2554");
-	}
-	else if ((int) CC == 202)
-	{
-		printf("\u2569");
-	}
-	else if ((int) CC == 203)
-	{
-		printf("\u2566");
-	}
-	else if ((int) CC == 204)
-	{
-		printf("\u2560");
-	}
-	else if ((int) CC == 205)
-	{
-		printf("\u2550");
-	}
-	else
-	{
-		printf("%c", CC);
-	}
-}
-
-
-void DeretPrima ()
-{
-	long i, N = 50001;
-	boolean a[50001];
-	prima[0] = 1;
-	for (i = 2; i <= N; ++i)
-	{
-		a[i] = true;
-	}
-	long k = 1, j;
-	for (i = 2; i <= N; ++i)
-	{
-		if (a[i] == true)
-		{
-			prima[k] = i;
-			for (j = 2; j < floor(N/i) + 1; ++j)
-			{
-				a[i*j] = false;
-			}
-			++k;
-		}
-	}
-}
-
-
 void MakeStack(Stack *st)
 {
 	int i,r,z;
@@ -805,6 +750,58 @@ void MakeStack(Stack *st)
 		Push(st,temp);
 		z++;
     }
+}
+
+void MakeTable (unsigned char* CC, int A, int B)
+{
+	int i, j;
+	for (i = 0; i < 1 && i < A; ++i)
+	{
+		CC[i*B] = (unsigned char) 201;
+		for (j = 1; j < B-1; ++j)
+		{
+			CC[i*B+j] = (unsigned char) 205;
+		}
+		CC[i*B+j] = (unsigned char) 187;
+	}
+
+	for (; i < 2 && i < A; ++i)
+	{
+		CC[i*B] = (unsigned char) 186;
+		for (j = 1; j < B-1; ++j)
+		{
+			CC[i*B+j] = ' ';
+		}
+		CC[i*B+j] = (unsigned char) 186;
+	}
+
+	for (; i < 3 && i < A; ++i)
+	{
+		CC[i*B] = (unsigned char) 204;
+		for (j = 1; j < B-1; ++j)
+		{
+			CC[i*B+j] = (unsigned char) 205;
+		}
+		CC[i*B+j] = (unsigned char) 185;
+	}
+	for (; i < A-1; ++i)
+	{
+		CC[i*B] = (unsigned char) 186;
+		for (j = 1; j < B-1; ++j)
+		{
+			CC[i*B+j] = ' ';
+		}
+		CC[i*B+j] = (unsigned char) 186;
+	}
+	for (i = A-1; i < A; ++i)
+	{
+		CC[i*B] = (unsigned char) 200;
+		for (j = 1; j < B-1; ++j)
+		{
+			CC[i*B+j] = (unsigned char) 205;
+		}
+		CC[i*B+j] = (unsigned char) 188;
+	}
 }
 
 void PrintLayar (unsigned char* CC)
@@ -848,7 +845,6 @@ void RandomDeque (Deque *D)
 	}
 	CopyDeque(temp2, D);
 }
-
 
 void Randomize (PETA *P, int z, player *Enemy)
 {
