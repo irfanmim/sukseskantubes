@@ -6,7 +6,7 @@
 #include "boolean.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include "custring.h"
 #include <time.h>
 
 /* Konstanta */

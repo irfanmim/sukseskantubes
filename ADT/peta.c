@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <time.h>
+#include "boolean.h"
 #include "peta.h"
 #include "point.h"
 #include "custring.h"

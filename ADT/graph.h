@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "boolean.h"
-#include "graph.h"
 #include "peta.h"
 #include "point.h"
 
