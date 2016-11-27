@@ -65,9 +65,6 @@ int main()
 	/** MERANDOM URUTAN PETA **/
 		
 	
-	InitSkillTree(&(STREE(Utama)));
-	SearchAndLearn(&(STREE(Utama)), "InitStatus");
-	ShowSkill(STREE(Utama));
 	RandomDeque(&D);
 	s = 0;
 	while (!IsDequeEmpty(D))
