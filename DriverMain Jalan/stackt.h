@@ -9,7 +9,7 @@
 #include "peta.h"
 
 #define Empty 0
-#define MaxEl 10
+#define MaxEl 20
 /* Empty adalah stack dengan elemen kosong . */
 /* Karena indeks dalam bhs C dimulai 0 maka tabel dg indeks 0 tidak dipakai */
 

@@ -1,6 +1,6 @@
 /* ADT Pohon Biner */
 /* Implementasi dengan menggunakan pointer */
-/* Penamaan type Infotype, type Addrnode, dan beberapa fungsi disesuikan 
+/* Penamaan type Infotype, type AddrNode, dan beberapa fungsi disesuikan 
    karena melibatkan modul list rekursif. */
 
 #ifndef _SKILLTREE_H
@@ -14,18 +14,18 @@
 /* *** Definisi Type Pohon Biner *** */
 /* typedef int Infotype; */ /* type Infotype sesuai pada modul listrek */
 typedef int Infotype;	
-typedef struct tnode *Addrnode;
-typedef struct tnode { 
+typedef struct tNode *AddrNode;
+typedef struct tNode { 
 	Infotype info;
-	Addrnode left;
-	Addrnode right;
+	AddrNode left;
+	AddrNode right;
 	boolean learnt;
 	char nama[20];
-} node;
+} Node;
 
 /* Definisi PohonBiner : */
 /* Pohon Biner kosong : P = Nil */
-typedef Addrnode SkillTree;
+typedef AddrNode SkillTree;
  
 /* *** PROTOTYPE *** */
 
@@ -46,15 +46,15 @@ void MakeTree (Infotype Akar, SkillTree L, SkillTree R, SkillTree *P);
 		jika alokasi berhasil. P = Nil jika alokasi gagal. */
 		
 /* Manajemen Memory */
-Addrnode aloknode (Infotype X);
-/* Mengirimkan Addrnode hasil alokasi sebuah elemen */
-/* Jika alokasi berhasil, maka Addrnode tidak Nil, dan misalnya menghasilkan P, 
+AddrNode alokNode (Infotype X);
+/* Mengirimkan AddrNode hasil alokasi sebuah elemen */
+/* Jika alokasi berhasil, maka AddrNode tidak Nil, dan misalnya menghasilkan P, 
   maka Akar(P) = X, Left(P) = Nil, Right(P)=Nil */
 /* Jika alokasi gagal, mengirimkan Nil */
-void dealoknode (Addrnode P);
+void DealokNode (AddrNode P);
 /* I.S. P terdefinisi */
 /* F.S. P dikembalikan ke sistem */
-/* Melakukan dealokasi/pengembalian Addrnode P */
+/* Melakukan dealokasi/pengembalian AddrNode P */
 
 /* *** Predikat-Predikat Penting *** */
 boolean IsTreeEmpty (SkillTree P);

@@ -61,8 +61,13 @@ int main()
 
 	/** MENDAFTARKAN SEMUA NODE-NODE YANG ADA PADA PETA **/
 	CreateGraph(0, MakePOINT(0,0), &G);	
-	
+		
 	/** MERANDOM URUTAN PETA **/
+		
+	
+	InitSkillTree(&(STREE(Utama)));
+	SearchAndLearn(&(STREE(Utama)), "InitStatus");
+	ShowSkill(STREE(Utama));
 	RandomDeque(&D);
 	s = 0;
 	while (!IsDequeEmpty(D))
@@ -71,7 +76,11 @@ int main()
 		P[s] = X;
 		++s;
 	}
-
+/*	printf("BUG\n");
+		printf("BUG\n");
+		printf("BUG\n");
+		printf("BUG\n");
+*/
 	/** INISASI BELUM DI RANDOM **/
 	for (r = 0; r < s; ++r)
 	{
@@ -168,16 +177,6 @@ int main()
 	}
 
 //	system("clear");
-		printf("LALALLA");
-		InitSkillTree(&(STREE(Utama)));
-	ShowSkill(STREE(Utama));
-	if (IsTreeEmpty(STREE(Utama))) {
-		printf("Kosong");
-	}
-	else {
-		printf("Yes");
-	}
-
 	printf("Masukkan ukuruan layar:\n");
 	printf("Ukuran Lebar minimal adalah 20 dan Panjang minimal 75\n");
 
@@ -199,10 +198,10 @@ int main()
 		}
 	} while (uj < 75);
 
+
 	MakeTable(kata, ui, uj);
 	
 	printf("Masukkan nama kamu: "); scanf("%c",&space); gets(NAME(Utama));
-
 
 	system("clear");
 
@@ -233,8 +232,9 @@ int main()
 	STR(Utama) = 999;
 	DEF(Utama) = 999;
 	LVL(Utama) = 100;	
-	Spt(Utama) = 0;
+	SPt(Utama) = 0;
 	InsertStats(kata, Utama, uj);
+	
 
 
 	/* RANDOM UNTUK LOKASI MEDICINE */
@@ -317,8 +317,6 @@ int main()
 		
 		if (Strcmp(CC, "GD"))
 		{
-			ShowSkill(STREE(Utama));
-
 			GerakBawah(&Posisi(Utama));
 			if (!isPath(P[i], Posisi(Utama)) || Y(Utama) >= LebarPeta(P[i]))
 			{
@@ -351,8 +349,6 @@ int main()
 		}
 		else if (Strcmp(CC, "GU"))
 		{
-			ShowSkill(STREE(Utama));
-
 			GerakAtas(&Posisi(Utama));
 			if (!isPath(P[i], Posisi(Utama)) || Y(Utama) < 0)
 			{
@@ -386,8 +382,6 @@ int main()
 
 		else if (Strcmp(CC, "GL"))
 		{
-			ShowSkill(STREE(Utama));
-
 			GerakKiri(&Posisi(Utama));
 			if (!isPath(P[i], Posisi(Utama)) || X(Utama) < 0)
 			{
@@ -420,8 +414,7 @@ int main()
 		}
 
 		else if (Strcmp(CC, "GR"))
-		{ShowSkill(STREE(Utama));
-
+		{
 			GerakKanan(&Posisi(Utama));
 			if (!isPath(P[i], Posisi(Utama)) || X(Utama) >= PanjangPeta(P[i]))
 			{
@@ -451,12 +444,6 @@ int main()
 					GerakKiri(&Posisi(Utama));
 				}
 			}
-		}
-		else if (Strcmp(CC, "SKILL")) {
-			printf("Skill point : %d. Skill List: \n", Spt(Utama));
-			ShowSkill(STREE(Utama));
-			printf("\nAvailable to learn : \n");
-			ShowAvailable(STREE(Utama));
 		}
 			
 

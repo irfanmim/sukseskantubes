@@ -14,7 +14,7 @@ SkillTree Tree (Infotype Akar, SkillTree L, SkillTree R)
 /* Menghasilkan pohon kosong (Nil) jika alokNode gagal */
 {
 	// Kamus
-	Addrnode P;
+	AddrNode P;
 	
 	// Algoritma
 	P = alokNode(Akar);
@@ -34,17 +34,17 @@ void MakeTree (Infotype Akar, SkillTree L, SkillTree R, SkillTree *P)
 }
 
 /* Manajemen Memory */
-Addrnode alokNode (Infotype X)
-/* Mengirimkan Addrnode hasil alokNode sebuah elemen */
-/* Jika alokNode berhasil, maka Addrnode tidak Nil, dan misalnya menghasilkan P, 
+AddrNode alokNode (Infotype X)
+/* Mengirimkan AddrNode hasil alokNode sebuah elemen */
+/* Jika alokNode berhasil, maka AddrNode tidak Nil, dan misalnya menghasilkan P, 
   maka Akar(P) = X, Left(P) = Nil, Right(P)=Nil */
 /* Jika alokNode gagal, mengirimkan Nil */
 {
 	// Kamus
-	Addrnode P;
+	AddrNode P;
 	
 	// Algoritma
-	P = (node*) malloc (sizeof(node));
+	P = (Node*) malloc (sizeof(Node));
 	if (P != Nil) {
 		Akar(P) = X;
 		Left(P) = Nil;
@@ -55,10 +55,10 @@ Addrnode alokNode (Infotype X)
 	return P;
 }
 
-void dealokNode (Addrnode P)
+void DealokNode (AddrNode P)
 /* I.S. P terdefinisi */
 /* F.S. P dikembalikan ke sistem */
-/* Melakukan dealokasi/pengembalian Addrnode P */
+/* Melakukan dealokasi/pengembalian AddrNode P */
 {
 	free(P);
 }
@@ -156,7 +156,7 @@ void AddDaunTerkiri (SkillTree *P, Infotype X, char nama[])
 	if (IsTreeEmpty(*P)) {
 		*P = alokNode(X);
 		if (*P != Nil) {
-			Strcpy(Name(*P), nama);
+			Strcpy(Name(P), nama);
 		}	
 	}
 	else {
@@ -171,7 +171,7 @@ void AddDaunTerkanan (SkillTree *P, Infotype X, char nama[])
 	if (IsTreeEmpty(*P)) {
 		*P = alokNode(X);
 		if (*P != Nil) {
-			Strcpy(Name(*P), nama);
+			Strcpy(Name(P), nama);
 		}
 	}
 	else {
