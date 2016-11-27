@@ -38,7 +38,7 @@ long strlen(char CC[])
 	return i;
 }
 
-void Strcpy(char* A, char B[])
+void Strcpy(char A[], char B[])
 {
 	int i, len = strlen(B);
 	for (i = 0; i < len; ++i)
@@ -58,4 +58,14 @@ void Strcat(char* A, char B[])
 	{
 		A[i] = '\0';
 	}
+}
+
+void KataToStr(Kata A, char B[])
+{
+	int i, len = A.Length;
+	for (i = 0; i < len; i++)
+	{
+		A.TabKata[i+1] = B[i];
+	}
+	B[i] = '\0';
 }

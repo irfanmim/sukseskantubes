@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "custring.h"
+#include "mesinkata.h"
 
 SkillTree Tree (Infotype Akar, SkillTree L, SkillTree R)
 /* Menghasilkan sebuah pohon biner dari A, L, dan R, jika alokNode berhasil */
@@ -146,7 +147,7 @@ boolean IsSkewRight (SkillTree P)
 }
 	
 /* *** Operasi lain *** */
-void AddDaunTerkiri (SkillTree *P, Infotype X, char * nama)
+void AddDaunTerkiri (SkillTree *P, Infotype X, char nama[])
 /* I.S. P boleh kosong */
 /* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkiri */
 {	
@@ -159,7 +160,7 @@ void AddDaunTerkiri (SkillTree *P, Infotype X, char * nama)
 		AddDaunTerkiri(&Left(*P), X, nama);
 	}
 }
-void AddDaunTerkanan (SkillTree *P, Infotype X, char * nama)
+void AddDaunTerkanan (SkillTree *P, Infotype X, char nama[])
 /* I.S. P boleh kosong */
 /* F.S. P bertambah simpulnya, dengan X sebagai simpul daun terkanan */
 {	
@@ -223,36 +224,65 @@ void InitSkillTree(SkillTree *S)
 	AddDaunTerkiri(S, i, temp);
 	i++;
 	
+	char ATK[] = "ATTACK\n";
+	char DEF[] = "DEFENSE\n";
+	char E[] = "END.\n";
+	char I[] = "InitStatus\n";
+	printf("%ld", strlen(I));
+//	line[strlen(line)-1] = '\0';
+//	line[strlen(line)-1] = '\0';
+	printf("%ld", strlen(line));
+	int k;
+	for (k = 0; k < strlen(line); ++k)
+	{
+		printf("%c", line[k]);	
+	}
+	printf("\n");
+	printf("%ld", strlen(line));
+	printf("%s", line);
+	if (Strcmp(line, I))
+	{
+		printf("HEHEHEH");	
+	}
+	else
+	{
+		printf("%s",line);	
+	}
+	int wks;
+	scanf("%d", &wks);
 	while (!feof(daftarskill)) {
 		// ATTACK SKILL TREE
-		while(Strcmp(line, "ATTACK\n")) {
+		while(!Strcmp(line, ATK)) {
 			fgets(line, 50, daftarskill);
+			printf("%s", line);
 		}
-		while(Strcmp(line, "DEFENSE\n"))  {
+		printf("ATTACK\n");
+		while(!Strcmp(line, DEF)) {
 			sscanf(line, "%s", temp);
 			puts(line);
-			if (Strcmp(temp, "ATTACK")) {
+			if (!Strcmp(temp, "ATTACK")) {
 				AddDaunTerkiri(S, i, temp);
 				i++;
 			}
 			fgets(line, 50, daftarskill);
 		}
 		// DEFENSE SKILL TREE
-		while(Strcmp(line, "END.")) {
+		while(!feof(daftarskill)) {
 			sscanf(line, "%s", temp);
 			puts(line);
-			if (Strcmp(temp, "DEFENSE")) {
+			if (!Strcmp(temp, "DEFENSE")) {
 				AddDaunTerkanan(S, i, temp);
 				i++;
 			}
 			fgets(line, 50, daftarskill);
 		}
 	}
+	Strcpy(line, temp);
+	printf("%s", line);
 	
 	fclose(daftarskill);
 	
 }
-
 void ShowSkill(SkillTree S)
 // I.S : Skill Tree P1 terdefinisi
 // F.S : Menampilkan seluruh daftar skill yang sudah dan belum dipelajari. Skill yang sudah dipelajari diberi keterangan (learned).
@@ -271,7 +301,7 @@ void ShowSkill(SkillTree S)
 		ShowSkill(Right(S));
 	}
 }
-boolean Search(SkillTree S, char * nama)
+boolean Search(SkillTree S, char nama[])
 // Mengembalikan true jika terdapat skill dengan nama 'nama' di S
 {
 	if (IsTreeEmpty(S)) {
@@ -287,7 +317,7 @@ boolean Search(SkillTree S, char * nama)
 	}
 }
 
-void SearchAndLearn(SkillTree *S, char * nama)
+void SearchAndLearn(SkillTree *S, char nama[])
 // I.S : S telah diinisialisasi, skill dengan nama 'nama' ada dalam S
 // F.S : Learnt skill 'nama' = true
 {

@@ -5,7 +5,7 @@
 #include "battleandplayer.h"
 #include <time.h>
 #include "soqlist.h"
-
+#include "peta.h"
 void printlogo();
 // I.S : Sembarang
 // F.S : Menghasilkan logo bright souls sebagai output 
