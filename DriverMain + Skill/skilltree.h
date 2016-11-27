@@ -19,8 +19,8 @@ typedef struct tnode {
 	Infotype info;
 	Addrnode left;
 	Addrnode right;
-	boolean learnt;
-	char nama[20];
+	boolean learnt;		// Skill sudah dipelajari / belum
+	char nama[20];		// Nama skill
 } node;
 
 /* Definisi PohonBiner : */
@@ -102,6 +102,8 @@ void SearchAndLearn(SkillTree *S, char nama[]);
 
 boolean IsLearnt(SkillTree S, char nama[]);
 // Mengirimkan true jika skill dengan nama 'nama' telah dipelajari (Learnt = True)
+SkillTree SearchTree(SkillTree * S, char nama[]);
+// Mengembalikan SkillTree nama 'nama' di S
 
 
 #endif

@@ -4,6 +4,7 @@ ATKUP
 Slayer
 Berserk
 Terror
+InstantKill
 DEFENSE
 DEFUP
 TortoiseShell

@@ -1,8 +1,0 @@
-InitStatus
-ATTACK
-ATKUP
-Terror
-DEFENSE
-DEFUP
-Guardian
-END.

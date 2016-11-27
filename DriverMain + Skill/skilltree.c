@@ -44,7 +44,7 @@ Addrnode alokNode (Infotype X)
 	Addrnode P;
 	
 	// Algoritma
-	P = (node*) malloc (sizeof(node));
+	P = (Addrnode*) malloc (4 * (sizeof(long)));
 	if (P != Nil) {
 		Akar(P) = X;
 		Left(P) = Nil;
@@ -224,9 +224,9 @@ void InitSkillTree(SkillTree *S)
 	
 	// Algoritma
 	i = 0;
-	fgets(line, 50, daftarskill);
+	fgets(line, 50, daftarskill);	// Ambil InitStatus
 	sscanf(line, "%s", temp);
-	AddDaunTerkiri(S, i, temp);
+	AddDaunTerkiri(S, i, temp);		// Jadikan root
 	i++;
 	
 	char ATK[] = "ATTACK\n";
@@ -238,7 +238,7 @@ void InitSkillTree(SkillTree *S)
 		while(!Strcmp(line, ATK)) {
 			fgets(line, 50, daftarskill);
 		}
-		while(!Strcmp(line, DEF)) {
+		while(!Strcmp(line, DEF)) {			// Insert semua skill bergolongan ATTACK
 			sscanf(line, "%s", temp);
 			if (!Strcmp(temp, "ATTACK")) {
 				AddDaunTerkiri(S, i, temp);
@@ -247,7 +247,7 @@ void InitSkillTree(SkillTree *S)
 			fgets(line, 50, daftarskill);
 		}
 		// DEFENSE SKILL TREE
-		while(!feof(daftarskill)) {
+		while(!Strcmp(line, "END.")) {		// Insert semua skill bergolongan DEFENSE
 			sscanf(line, "%s", temp);
 			if (!Strcmp(temp, "DEFENSE")) {
 				AddDaunTerkanan(S, i, temp);
@@ -335,4 +335,25 @@ boolean IsLearnt(SkillTree S, char nama[])
 			return (IsLearnt(Left(S), nama) || IsLearnt(Right(S), nama));
 		}
 	}
-}	
+}
+
+SkillTree SearchTree(SkillTree * S, char nama[])
+// Mengembalikan true jika terdapat skill dengan nama 'nama' di S
+{
+	if (IsTreeEmpty(*S)) {
+		return Nil;
+	}
+	else {
+		if (Strcmp(Name(*S), nama))  {
+			return (*S);
+		}
+		else { 
+			if (Search(Left(*S), nama)) {
+				return (SearchTree(&Left(*S), nama));
+			}
+			else {
+				return (SearchTree(&Right(*S), nama));
+			}
+		}
+	}
+}

@@ -61,8 +61,10 @@ int main()
 
 	/** MENDAFTARKAN SEMUA NODE-NODE YANG ADA PADA PETA **/
 	CreateGraph(0, MakePOINT(0,0), &G);	
-	
+		
 	/** MERANDOM URUTAN PETA **/
+
+
 	RandomDeque(&D);
 	s = 0;
 	while (!IsDequeEmpty(D))
@@ -71,7 +73,11 @@ int main()
 		P[s] = X;
 		++s;
 	}
-
+/*	printf("BUG\n");
+		printf("BUG\n");
+		printf("BUG\n");
+		printf("BUG\n");
+*/
 	/** INISASI BELUM DI RANDOM **/
 	for (r = 0; r < s; ++r)
 	{
@@ -223,12 +229,11 @@ int main()
 	STR(Utama) = 999;
 	DEF(Utama) = 999;
 	LVL(Utama) = 100;	
-	Spt(Utama) = 0;
+	SPt(Utama) = 0;
 	InsertStats(kata, Utama, uj);
-	InitSkillTree(&STREE(Utama));
+	InitSkillTree(&(STREE(Utama)));					// Inisialisasi daftar skill pemain
+	SearchAndLearn(&(STREE(Utama)), "InitStatus");	// Learn root sebagai dasar pengambilan skill lain
 	
-
-
 	/* RANDOM UNTUK LOKASI MEDICINE */
 	int l;
 	for (l = 0; l <= 2; ++l)
@@ -437,15 +442,38 @@ int main()
 				}
 			}
 		}
-		else if (Strcmp(CC, "SKILL")) {
-			printf("Skill point : %d. Skill List: \n", Spt(Utama));
-			ShowSkill(STREE(Utama));
-			printf("\nAvailable to learn : \n");
+		else if(Strcmp(CC, "SKILL")) {
+			printf("\nJumlah skill point : %d.\n\n Daftar Skill :\n", SPt(Utama));
+			ShowSkill(STREE(Utama)); printf("\n");
+			printf("Skill yang dapat dipelajari : \n");
 			ShowAvailable(STREE(Utama));
+		}	
+
+		// SKILL AKTIF
+		else if(Strcmp(CC, "InstantKill")) {
+			if (IsLearnt(STREE(Utama), "InstantKill")) {
+				if (Letak(P[i], (Y(Utama) + 1), X(Utama)) == 'E') {
+					Letak(P[i], (Y(Utama)+1), X(Utama)) = '-';
+				}
+				else if (Letak(P[i], (Y(Utama) - 1), X(Utama)) == 'E') { 		// Jika musuh ada pada satu kotak di atas, bawah, kiri, atau kanan player,
+					Letak(P[i], (Y(Utama) -1 ), X(Utama)) = '-';
+				}
+				else if (Letak(P[i], Y(Utama), (X(Utama) + 1)) == 'E') {		// maka akan diinstant-kill
+					Letak(P[i], Y(Utama), (X(Utama) +1)) = '-';
+				}
+				else if (Letak(P[i], Y(Utama), (X(Utama) - 1)) == 'E') {
+					Letak(P[i], Y(Utama), (X(Utama)-1)) = '-';
+				}
+				Learnt(SearchTree(&(STREE(Utama)), "InstantKill")) = false;		// InstantKill hanya bisa dipakai satu kali setiap kali telah dipelajari
+			}
+			else {
+				for (int n = 1; n <= 32; n++) {
+					printf("\n");
+				}
+				printf("\nKamu belum mempelajari skill \"InstantKill\"\n\n\n");
+			}
 		}
-			
-
-
+		
 		if (Letak(P[i], Y(Utama), X(Utama)) == 'M')
 		{
 			RestoredHP(&Utama);
