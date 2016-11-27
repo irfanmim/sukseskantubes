@@ -19,7 +19,7 @@ typedef struct {
 	long int HPMAX;
 	int LVL;
 	long int EXP;
-	long int ATK;
+	long int STR;
 	long int DEF;
 } player;
 
@@ -30,7 +30,7 @@ typedef struct {
 #define Y(P) 		(P).posisi.Y
 #define HP(P) 		(P).HP
 #define EXP(P) 		(P).EXP
-#define ATK(P) 		(P).ATK
+#define STR(P) 		(P).STR
 #define DEF(P)		(P).DEF
 #define LVL(P) 		(P).LVL
 #define NAME(P)		(P).name
@@ -50,19 +50,21 @@ void LVLUP (player *P1, int Exp[]);
 /*	Menaikkan Level Pemain sebanyak 1 */
 void RestoredHP (player *P1);
 /*	Mengembalikan HP Pemain menjadi Maksimum */
-boolean isDeath (player *P1);
+boolean isDeath (player P1);
 /*	Mengecek apakah pemain sudah mati atau belum */
 
 //BATTLE
-void bertarungreal(char lawan, char cplayer,player *me, player *enemy);
+long int HitungDamage(player me, player enemy);
 
-void bertarungstatus(char lawan, char cplayer, player me, player enemy);
+void bertarungreal(char lawan, char cplayer,player *me, player *enemy, long int *atklawan, long int *atkkita);
+
+void bertarungstatus(char lawan, char cplayer, player me, player enemy,long int atklawan, long int atkkita);
 
 void PrintHeader(player me, player enemy, int round, Queue qenemy, int i,int  r,int lebar, int tinggi);
 
 void PrintHeaderInBattle(player me, player enemy, int round, Queue qenemy, int i,int  r,int x ,int lebar, int tinggi);
 
-void PrintAndInput(Queue *Q, int *i ,int lebar, int tinggi);
+void PrintAndInput(Queue *Q, int *i ,int lebar, int tinggi, int *menang);
 
 //tambahan
 void PrintWithoutInput(Queue *Q, int *i, int lebar, int tinggi);
@@ -71,6 +73,6 @@ void PrintCommandInBattle(Queue Q, int i,int lebar, int tinggi);
 
 void RandomAngka(int *i, int *r);
 
-void BattleOn(player *me, player enemy, Stack enemyatk ,boolean *win, int lebar, int tinggi);
+void BattleOn(player *me, player enemy, Stack enemySTR ,boolean *win, int lebar, int tinggi);
 
 #endif
