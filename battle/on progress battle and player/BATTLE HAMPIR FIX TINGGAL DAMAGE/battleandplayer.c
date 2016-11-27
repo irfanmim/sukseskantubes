@@ -51,18 +51,31 @@ boolean isDeath (player *P1)
 }
 
 //BATTLE
+long int HitungDamage(player serang, player kena){
+	return (ATK(serang) * (HP(serang) / HPMAX(serang))) - (DEF(kena) * (HP(kena) / HPMAX(kena)))  ;
+}
+
 void bertarungreal(char lawan, char cplayer, player *me, player *enemy){
+	long int atklawan = HitungDamage(*enemy,*me);
+	long int atkkita = HitungDamage(*me,*enemy);
+	if(atklawan <= 0){
+		atklawan = 1;
+	}
+	if (atkkita <= 0){
+		atkkita = 1;
+	}
+
 	if (lawan == 'A')
 	{
 		if (cplayer == 'A')
 		{
-			HP(*me) = HP(*me) - ATK(*enemy);
-			HP(*enemy) = HP(*enemy) - ATK(*me);
+			HP(*me) = HP(*me) - atklawan;
+			HP(*enemy) = HP(*enemy) - atkkita;
 			
 			//seri
 		}else if (cplayer == 'F')
 		{	
-			HP(*me) = HP(*me) - ATK(*enemy);
+			HP(*me) = HP(*me) - atklawan;
 
 		}else if (cplayer == 'B')
 		{
@@ -71,16 +84,16 @@ void bertarungreal(char lawan, char cplayer, player *me, player *enemy){
 	{
 		if (cplayer == 'A')
 		{
-			HP(*enemy) = HP(*enemy) - ATK(*me);
+			HP(*enemy) = HP(*enemy) - atkkita;
 			
 		}else if (cplayer == 'F')
 		{
-			HP(*me) = HP(*me) - ATK(*enemy);
-			HP(*enemy) = HP(*enemy) - ATK(*me);
+			HP(*me) = HP(*me) - atklawan;
+			HP(*enemy) = HP(*enemy) - atkkita;
 			//
 		}else if (cplayer == 'B')
 		{
-			HP(*me) = HP(*me) - ATK(*enemy);
+			HP(*me) = HP(*me) - atklawan;
 		}
 	}else if (lawan == 'B')
 	{
@@ -88,25 +101,42 @@ void bertarungreal(char lawan, char cplayer, player *me, player *enemy){
 		{
 		}else if (cplayer == 'F')
 		{
-			HP(*enemy) = HP(*enemy) - ATK(*me);
+			HP(*enemy) = HP(*enemy) - atkkita;
 		}else if (cplayer == 'B')
 		{
 		}
 	}
+
+	if(HP(*me) < 0 ){
+		HP(*me) = 0;
+	}
+
+	if (HP(*enemy) < 0){
+		HP(*enemy) = 0;
+	}
 }
 
 void bertarungstatus(char lawan, char cplayer, player me, player enemy){
+	long int atklawan = HitungDamage(enemy,me);
+	long int atkkita = HitungDamage(me,enemy);
+	if(atklawan <= 0){
+		atklawan = 1;
+	}
+	if (atkkita <= 0){
+		atkkita = 1;
+	}
+
 	if (lawan == 'A')
 	{
 		if (cplayer == 'A')
 		{	
-			printf("║ %s attacks %s! %s -%ldHP \n",NAME(enemy),NAME(me),NAME(me),ATK(enemy) );
-			printf("║ %s attacks %s! %s -%ldHP \n",NAME(me),NAME(enemy),NAME(enemy),ATK(me) );
+			printf("║ %s attacks %s! %s -%ldHP \n",NAME(enemy),NAME(me),NAME(me),atklawan );
+			printf("║ %s attacks %s! %s -%ldHP \n",NAME(me),NAME(enemy),NAME(enemy),atkkita );
 			
 			//seri
 		}else if (cplayer == 'F')
 		{	
-			printf("║ %s attacks %s! %s -%ldHP \n",NAME(enemy),NAME(me),NAME(me),ATK(enemy) );
+			printf("║ %s attacks %s! %s -%ldHP \n",NAME(enemy),NAME(me),NAME(me),atklawan );
 		
 		}else if (cplayer == 'B')
 		{
@@ -116,16 +146,16 @@ void bertarungstatus(char lawan, char cplayer, player me, player enemy){
 	{
 		if (cplayer == 'A')
 		{
-			printf("║ %s attacks %s! %s -%ldHP \n",NAME(me),NAME(enemy),NAME(enemy),ATK(me));
+			printf("║ %s attacks %s! %s -%ldHP \n",NAME(me),NAME(enemy),NAME(enemy),atkkita);
 			
 		}else if (cplayer == 'F')
 		{
-			printf("║ %s flanks %s! %s -%ldHP \n",NAME(enemy),NAME(me),NAME(me),ATK(enemy) );
-			printf("║ %s flanks %s! %s -%ldHP \n",NAME(me),NAME(enemy),NAME(enemy),ATK(me));
+			printf("║ %s flanks %s! %s -%ldHP \n",NAME(enemy),NAME(me),NAME(me),atklawan );
+			printf("║ %s flanks %s! %s -%ldHP \n",NAME(me),NAME(enemy),NAME(enemy),atkkita);
 			//
 		}else if (cplayer == 'B')
 		{
-			printf("║ %s flanks %s! %s -%ldHP \n",NAME(enemy),NAME(me),NAME(me),ATK(enemy));
+			printf("║ %s flanks %s! %s -%ldHP \n",NAME(enemy),NAME(me),NAME(me),atklawan);
 		}
 	}else if (lawan == 'B')
 	{
@@ -134,7 +164,7 @@ void bertarungstatus(char lawan, char cplayer, player me, player enemy){
 			printf("║ %s attacks %s, but it's blocked \n",NAME(me),NAME(enemy));
 		}else if (cplayer == 'F')
 		{
-			printf("║ %s flanks %s! %s -%ldHP \n",NAME(me),NAME(enemy),NAME(enemy),ATK(me) );
+			printf("║ %s flanks %s! %s -%ldHP \n",NAME(me),NAME(enemy),NAME(enemy),atkkita );
 		}else if (cplayer == 'B')
 		{
 			printf("║ %s blocks %s! \n",NAME(enemy),NAME(me));
@@ -143,7 +173,6 @@ void bertarungstatus(char lawan, char cplayer, player me, player enemy){
 			//seri
 		}
 	}
-
 }
 
 void PrintHeader(player me, player enemy, int round, Queue qenemy, int i,int  r, int lebar, int tinggi){
@@ -540,7 +569,7 @@ void BattleOn(player *me, player enemy, Stack enemyatk, boolean *win, int lebar,
 					selesai = true;
 				}
 			}while(i!=4);
-			if (menang != 4){
+			if (HP(enemy) != 0){
 				PrintHeader(*me,enemy,round,atkenm,r1,r2,lebar,tinggi);
 				
 				PrintWithoutInput(&atkpl,&i,lebar,tinggi);

@@ -52,6 +52,8 @@ boolean isDeath (player *P1);
 /*	Mengecek apakah pemain sudah mati atau belum */
 
 //BATTLE
+long int HitungDamage(player me, player enemy);
+
 void bertarungreal(char lawan, char cplayer,player *me, player *enemy);
 
 void bertarungstatus(char lawan, char cplayer, player me, player enemy);
