@@ -51,7 +51,11 @@ boolean isDeath (player P1)
 {
 	return (HP(P1) <= 0);
 }
-
+void ExpUp(player *P1, player Enemy)
+/* Menambah exp setelah battle */
+{
+	Exp(*P1) = Exp(*P1) + ((1/10) * HP(Enemy)) + Exp(Enemy);
+}
 void ShowStatus(player P1)
 // I.S : P1 terdefinisi
 // F.S : Menampilkan current status P1 (HP, STR, DEF)

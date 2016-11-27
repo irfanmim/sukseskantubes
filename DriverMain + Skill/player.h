@@ -57,10 +57,15 @@ void RestoredHP (player *P1);
 /*	Mengembalikan HP Pemain menjadi Maksimum */
 boolean isDeath (player P1);
 /*	Mengecek apakah pemain sudah mati atau belum */
+void ExpUp(player *P1, player Enemy);
+/* Menambah exp setelah battle */
+
 
 void ShowStatus(player P1);
 // I.S : P1 terdefinisi
 // F.S : Menampilkan current status P1 (HP, ATK, DEF)
+
+
 
 /* *** PROSES SKILL TREE *** */
 void ActivateSkill(player * P1, SkillTree *S);

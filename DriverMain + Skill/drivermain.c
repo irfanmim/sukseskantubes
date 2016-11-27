@@ -42,7 +42,8 @@ int main()
 	PETA P[11];
 	player Utama, Enemy[60];
 	unsigned char space;
-
+	char temp[];
+	
 	/* ALGORITMA */
 	CreateDeque(&D);
 	char nana[] = "List Peta.txt";
@@ -448,6 +449,17 @@ int main()
 			printf("Skill yang dapat dipelajari : \n");
 			ShowAvailable(STREE(Utama));
 		}	
+		else if(Strcmp(CC, "Learn")) {
+			printf("\nMasukkan nama skill yang ingin kamu pelajari : \n");
+			scanf("%s", temp);
+			if (Search(STREE(Utama), temp)) {
+				Learn(&Utama, temp);
+			}
+			else {
+				printf("Tidak ada skill dengan nama %s\n", temp);
+			}
+		}
+		
 
 		// SKILL AKTIF
 		else if(Strcmp(CC, "InstantKill")) {
@@ -500,6 +512,14 @@ int main()
 			if (win)
 			{
 				Letak(P[i], Y(Utama), X(Utama)) = 'P';
+				ExpUp(&Utama, Enemy);
+				if (IsLvlUp(&Utama, Exp)) {
+					LVLUP(&Utama, Exp);
+					SPt(Utama) += 1;
+					printf("Selamat, kamu telah naik level. Kamu memperoleh 1 skill point.\n");
+					printf("Input \"SKILL\" untuk menampilkan daftar skill yang dapat dipelajari.\n");
+					printf("Kemudian, input \"Learn\" untuk mempelajari skill yang kamu inginkan\n");
+				}
 			}
 			else
 			{
