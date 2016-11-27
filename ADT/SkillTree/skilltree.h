@@ -100,6 +100,8 @@ void SearchAndLearn(SkillTree *S, char nama[]);
 // I.S : S telah diinisialisasi, skill dengan nama 'nama' ada dalam S
 // F.S : Learnt skill 'nama' = true
 
+boolean IsLearnt(SkillTree S, char nama[]);
+// Mengirimkan true jika skill dengan nama 'nama' telah dipelajari (Learnt = True)
 
 
 #endif

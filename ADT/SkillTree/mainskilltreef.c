@@ -22,16 +22,21 @@ int main () {
 	ShowSkill(S);
 	ShowAvailable(S);
 	printf("\n");
-	printf("Learn hihi .. \n");
+	printf("Learn TortoiseShell .. \n");
+	SearchAndLearn(&S, "TortoiseShell");
 	ShowSkill(S);
 	ShowAvailable(S);
-	printf("%d\n %d\n", IsSkewLeft(S), IsSkewRight(S)); bug bug nl
+	printf("%d\n", IsSkewLeft(S));
+	printf("%d\n", IsSkewRight(S));
 	printf("Ada skill Hoho : %d", Search(S, "Hoho")); printf("\n"); 
 	printf("Ada skill Huhu ? : %d", Search(S, "Huhu")); printf("\n");
 	AddDaunTerkiri(&S, 9, "HmHm");
 	AddDaunTerkanan(&S, 8, "Huhu");
 	ShowSkill(S);
-	
+	printf("%d\n", IsLearnt(S, "InitStatus"));
+	SearchAndLearn(&S, "Terros");
+	printf("%d\n", IsLearnt(S, "Guardian"));
+
 	
 	return 0;
 }

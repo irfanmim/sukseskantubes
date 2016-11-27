@@ -49,6 +49,7 @@ AddrNode alokNode (Infotype X)
 		Akar(P) = X;
 		Left(P) = Nil;
 		Right(P) = Nil;
+		Learnt(P) = false;
 	}
 	
 	return P;
@@ -228,38 +229,13 @@ void InitSkillTree(SkillTree *S)
 	char DEF[] = "DEFENSE\n";
 	char E[] = "END.\n";
 	char I[] = "InitStatus\n";
-	printf("%ld", strlen(I));
-//	line[strlen(line)-1] = '\0';
-//	line[strlen(line)-1] = '\0';
-	printf("%ld", strlen(line));
-	int k;
-	for (k = 0; k < strlen(line); ++k)
-	{
-		printf("%c", line[k]);	
-	}
-	printf("\n");
-	printf("%ld", strlen(line));
-	printf("%s", line);
-	if (Strcmp(line, I))
-	{
-		printf("HEHEHEH");	
-	}
-	else
-	{
-		printf("%s",line);	
-	}
-	int wks;
-	scanf("%d", &wks);
 	while (!feof(daftarskill)) {
 		// ATTACK SKILL TREE
 		while(!Strcmp(line, ATK)) {
 			fgets(line, 50, daftarskill);
-			printf("%s", line);
 		}
-		printf("ATTACK\n");
 		while(!Strcmp(line, DEF)) {
 			sscanf(line, "%s", temp);
-			puts(line);
 			if (!Strcmp(temp, "ATTACK")) {
 				AddDaunTerkiri(S, i, temp);
 				i++;
@@ -269,17 +245,13 @@ void InitSkillTree(SkillTree *S)
 		// DEFENSE SKILL TREE
 		while(!feof(daftarskill)) {
 			sscanf(line, "%s", temp);
-			puts(line);
 			if (!Strcmp(temp, "DEFENSE")) {
 				AddDaunTerkanan(S, i, temp);
 				i++;
 			}
 			fgets(line, 50, daftarskill);
 		}
-	}
-	Strcpy(line, temp);
-	printf("%s", line);
-	
+	}	
 	fclose(daftarskill);
 	
 }
@@ -344,3 +316,19 @@ void SearchAndLearn(SkillTree *S, char nama[])
 		}
 	}
 }
+
+boolean IsLearnt(SkillTree S, char nama[])
+// Mengirimkan true jika skill dengan nama 'nama' telah dipelajari (Learnt = True)
+{
+	if (IsTreeEmpty(S)) {
+		return false;
+	}
+	else {
+		if (Strcmp(Name(S), nama) && (Learnt(S)))  {
+			return true;
+		}
+		else { 
+			return (IsLearnt(Left(S), nama) || IsLearnt(Right(S), nama));
+		}
+	}
+}	

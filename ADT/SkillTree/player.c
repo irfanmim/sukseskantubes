@@ -136,7 +136,10 @@ void Terror(player *P1)
 	STR(*P1) = STR(*P1) + ((1/10) * STR(*P1));
 	HPMAX(*P1) = HPMAX(*P1) + ((5/100) * HPMAX(*P1));
 }
-
+void InstantKill(player *P1)
+{
+	;
+}
 // DEFEND
 void DEFUP(player *P1)
 {
