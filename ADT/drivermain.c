@@ -197,8 +197,8 @@ int main()
 	Y(Utama) = i;
 	HP(Utama) = 100;
 	HPMAX(Utama) = 100;
-	STR(Utama) = 999;
-	DEF(Utama) = 999;
+	STR(Utama) = 50;
+	DEF(Utama) = 50;
 	LVL(Utama) = 100;	
 	InsertStats(kata, Utama, uj);
 
