@@ -54,7 +54,7 @@ boolean isDeath (player P1)
 
 //BATTLE
 long int HitungDamage(player serang, player kena){
-	return (STR(serang) * (HP(serang) / HPMAX(serang))) - (DEF(kena) * (HP(kena) / HPMAX(kena)))  ;
+	return (STR(serang) * ((float) HP(serang) / (float) HPMAX(serang))) - (DEF(kena) * ((float) HP(kena) / (float) HPMAX(kena)))  ;
 }
 
 void bertarungreal(char lawan, char cplayer, player *me, player *enemy, long int *atklawan, long int *atkkita){
@@ -541,7 +541,7 @@ void RandomAngka(int *i, int *r){
 void BattleOn(player *me, player enemy, Stack enemySTR, boolean *win, int lebar, int tinggi ){
 	Queue STRenm,STRpl;
 	int i,x,z,r1,r2,round,menang = 0;
-	long int dmglawan,dmgkita;
+	long int dmglawan,dmgkita,dmglawanprev,dmgkitaprev;
 	addressq penemy,pplayer;
 	boolean selesai = false;
 
@@ -625,13 +625,16 @@ void BattleOn(player *me, player enemy, Stack enemySTR, boolean *win, int lebar,
 				bertarungstatus(Info(penemy),Info(pplayer),*me,enemy,dmglawan,dmgkita);
 				prevlawan = Info(penemy);
 				prevplayer = Info(pplayer);
+				dmgkitaprev = dmgkita;
+				dmglawanprev = dmglawan;
 			}else{
 				gotoxy(1,tinggi/2);
-				bertarungstatus(prevlawan,prevplayer,*me,enemy,dmglawan,dmgkita);
+				bertarungstatus(prevlawan,prevplayer,*me,enemy,dmglawanprev,dmgkitaprev);
 				bertarungstatus(Info(penemy),Info(pplayer),*me,enemy,dmglawan,dmgkita);
 				prevlawan = Info(penemy);
 				prevplayer = Info(pplayer);
-
+				dmgkitaprev = dmgkita;
+				dmglawanprev = dmglawan;
 			}
 
 
