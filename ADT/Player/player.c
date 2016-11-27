@@ -12,6 +12,12 @@ void gotoxy(int x, int y) {
 	printf("%c[%d;%df", 0x1B, y, x);
 }
 
+void delay(unsigned int mseconds)
+{
+    clock_t goal = mseconds + clock();
+    while (goal > clock());
+}
+
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */
 
 void HPUP (player *P1, int N)
@@ -51,6 +57,98 @@ boolean isDeath (player P1)
 {
 	return (HP(P1) <= 0);
 }
+
+//Tampilan
+void GotoBattle(int lebar, int tinggi){
+	for (int w = 0; w <= lebar; w++){
+		//for (int i = 0; i <= tinggi; ++i){
+			gotoxy(2,tinggi-2);
+			printf("Now Loading");
+			gotoxy(w,tinggi-2);
+			printf("═");
+		//}
+		printf("\n");
+
+		delay(20000);
+	}
+}
+
+void YouWin(int lebar, int tinggi){
+	for (int i = 0; i <= tinggi; i++){
+		system("clear");
+		for (int j = 0; j <= lebar; j++){	
+			gotoxy(j,i);
+			printf("═");
+		}
+		if (i == (tinggi/2)-3) {
+			gotoxy((lebar/2)-37,(tinggi/2)-3);
+			printf("YYY   YYY   OOOOO     UUUU  UUUU    WWWW     WWW     WWWW III  NNN     NNN" );				
+		}else if (i == (tinggi/2)-2){
+			gotoxy((lebar/2)-37,(tinggi/2)-3);
+			printf("YYY   YYY   OOOOO     UUUU  UUUU    WWWW     WWW     WWWW III  NNN     NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)-2);
+			printf(" YYY YYY  OOOO OOOO   UUUU  UUUU    WWWW     WWW     WWWW III  NNNNN   NNN" );
+		}else if (i == (tinggi/2)-1){
+			gotoxy((lebar/2)-37,(tinggi/2)-3);
+			printf("YYY   YYY   OOOOO     UUUU  UUUU    WWWW     WWW     WWWW III  NNN     NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)-2);
+			printf(" YYY YYY  OOOO OOOO   UUUU  UUUU    WWWW     WWW     WWWW III  NNNNN   NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)-1);
+			printf("  YYYYY  OOOO   OOOO  UUUU  UUUU     WWWW   WWWWw   wWWW  III  NNNNNN  NNN" );
+		}else if (i == (tinggi/2)){
+			gotoxy((lebar/2)-37,(tinggi/2)-3);
+			printf("YYY   YYY   OOOOO     UUUU  UUUU    WWWW     WWW     WWWW III  NNN     NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)-2);
+			printf(" YYY YYY  OOOO OOOO   UUUU  UUUU    WWWW     WWW     WWWW III  NNNNN   NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)-1);
+			printf("  YYYYY  OOOO   OOOO  UUUU  UUUU     WWWW   WWWWw   wWWW  III  NNNNNN  NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2));
+			printf("   YYY   OOOO   OOOO  UUUU  UUUU      WWWW www wWW wWWW   III  NNN NNN NNN" );
+		}else if (i == (tinggi/2)+1){
+			gotoxy((lebar/2)-37,(tinggi/2)-3);
+			printf("YYY   YYY   OOOOO     UUUU  UUUU    WWWW     WWW     WWWW III  NNN     NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)-2);
+			printf(" YYY YYY  OOOO OOOO   UUUU  UUUU    WWWW     WWW     WWWW III  NNNNN   NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)-1);
+			printf("  YYYYY  OOOO   OOOO  UUUU  UUUU     WWWW   WWWWw   wWWW  III  NNNNNN  NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2));
+			printf("   YYY   OOOO   OOOO  UUUU  UUUU      WWWW www wWW wWWW   III  NNN NNN NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)+1);
+			printf("   YYY   OOOO   OOOO  UUUU  UUUU       wwwwwWW WWWWWWW    III  NNN  NNNNNN" );
+		}else if (i == (tinggi/2)+2){
+			gotoxy((lebar/2)-37,(tinggi/2)-3);
+			printf("YYY   YYY   OOOOO     UUUU  UUUU    WWWW     WWW     WWWW III  NNN     NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)-2);
+			printf(" YYY YYY  OOOO OOOO   UUUU  UUUU    WWWW     WWW     WWWW III  NNNNN   NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)-1);
+			printf("  YYYYY  OOOO   OOOO  UUUU  UUUU     WWWW   WWWWw   wWWW  III  NNNNNN  NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2));
+			printf("   YYY   OOOO   OOOO  UUUU  UUUU      WWWW www wWW wWWW   III  NNN NNN NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)+1);
+			printf("   YYY   OOOO   OOOO  UUUU  UUUU       wwwwwWW WWWWWWW    III  NNN  NNNNNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)+2);
+			printf("   YYY    OOOO OOOO   UUUUUUUUUU        wwwwW   wwwww     III  NNN   NNNNN" );
+		}else if (i >= (tinggi/2)+3){
+			gotoxy((lebar/2)-37,(tinggi/2)-3);
+			printf("YYY   YYY   OOOOO     UUUU  UUUU    WWWW     WWW     WWWW III  NNN     NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)-2);
+			printf(" YYY YYY  OOOO OOOO   UUUU  UUUU    WWWW     WWW     WWWW III  NNNNN   NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)-1);
+			printf("  YYYYY  OOOO   OOOO  UUUU  UUUU     WWWW   WWWWw   wWWW  III  NNNNNN  NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2));
+			printf("   YYY   OOOO   OOOO  UUUU  UUUU      WWWW www wWW wWWW   III  NNN NNN NNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)+1);
+			printf("   YYY   OOOO   OOOO  UUUU  UUUU       wwwwwWW WWWWWWW    III  NNN  NNNNNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)+2);
+			printf("   YYY    OOOO OOOO   UUUUUUUUUU        wwwwW   wwwww     III  NNN   NNNNN" );
+			gotoxy((lebar/2)-37,(tinggi/2)+3);
+			printf("   YYY      OOOOO      UUUUUUUU          www     www      III  NNN     NNN" );
+		}	
+		printf("\n");
+		delay(100000);
+	}
+}
+
 
 //BATTLE
 long int HitungDamage(player serang, player kena){
@@ -545,6 +643,8 @@ void BattleOn(player *me, player enemy, Stack enemySTR, boolean *win, int lebar,
 	addressq penemy,pplayer;
 	boolean selesai = false;
 
+	GotoBattle(lebar,tinggi);
+
 	round = 1;
 	while(HP(*me) > 0 && HP(enemy) > 0 && round <= 10 ){
 		CreateEmptyQueue(&STRpl);
@@ -652,6 +752,7 @@ void BattleOn(player *me, player enemy, Stack enemySTR, boolean *win, int lebar,
 	}
 	if(HP(*me) > 0 && round <= 10 && HP(enemy) <= 0 ){
 		*win = true;
+		YouWin(lebar,tinggi);
 	}else{
 		*win = false;
 	}

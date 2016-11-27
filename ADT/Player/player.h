@@ -53,6 +53,11 @@ void RestoredHP (player *P1);
 boolean isDeath (player P1);
 /*	Mengecek apakah pemain sudah mati atau belum */
 
+//Transisi
+void GotoBattle(int lebar, int tinggi);
+
+void YouWin(int lebar, int tinggi);
+
 //BATTLE
 long int HitungDamage(player me, player enemy);
 
