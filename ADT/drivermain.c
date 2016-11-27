@@ -20,11 +20,13 @@ void MakeTable (unsigned char* CC, int A, int B);
 void MakeStack (Stack *st);
 void PrintLayar (unsigned char* CC);
 void RandomDeque (Deque *D);
+void Randomize (PETA *P, int z, player *Enemy);
 
 /* KAMUS GLOBAL */
+boolean done[10];
 int ui, uj;
-unsigned char kata[100][100];
 long int prima[50001];
+unsigned char kata[100][100];
 
 int main()
 {
@@ -38,7 +40,7 @@ int main()
 	Graph G;
 	FILE *listed;
 	PETA P[10];
-	player Utama, Enemy[3];
+	player Utama, Enemy[50];
 	unsigned char space;
 
 	/* ALGORITMA */
@@ -70,10 +72,10 @@ int main()
 		++s;
 	}
 
+	/** INISASI BELUM DI RANDOM **/
 	for (r = 0; r < s; ++r)
 	{
-		PrintPeta(P[r]);
-		printf("\n");
+		done[r] = false;
 	}
 
 	/** MENAMBAHKAN EDGE PADA GRAPH **/
@@ -142,8 +144,7 @@ int main()
 		}
 	}
 
-//	InsertEdge(&G, 0, FindBaris(P[0], PanjangPeta(P[0])-1, '-'), 1, FindBaris(P[1], 0, '-'));
-//	InsertEdge(&G, 1, FindBaris(P[1], 0, '-'), 0, FindBaris(P[0], PanjangPeta(P[0])-1, '-'));
+	system("clear");
 	printf("Masukkan ukuruan layar:\n");
 	printf("Ukuran Lebar minimal adalah 20 dan Panjang minimal 75\n");
 
@@ -265,7 +266,8 @@ int main()
 			Strcat(NAME(Enemy[l]),"Jau cups");
 		}
 	}	
-	
+	done[0] = true;
+		
 	PrintLayar(kata);
 	int k = 3;
 	POINT initial;
@@ -300,6 +302,7 @@ int main()
 							Letak(P[j], Y(Utama), X(Utama)) = 'P';
 							MakeTable(kata, ui, uj);
 							InsertStats(kata, Utama, uj);
+							Randomize(&P[j], j, Enemy);
 							i = j;
 						}
 					}
@@ -331,6 +334,7 @@ int main()
 							Letak(P[j], Y(Utama), X(Utama)) = 'P';
 							MakeTable(kata, ui, uj);
 							InsertStats(kata, Utama, uj);
+							Randomize(&P[j], j, Enemy);
 							i = j;
 						}
 					}
@@ -363,6 +367,7 @@ int main()
 							Letak(P[j],Y(Utama), X(Utama)) = 'P';
 							MakeTable(kata, ui, uj);
 							InsertStats(kata, Utama, uj);
+							Randomize(&P[j], j, Enemy);
 							i = j;
 						}
 					}
@@ -395,6 +400,7 @@ int main()
 							Letak(P[j], Y(Utama), X(Utama)) = 'P';
 							MakeTable(kata, ui, uj);
 							InsertStats(kata, Utama, uj);
+							Randomize(&P[j], j, Enemy);
 							i = j;
 						}
 					}
@@ -415,18 +421,20 @@ int main()
 		
 		else if (Letak(P[i], Y(Utama), X(Utama)) == 'E')
 		{
-			int z = 0;
+			int z = 3*i, temp = z+3;
 			boolean found = false, win;
 			Stack yuhu;
 			CreateEmpty(&yuhu);
 			MakeStack(&yuhu);
-			while (z < k && !found)
+			while (z < temp && !found)
 			{
 				found = (X(Utama) == X(Enemy[z]) && Y(Utama) == Y(Enemy[z]));
 				++z;
 			}
 			--z;
 //			BattleOn(&Utama, Enemy[z], yuhu, &win);
+			system("clear");
+			BattleOn(&Utama, Enemy[z], yuhu, &win, uj, ui);
 			InsertStats(kata, Utama, uj);
 			if (win)
 			{
@@ -449,7 +457,7 @@ int main()
 		
 		else
 		{
-			Letak(P[i], Y(Utama), X(Utama)) = 'P';			
+			Letak(P[i], Y(Utama), X(Utama)) = 'P';
 		}
 		
 		Letak(P[i],Y(Utama),X(Utama)) = 'P';
@@ -816,4 +824,86 @@ void RandomDeque (Deque *D)
 		InverseDeque(D);
 	}
 	CopyDeque(temp2, D);
+}
+
+
+void Randomize (PETA *P, int z, player *Enemy)
+{
+	int i, j, l;
+	if (!done[z])
+	{
+		for (l = 0; l <= 2; ++l)
+		{
+			i = rand()%LebarPeta(*P);
+			j = rand()%PanjangPeta(*P);
+
+			while (!SearchBaris(*P, j, '-'))
+			{
+				++j;
+			}
+
+			while (Letak(*P,i,j) != '-')
+			{
+				srand(i*time(NULL));
+				++i;
+				i %= LebarPeta(*P);
+			}
+			Letak(*P,i,j) = 'M';
+		}
+
+		for (l = 3*z; l <= 3*z+2; ++l)
+		{
+			i = rand()%LebarPeta(*P);
+			j = rand()%PanjangPeta(*P);
+
+			while (!SearchBaris(*P, j, '-'))
+			{
+				++j;
+				j %= PanjangPeta(*P);
+			}
+
+			while (Letak(*P,i,j) != '-')
+			{
+				srand(i*time(NULL));
+				++i;
+				i %= LebarPeta(*P);
+			}
+
+			Letak(*P,i,j) = 'E';
+			InsertMaps(kata, *P);
+			X(Enemy[l]) = j;
+			Y(Enemy[l]) = i;
+			STR(Enemy[l]) = 50*+10*pow(-1,l);
+			DEF(Enemy[l]) = 10+10*pow(-1,l+1);
+			HP(Enemy[l]) = 20+10*pow(-1,l);
+			HPMAX(Enemy[l]) = 20+10*pow(-1,l+1);
+			LVL(Enemy[l]) = 1;
+			EXP(Enemy[l]) = 0;
+			if (l%7==1)
+			{
+				Strcat(NAME(Enemy[l]),"Agung");
+			}
+			else if (l%7==2)
+			{
+				Strcat(NAME(Enemy[l]),"Yos");
+			}
+			else if (l%7==3)
+			{
+				Strcat(NAME(Enemy[l]),"Jau cups");
+			}
+			else if (l%7==4)
+			{
+				Strcat(NAME(Enemy[l]),"Reiv");
+			}
+			else if (l%7==5)
+			{
+				Strcat(NAME(Enemy[l]),"Ziza");
+			}
+			else if (l%7==6)
+			{
+				Strcat(NAME(Enemy[l]),"Daria");
+			}
+		}
+		done[z] = true;	
+	}
 }
